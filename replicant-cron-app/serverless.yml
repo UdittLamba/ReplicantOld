@@ -1,0 +1,10 @@
+org: udittlamba
+app: replicant-cron-app
+component: aws-lambda-cron
+
+name: aws-lambda-cron-template
+
+author: Aaron Stuyvenberg
+inputs:
+  src: ./src/
+  schedule: rate(5 minutes)

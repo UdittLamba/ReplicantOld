@@ -1,0 +1,7 @@
+org: udittlamba
+app: replicant-api
+component: express
+name: express-starter
+
+inputs:
+  src: ./
