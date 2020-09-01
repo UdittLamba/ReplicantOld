@@ -1,0 +1,10 @@
+org: udittlamba
+app: replicant-app
+name: aws-lambda-layer-starter
+component: aws-lambda-layer
+
+inputs:
+  src: ./src
+  runtimes:
+    - nodejs10.x
+    - nodejs12.x
