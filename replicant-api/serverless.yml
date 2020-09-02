@@ -1,5 +1,5 @@
 org: udittlamba
-app: replicant-api
+app: replicant-app
 component: express
 name: express-starter
 
