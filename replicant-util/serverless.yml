@@ -1,6 +1,6 @@
 org: udittlamba
 app: replicant-app
-name: aws-lambda-layer-starter
+name: replicant-util
 component: aws-lambda-layer
 
 inputs:

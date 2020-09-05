@@ -1,21 +1,12 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
-
+const accountUpdaterJob = require('../jobs/AccountUpdaterJob');
 
 
 const handler = async () => {
-    const sequelize = new Sequelize('replicant', 'admin', 'anfield1892'
-        ,{
-            host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
-            dialect: 'mysql'
-        });
+  const accountUpdatorJob = accountUpdaterJob();
 
-    try {
-        sequelize.authenticate();
-        return "we did it";
-    } catch (error) {
-        return ":(";
-    }
 };
+handler().then(console.log);
 
 module.exports = {
   handler,
