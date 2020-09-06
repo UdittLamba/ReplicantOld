@@ -1,11 +1,9 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
 const snoowrap = require('snoowrap');
-const Account = require('../models/Account');
+const Account = require("../models/Account");
 const Subreddit = require('../models/Subreddit');
 
-const subredditUpdatorJob = () => {
-    const account = Account.findByPk(1).then((account) => {
-        //console.log(account.dataValues.userAgent);
+const subredditPopulatorJob = () => {
+    Account.findOne().then((account) => {// any reddit account will do.
         const requester = new snoowrap({
             userAgent: account.dataValues.userAgent,
             clientId: account.dataValues.clientId,
@@ -15,15 +13,13 @@ const subredditUpdatorJob = () => {
         });
         requester.getHot().map(post => post.subreddit_name_prefixed).then((subreddits) =>{
             for (const subredditName of subreddits) {
-                console.log(subredditName);
-                // Subreddit.findOrCreate({
-                //     where: { name: subredditName.substring(2, subredditName.length) }
-                // });
-
+                Subreddit.findOrCreate({
+                    where: { name: subredditName.substring(2, subredditName.length) }
+                });
             }
         });
     });
 }
 
-subredditUpdatorJob();
-module.exports = subredditUpdatorJob;
+//subredditPopulatorJob();//temp execution
+module.exports = subredditPopulatorJob;

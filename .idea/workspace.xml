@@ -20,20 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ee2629-e6de-4352-ae9c-3930412236a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/replicant-cron-app/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-cron-app/jobs/AccountUpdaterJob.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-cron-app/jobs/SubredditPopulatorJob.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-cron-app/models/Account.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-cron-app/models/Subreddit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-util/src/nodejs/models/Account.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-util/src/nodejs/models/Post.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/replicant-util/src/nodejs/models/Subreddit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aws-lambda-layer-starter/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-util/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aws-lambda-layer-starter/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-util/serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aws-lambda-layer-starter/src/nodejs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-util/src/nodejs/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/replicant-cron-app/models/account.js" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/replicant-cron-app/jobs/FetchTopPostsJob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/replicant-cron-app/jobs/SubredditPopulatorJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-cron-app/jobs/SubredditPopulatorJob.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/replicant-cron-app/src/handler.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-cron-app/src/handler.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,18 +66,18 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/replicant-cron-app/models" />
+      <recent name="$PROJECT_DIR$/replicant-cron-app" />
+      <recent name="$PROJECT_DIR$/aws-lambda-layer-starter/src/nodejs/models" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/aws-lambda-layer-starter/src/nodejs" />
       <recent name="$PROJECT_DIR$/replicant-cron-app/models" />
       <recent name="$PROJECT_DIR$/replicant-cron-app/jobs" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/replicant-cron-app" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/replicant-cron-app/models" />
-      <recent name="$PROJECT_DIR$/replicant-cron-app" />
-      <recent name="$PROJECT_DIR$/aws-lambda-layer-starter/src/nodejs/models" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

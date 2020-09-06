@@ -1,12 +1,16 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const accountUpdaterJob = require('../jobs/AccountUpdaterJob');
+const moment = require('moment');
+const acc = require('./models/Account');
+const subredditPopulatorJob = require("./jobs/SubredditPopulatorJob");
+const postJob = require("./jobs/PostJob");
 
-
-const handler = async () => {
-  const accountUpdatorJob = accountUpdaterJob();
-
+const handler = () => {
+  if(moment().format("hA") === '9PM'){
+    subredditPopulatorJob();
+  }
+  postJob(4);
+  acc.fetchAccData().catch((err) => console.log(err));
 };
-handler().then(console.log);
+handler();
 
 module.exports = {
   handler,
