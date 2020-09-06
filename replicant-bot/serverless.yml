@@ -7,4 +7,4 @@ name: aws-lambda-cron-template
 author: Aaron Stuyvenberg
 inputs:
   src: ./src/
-  schedule: rate(5 minutes)
+  schedule: rate(1 hour)

@@ -13,9 +13,11 @@ node_modules
 .vscode/
 .eslintcache
 dist
+.idea*
 .idea
 build/
 .env*
+.env
 .cache*
 .serverless
 .serverless_nextjs
@@ -25,3 +27,4 @@ tmp
 package-lock.json
 yarn.lock
 test
+/replicant-bot/src/models/
