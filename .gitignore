@@ -27,4 +27,4 @@ tmp
 package-lock.json
 yarn.lock
 test
-/replicant-cron-app/src/models/
+/replicant-bot/src/models/

@@ -14,11 +14,14 @@ const fetchTopPostsJob = (time) => {
         });
         Subreddit.findAll().then((subs) => {
             for (const subName of subs) {
-                if (subName.dataValues.isDeleted == false) {
+                if (subName.dataValues.isDeleted === false) {
                     requester.getSubreddit(subName.dataValues.name).getTop(time).then((posts) => {
                         for (const post of posts) {
-                            //Avoid OC content with poster ownership claimed.
-                            if (post.title.includes('I') || post.title.includes('My ') || post.title.includes(' my ')) {
+                            //Avoid OC content with poster makes self reference.
+                            //Avoid posts with less than 1000 karma.
+                            //Avoid reddit hosted video media.
+                            if ((!post.title.includes('I') || !post.title.includes('My ') || !post.title.includes(' my ')
+                                || !post.url.includes('v.redd.it')) && post.ups > 1000 ) {
                                 Post.create({
                                     title: post.title,
                                     name: post.name,

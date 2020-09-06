@@ -4,14 +4,14 @@ const subredditPopulatorJob = require("./jobs/SubredditPopulatorJob");
 const postJob = require("./jobs/PostJob");
 
 const handler = () => {
-  if(moment().format("hA") === '9PM'){
-    subredditPopulatorJob();
-  }
-  postJob(4);
-  acc.fetchAccData().catch((err) => console.log(err));
+    if (moment().format("hA") === '9PM') {
+        subredditPopulatorJob();
+    }
+    postJob(4);
+    acc.fetchAccData().catch((err) => console.log(err));
 };
 handler();
 
 module.exports = {
-  handler,
+    handler,
 };
