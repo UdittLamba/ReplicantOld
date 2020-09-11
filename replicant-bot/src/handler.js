@@ -1,6 +1,6 @@
 const moment = require('moment');
 const acc = require('./models/Account');
-const subredditPopulatorJob = require("./jobs/SubredditPopulatorJob");
+const subredditPopulatorJob = require("./jobs/SubredditPopulateJob");
 const postJob = require("./jobs/PostJob");
 
 const handler = () => {

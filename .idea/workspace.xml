@@ -20,9 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ee2629-e6de-4352-ae9c-3930412236a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/replicant-cron-app/jobs/FetchTopPostsJob.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/replicant-cron-app/jobs/SubredditPopulatorJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-cron-app/jobs/SubredditPopulatorJob.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/replicant-cron-app/src/handler.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-cron-app/src/handler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/replicant-bot/src/handler.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-bot/src/handler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/replicant-bot/src/jobs/AccountUpdaterJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-bot/src/jobs/AccountUpdaterJob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/replicant-bot/src/jobs/SubredditPopulatorJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-bot/src/jobs/SubredditPopulateJob.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +94,8 @@
       <workItem from="1598872684577" duration="1152000" />
       <workItem from="1598874293141" duration="34091000" />
       <workItem from="1599217828805" duration="7945000" />
+      <workItem from="1599723501874" duration="1233000" />
+      <workItem from="1599801892490" duration="5439000" />
     </task>
     <servers />
   </component>
