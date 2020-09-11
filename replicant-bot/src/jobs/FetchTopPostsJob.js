@@ -21,26 +21,29 @@ const fetchTopPostsJob = (time) => {
                             //Avoid posts with less than 1000 karma.
                             //Avoid reddit hosted video media.
                             if ((!post.title.includes('I') || !post.title.includes('My ') || !post.title.includes(' my ')
-                                || !post.url.includes('v.redd.it')) && post.ups > 1000 ) {
-                                Post.create({
-                                    title: post.title,
-                                    name: post.name,
-                                    upvoteRatio: post.upvote_ratio,
-                                    ups: post.ups,
-                                    downs: post.downs,
-                                    score: post.score,
-                                    subreddit: post.subreddit.display_name,
-                                    isOriginalContent: post.is_original_content,
-                                    isRedditMediaDomain: post.is_reddit_media_domain,
-                                    isMeta: post.is_meta,
-                                    edited: post.edited,
-                                    isSelf: post.is_self,
-                                    selfText: post.selftext,
-                                    selfTextHtml: post.selftext_html,
-                                    created: post.created,
-                                    over18: post.over_18,
-                                    url: post.url,
-                                    domain: post.domain,
+                                || !post.url.includes('v.redd.it')) && post.ups > 1000) {
+                                Post.findOrCreate({
+                                    where: {name: post.name},
+                                    defaults: {
+                                        title: post.title,
+                                        name: post.name,
+                                        upvoteRatio: post.upvote_ratio,
+                                        ups: post.ups,
+                                        downs: post.downs,
+                                        score: post.score,
+                                        subreddit: post.subreddit.display_name,
+                                        isOriginalContent: post.is_original_content,
+                                        isRedditMediaDomain: post.is_reddit_media_domain,
+                                        isMeta: post.is_meta,
+                                        edited: post.edited,
+                                        isSelf: post.is_self,
+                                        selfText: post.selftext,
+                                        selfTextHtml: post.selftext_html,
+                                        created: post.created,
+                                        over18: post.over_18,
+                                        url: post.url,
+                                        domain: post.domain,
+                                    }
                                 }).catch((err) => console.log(err));
                             }
                         }
@@ -51,5 +54,5 @@ const fetchTopPostsJob = (time) => {
     });
 };
 
-fetchTopPostsJob('today');
+fetchTopPostsJob('year');
 module.exports = fetchTopPostsJob;

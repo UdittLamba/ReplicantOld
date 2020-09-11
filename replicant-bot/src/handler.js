@@ -1,16 +1,17 @@
 const moment = require('moment');
-const acc = require('./models/Account');
-const subredditPopulatorJob = require("./jobs/SubredditPopulateJob");
+const Account = require('./models/Account');
+const subredditPopulateJob = require("./jobs/SubredditPopulateJob");
 const postJob = require("./jobs/PostJob");
 
 const handler = () => {
-    if (moment().format("hA") === '9PM') {
-        subredditPopulatorJob();
+    const acc = new Account();
+    if (moment().format("hA") === '12AM') {
+        subredditPopulateJob();
     }
-    postJob(4);
-    acc.fetchAccData().catch((err) => console.log(err));
+
+    acc.fetchAccountData().catch((err) => console.log(err));
 };
-handler();
+//handler();
 
 module.exports = {
     handler,
