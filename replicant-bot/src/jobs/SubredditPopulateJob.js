@@ -1,8 +1,8 @@
 const snoowrap = require('snoowrap');
-const Account = require("../models/Account");
+const Account = require('../models/Account');
 const Subreddit = require('../models/Subreddit');
 
-const subredditPopulatorJob = () => {
+const subredditPopulateJob = () => {
     Account.findOne().then((account) => {// any reddit account will do.
         const requester = new snoowrap({
             userAgent: account.dataValues.userAgent,
@@ -10,16 +10,16 @@ const subredditPopulatorJob = () => {
             clientSecret: account.dataValues.clientSecret,
             username: account.dataValues.username,
             password: account.dataValues.password
-        });
+        }).catch(console.error);
         requester.getHot().map(post => post.subreddit_name_prefixed).then((subreddits) =>{
             for (const subredditName of subreddits) {
                 Subreddit.findOrCreate({
                     where: { name: subredditName.substring(2, subredditName.length) }
-                });
+                }).catch(console.error);
             }
         });
     });
 }
 
-//subredditPopulatorJob();//temp execution
-module.exports = subredditPopulatorJob;
+subredditPopulateJob();//temp execution
+module.exports = subredditPopulateJob;
