@@ -10,7 +10,14 @@ const subredditPopulateJob = () => {
             clientSecret: account.dataValues.clientSecret,
             username: account.dataValues.username,
             password: account.dataValues.password
-        }).catch(console.error);
+        });
+        requester.getPopularSubreddits().map(sub => sub.display_name_prefixed).then((subreddits) => {
+            for (const subredditName of subreddits) {
+                Subreddit.findOrCreate({
+                    where: { name: subredditName.substring(2, subredditName.length) }
+                }).catch(console.error);
+            }
+        });
         requester.getHot().map(post => post.subreddit_name_prefixed).then((subreddits) =>{
             for (const subredditName of subreddits) {
                 Subreddit.findOrCreate({
@@ -21,5 +28,5 @@ const subredditPopulateJob = () => {
     });
 }
 
-subredditPopulateJob();//temp execution
-module.exports = subredditPopulateJob;
+//subredditPopulateJob();//temp execution
+module.exports = subredditPopulateJob

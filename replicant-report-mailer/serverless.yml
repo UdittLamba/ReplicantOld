@@ -2,7 +2,7 @@ org: udittlamba
 app: replicant-app
 component: aws-lambda-cron
 
-name: aws-lambda-cron-template
+name: replicant-report-mailer
 
 author: Aaron Stuyvenberg
 inputs:

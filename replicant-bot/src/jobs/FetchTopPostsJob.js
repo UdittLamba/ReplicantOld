@@ -3,6 +3,10 @@ const Account = require('../models/Account');
 const Subreddit = require('../models/Subreddit');
 const Post = require('../models/Post');
 
+/**
+ * fetch and store top posts of approved subs and subscribe to approved subreddits.
+ * @param time can be 'today', 'month', 'year' or 'all time'
+ */
 const fetchTopPostsJob = (time) => {
     Account.findOne().then((account) => {// any reddit account will do.
         const requester = new snoowrap({
@@ -14,14 +18,17 @@ const fetchTopPostsJob = (time) => {
         });
         Subreddit.findAll().then((subs) => {
             for (const subName of subs) {
-                if (subName.dataValues.isDeleted === false) {
-                    requester.getSubreddit(subName.dataValues.name).getTop(time).then((posts) => {
+                if (subName.dataValues.isApproved === true) {
+                    requester.getSubreddit(subName.dataValues.name)
+                        .subscribe()
+                        .getTop(time)
+                        .then((posts) => {
                         for (const post of posts) {
-                            //Avoid OC content with poster makes self reference.
+                            //Avoid OC content with poster makes a self reference.
                             //Avoid posts with less than 1000 karma.
                             //Avoid reddit hosted video media.
                             if ((!post.title.includes('I') || !post.title.includes('My ') || !post.title.includes(' my ')
-                                || !post.url.includes('v.redd.it')) && post.ups > 1000) {
+                                || post.domain !== 'v.redd.it') && post.ups > 1000) {
                                 Post.findOrCreate({
                                     where: {name: post.name},
                                     defaults: {
