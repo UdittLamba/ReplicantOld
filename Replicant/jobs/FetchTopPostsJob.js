@@ -27,8 +27,8 @@ const fetchTopPostsJob = (time) => {
                             //Avoid OC content with poster makes a self reference.
                             //Avoid posts with less than 1000 karma.
                             //Avoid reddit hosted video media.
-                            if ((!post.title.includes('I') || !post.title.includes('My ') || !post.title.includes(' my ')
-                                || post.domain !== 'v.redd.it') && post.ups > 1000) {
+                            if (!post.title.includes('I') && !post.title.includes('My ') && !post.title.includes(' my ')
+                                && post.domain !== 'v.redd.it' && post.ups > 1000) {
                                 Post.findOrCreate({
                                     where: {name: post.name},
                                     defaults: {
@@ -61,5 +61,5 @@ const fetchTopPostsJob = (time) => {
     });
 };
 
-fetchTopPostsJob('year');
+//fetchTopPostsJob('year');
 module.exports = fetchTopPostsJob;
