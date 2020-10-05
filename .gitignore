@@ -13,7 +13,7 @@ node_modules
 .vscode/
 .eslintcache
 dist
-.idea*
+.idea/
 .idea
 build/
 .env*

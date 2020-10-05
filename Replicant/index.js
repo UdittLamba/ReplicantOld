@@ -1,9 +1,14 @@
 const serverless = require('serverless-http');
-const express = require('express')
-const app = express()
+const express = require('express');
+const account = require('Replicant/db');
+const app = express();
+const acc = new account();
 
-app.get('/', function (req, res) {
-    res.send('Hello World!')
+// API endpoints go here.
+app.get('/accounts/all', function (req, res) {
+    acc.fetchAllAccounts().then( (accounts) => {
+        res.json(accounts);
+    })
 })
 
 module.exports.apiHandler = serverless(app);

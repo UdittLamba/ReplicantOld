@@ -1,14 +1,13 @@
 const snoowrap = require('snoowrap');
-const Account = require('../models/Account');
-const Subreddit = require('../models/Subreddit');
-const Post = require('../models/Post');
+const {sequelize} = require('../db');
 
 /**
  * fetch and store top posts of approved subs and subscribe to approved subreddits.
  * @param time can be 'today', 'month', 'year' or 'all time'
  */
 const fetchTopPostsJob = (time) => {
-    Account.findOne().then((account) => {// any reddit account will do.
+    sequelize.models.Account.findOne().then((account) => {// any reddit account will do.
+        console.log(account.dataValues.username);
         const requester = new snoowrap({
             userAgent: account.dataValues.userAgent,
             clientId: account.dataValues.clientId,
@@ -16,7 +15,7 @@ const fetchTopPostsJob = (time) => {
             username: account.dataValues.username,
             password: account.dataValues.password
         });
-        Subreddit.findAll().then((subs) => {
+        sequelize.models.Subreddit.findAll().then((subs) => {
             for (const subName of subs) {
                 if (subName.dataValues.isApproved === true) {
                     requester.getSubreddit(subName.dataValues.name)
@@ -29,7 +28,7 @@ const fetchTopPostsJob = (time) => {
                             //Avoid reddit hosted video media.
                             if (!post.title.includes('I') && !post.title.includes('My ') && !post.title.includes(' my ')
                                 && post.domain !== 'v.redd.it' && post.ups > 1000) {
-                                Post.findOrCreate({
+                                sequelize.models.Post.findOrCreate({
                                     where: {name: post.name},
                                     defaults: {
                                         title: post.title,
@@ -61,5 +60,5 @@ const fetchTopPostsJob = (time) => {
     });
 };
 
-//fetchTopPostsJob('year');
+//fetchTopPostsJob('today');
 module.exports = fetchTopPostsJob;

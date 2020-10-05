@@ -1,7 +1,7 @@
 const snoowrap = require('snoowrap');
-const {Account, pickAccounts} = require("../models/Account");
+const {Account, pickAccounts} = require("../db");
 const Post = require('../models/Post');
-const { Sequelize, DataTypes, Model } = require('sequelize');
+const Sequelize  = require('sequelize');
 
 const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
     ,{
@@ -13,23 +13,23 @@ const postJob = (numberOfAccounts) => {
     pickAccounts(numberOfAccounts).then((accounts) => {
         for(const account of accounts){
             const poster = new snoowrap({
-                userAgent: account.dataValues.userAgent,
-                clientId: account.dataValues.clientId,
-                clientSecret: account.dataValues.clientSecret,
-                username: account.dataValues.username,
-                password: account.dataValues.password
+                userAgent: account.userAgent,
+                clientId: account.clientId,
+                clientSecret: account.clientSecret,
+                username: account.username,
+                password: account.password
             });
 
             Post.findOne({order: sequelize.random()}).then((post) => {
-                if(post.dataValues.url != null || ''){
-                    poster.getSubreddit(post.dataValues.subreddit).submitLink({
-                        title: post.dataValues.title,
-                        url: post.dataValues.url
+                if(post.url != null || ''){
+                    poster.getSubreddit(post.subreddit).submitLink({
+                        title: post.title,
+                        url: post.url
                     }).catch((err) => console.log(err));
                 }
                 if(post.dataValues.isSelf == true && post.dataValues.edited == false ){
-                    poster.getSubreddit(post.dataValues.subreddit).submitSelfPost({
-                        title: post.dataValues.title,
+                    poster.getSubreddit(post.subreddit).submitSelfPost({
+                        title: post.title,
                         text: post.selfText
                     }).catch((err) => console.log(err));
                 }

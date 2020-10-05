@@ -1,5 +1,5 @@
 const snoowrap = require('snoowrap');
-const Account = require('../models/Account');
+const Account = require('../db');
 const Subreddit = require('../models/Subreddit');
 
 const subredditPopulateJob = () => {
