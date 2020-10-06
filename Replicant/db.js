@@ -1,12 +1,12 @@
-const { DataTypes, Sequelize} = require('sequelize');
+const {DataTypes, Sequelize} = require('sequelize');
 const snoo = require('snoowrap');
 const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
-    ,{
+    , {
         host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
         dialect: 'mysql'
     });
 
-sequelize.define('Account',{
+Account = sequelize.define('Account', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -61,7 +61,7 @@ sequelize.define('Account',{
     }
 })
 
-sequelize.define('Post', {
+Post = sequelize.define('Post', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -73,7 +73,7 @@ sequelize.define('Post', {
         type: DataTypes.STRING,
     },
     name: {
-        type:DataTypes.STRING,
+        type: DataTypes.STRING,
     },
     upvoteRatio: {
         type: DataTypes.DECIMAL,
@@ -108,7 +108,7 @@ sequelize.define('Post', {
     selfText: {
         type: DataTypes.STRING,
     },
-    selfTextHtml:{
+    selfTextHtml: {
         type: DataTypes.STRING,
     },
     created: {
@@ -125,7 +125,7 @@ sequelize.define('Post', {
     }
 })
 
-sequelize.define('Subreddit', {
+Subreddit = sequelize.define('Subreddit', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -143,6 +143,67 @@ sequelize.define('Subreddit', {
         defaultValue: false,
     }
 })
+
+PostQueue = sequelize.define('PostQueue', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        unique: true,
+    },
+    postId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    postName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    submitter: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    toBePostedAt: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    isDone: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    }
+})
+
+SubmittedPost = sequelize.define('SubmittedPost', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        unique: true,
+    },
+    postId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    postName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    submitter: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
+})
+
+//relationships between tables goes here
+// Account.hasMany(PostQueue, {as:'PostQueues'});
+// Account.hasMany(SubmittedPost, {as: 'SubmittedPosts'});
+// Post.hasOne(SubmittedPost, {as: 'SubmittedPost'});
+// Post.hasOne(PostQueue, {as: 'PostQueue'});
 
 /**
  * Select accounts that are not sold.
@@ -191,7 +252,8 @@ fetchAccountData = async () => {
             requester.getMe().then((me) => {
                 sequelize.models.Account.update({
                     postKarma: me.link_karma,
-                    commentKarma: me.comment_karma
+                    commentKarma: me.comment_karma,
+                    isSuspended: me.is_suspended
                 }, {
                     where: {
                         username: account.username
@@ -215,7 +277,7 @@ fetchAccountData = async () => {
  */
 fetchAllAccounts = async () => {
     const promise = new Promise((resolve, reject) => {
-        serialize.models.Account.findAll({
+        sequelize.models.Account.findAll({
                 attributes: {
                     exclude: ['clientSecret', 'password', 'updatedAt']
                 }
@@ -233,17 +295,38 @@ fetchAllAccounts = async () => {
     return promise;
 }
 
+/**
+ *
+ * @returns {Promise<unknown>}
+ */
+fetchAllSubreddits = async () => {
+    const promise = new Promise((resolve, reject) => {
+        sequelize.models.Subreddit.findAll({
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                }
+            }
+        ).then((subreddits) => {
+            const subs = [];
+            for (const subreddit of subreddits) {
+                subs.push(subreddit.dataValues);
+            }
+            resolve(subs)
+        }).catch((err) => reject(Error(err)))
+    }).catch((err) => {
+        console.log(err)
+    });
+    return promise;
+}
 
+//sequelize.sync({alter:true}).catch();
 
-
-//Account.sync({alter:true}).catch();
-
-// Account.create({
+// sequelize.models.Account.create({
 //     userAgent: 'Replicant Bot 1.0.0',
-//     username: 'NoSupermarket576',
-//     password: 'uxzm8ZcA9g8EMVp',
-//     clientId: '5VZEplIf4eAn7g',
-//     clientSecret: 'laeQU3f2DxQA1wxUWlc0g5U6Nvc'
+//     username: 'Letterhead-Mindless',
+//     password: 'xp0Y2l@#fLDN',
+//     clientId: 'e8OC-bfxUDa9lA',
+//     clientSecret: 'dcseJlzRZPART5CPM-UGhCrhw0Y'
 // }).catch(console.log);
 
 //acc.pickAccounts(2).then(console.log)
@@ -251,5 +334,6 @@ module.exports = {
     sequelize,
     pickAccounts,
     fetchAccountData,
-    fetchAllAccounts
+    fetchAllAccounts,
+    fetchAllSubreddits
 };
