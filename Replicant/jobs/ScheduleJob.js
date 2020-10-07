@@ -16,6 +16,7 @@ const pickRandomHour = () => {
  *
  * Accounts MUST be incubated for 1 week min.
  * Selected posts MUST be atleast a month old.
+ *
  * @param numOfAccounts
  * @param numOfPosts
  */
@@ -37,7 +38,7 @@ const schedulePostJobs = (numOfAccounts, numOfPosts) => {
                     order: Sequelize.literal('rand()'),
                     where: {
                         createdAt: {
-                            [Op.lte]: dayjs().subtract(1, 'month')['$d']
+                            [Op.lte]: dayjs().subtract(24, 'day')['$d']
                         }
                     },
                     limit: numOfPosts
@@ -57,5 +58,5 @@ const schedulePostJobs = (numOfAccounts, numOfPosts) => {
         }
     })
 }
-
+//schedulePostJobs(2,3);
 module.exports = schedulePostJobs;

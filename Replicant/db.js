@@ -1,11 +1,14 @@
 const {DataTypes, Sequelize} = require('sequelize');
-const snoo = require('snoowrap');
+const snoowrap = require('snoowrap');
 const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
     , {
         host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
         dialect: 'mysql'
     });
-
+/**
+ *  MODEL DEFINITIONS
+ *
+ */
 Account = sequelize.define('Account', {
     id: {
         type: DataTypes.INTEGER,
@@ -206,49 +209,54 @@ SubmittedPost = sequelize.define('SubmittedPost', {
 // Post.hasOne(PostQueue, {as: 'PostQueue'});
 
 /**
- * Select accounts that are not sold.
- * @param numberOfAccounts
- * @returns {Promise<[] | void>}
+ *
+ * @param accountName
+ * @returns {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
-pickAccounts = (numberOfAccounts) => {
-    return sequelize.models.Account.findAll({
+getAccount = (accountName) => {
+    return sequelize.models.Account.findOne({
         where: {
             isSold: false,
-            isSuspended: false
+            isSuspended: false,
+            username: accountName
         },
-        order: conn().random(),
-        limit: numberOfAccounts
-    }).then(
-        (accounts) => {
-            const accs = [];
-            for (const Account of accounts) {
-                accs.push(account.dataValues);
-            }
-            return accs;
-        }).catch((err) => {
-        console.log(err)
     });
-
 }
+
+getPost =(postId) => {
+    return sequelize.models.Post.findByPk(postId)
+}
+
+insertSubmittedPost = (job) => {
+     return sequelize.models.SubmittedPost.findOrCreate({
+         where: {
+             postId: job.dataValues.postId,
+             postName: job.dataValues.postName,
+             submitter: job.dataValues.submitter
+         }
+     }).catch((err) => {console.log(err)})
+}
+
+ setIsDone =  (postId,bool) => {
+    sequelize.models.PostQueue.update({
+        isDone: bool
+    },{
+        where: {postId: postId}
+        }).catch((err) => {console.log(err)})
+ }
+
 /**
  * fetch and store comment and link karma from reddit api.
  * @returns {Promise<void>}
  */
-fetchAccountData = async () => {
+updateAccountKarma = async () => {
     return sequelize.models.Account.findAll({
         where: {
             isSold: false
         }
     }).then((accounts) => {
         for (const account of accounts) {
-            const requester = new snoo({
-                userAgent: account.userAgent,
-                clientId: account.clientId,
-                clientSecret: account.clientSecret,
-                username: account.username,
-                password: account.password
-            })
-
+            const requester = createRequester(account);
             requester.getMe().then((me) => {
                 sequelize.models.Account.update({
                     postKarma: me.link_karma,
@@ -319,6 +327,15 @@ fetchAllSubreddits = async () => {
     return promise;
 }
 
+createRequester = (account) => {
+    return new snoowrap({
+        userAgent: account.dataValues.userAgent,
+        clientId: account.dataValues.clientId,
+        clientSecret: account.dataValues.clientSecret,
+        username: account.dataValues.username,
+        password: account.dataValues.password
+    });
+}
 //sequelize.sync({alter:true}).catch();
 
 // sequelize.models.Account.create({
@@ -329,11 +346,15 @@ fetchAllSubreddits = async () => {
 //     clientSecret: 'dcseJlzRZPART5CPM-UGhCrhw0Y'
 // }).catch(console.log);
 
-//acc.pickAccounts(2).then(console.log)
+//acc.getAccount(2).then(console.log)
 module.exports = {
     sequelize,
-    pickAccounts,
-    fetchAccountData,
+    getAccount,
+    updateAccountKarma,
     fetchAllAccounts,
-    fetchAllSubreddits
+    fetchAllSubreddits,
+    createRequester,
+    getPost,
+    insertSubmittedPost,
+    setIsDone
 };
