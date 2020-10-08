@@ -1,27 +1,26 @@
-'use strict';
+const {sequelize, updateAccountKarma} = require('./db');
+const subredditPopulateJob = require("./jobs/SubredditPopulateJob");
+const fetchTopPosts = require("./jobs/FetchTopPostsJob");
+const scheduleJob = require("./jobs/ScheduleJob");
+const farmKarmaJob = require("./jobs/FarmKarmaJob");
 
-module.exports.botHandler = async event => {
-      const acc = new Account();
-      if (moment().format("hA") === '12AM') {
-        subredditPopulateJob();
-        fetchTopPosts('today');
-    }
-    acc.fetchAccountData().catch((err) => console.log(err));
+module.exports.botHandler = () => {
+    updateAccountKarma().catch((err) => console.log(err));
+}
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
+module.exports.updateHandler = async () => {
+    await subredditPopulateJob();
+    await fetchTopPosts('today');
+    await sequelize.connectionManager.close();
+}
 
-module.exports.reportHandler = async => {
-    return{
-        statusCode: 200,
-        body: JSON.stringify(
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                input: event,
-            },
-            null,
-            2
-        ),
-    }
+module.exports.postHandler = async () => {
+    //TODO : convert to manually updatable control values.
+    await scheduleJob(2,3);
+    await sequelize.connectionManager.close();
+}
+
+module.exports.karmaFarmingHandler = async () => {
+    await farmKarmaJob;
+    await sequelize.connectionManager.close();
 }

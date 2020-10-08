@@ -1,0 +1,56 @@
+const {sequelize, getAccount, createRequester, getPost, insertSubmittedPost, setIsDone} = require('../db');
+const dayjs = require('dayjs');
+
+const farmKarmaJob = async() => {
+    let jobs = null;
+    jobs = await sequelize.models.PostQueue.findAll(
+        {
+            where: {
+                toBePostedAt: dayjs().hour(),
+                isDone: false
+            }
+        }
+    );
+    if(typeof jobs != 'undefined' && jobs != null && jobs.length > 0){
+        await farmKarma(jobs);
+    }
+}
+
+farmKarma = async (jobs) => {
+    for (const job of jobs) {
+        account = await getAccount(job.dataValues.submitter);
+        const requester = await createRequester(account);
+        await executeSubmission(account, job, requester);
+    }
+}
+executeSubmission = async (account, job, requester) => {
+    let post = null;
+    post = await getPost(job.dataValues.postId);
+    await recordSubmission(post, requester, job );
+}
+
+recordSubmission = async (post, requester, job) => {
+    await submitPost(post, requester);
+    await insertSubmittedPost(job).then(() =>{
+            setIsDone(job.dataValues.postId, true);
+        }
+    )
+}
+submitPost = async (post, requester) => {
+    if (post.dataValues.url != null || '') {
+        console.log(post.dataValues.subreddit);
+        return requester.getSubreddit(post.dataValues.subreddit).submitLink({
+            title: post.dataValues.title,
+            url: post.dataValues.url
+        }).catch((err) => console.log(err));
+    }
+    if (post.dataValues.isSelf === true && post.dataValues.edited === false) {
+        console.log(post.dataValues.subreddit);
+        return requester.getSubreddit(post.dataValues.subreddit).submitSelfPost({
+            title: post.dataValues.title,
+            text: post.dataValues.selfText
+        }).catch((err) => console.log(err));
+    }
+}
+//farmKarmaJob().catch();
+module.exports = farmKarmaJob;

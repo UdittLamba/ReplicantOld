@@ -9,10 +9,10 @@
   "author": "Uditt Lamba",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.9.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
     "mysql2": "^2.1.0",
     "node-env-run": "^4.0.2",
     "sequelize": "^6.3.4",

@@ -9,9 +9,9 @@
   "author": "Uditt Lamba",
   "license": "ISC",
   "dependencies": {
+    "dayjs": "^1.9.1",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
     "mysql2": "^2.1.0",
     "sequelize": "^6.3.4",
     "serverless-http": "^2.6.0",
