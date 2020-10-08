@@ -1,32 +1,42 @@
 const {sequelize, getAccount, createRequester, getPost, insertSubmittedPost, setIsDone} = require('../db');
 const dayjs = require('dayjs');
 
-const farmKarmaJob = () => {
-    sequelize.models.PostQueue.findAll(
+const farmKarmaJob = async() => {
+    let jobs = null;
+    jobs = await sequelize.models.PostQueue.findAll(
         {
             where: {
                 toBePostedAt: dayjs().hour(),
                 isDone: false
             }
         }
-    ).then((jobs) => {
-        for (const job of jobs) {
-            getAccount(job.dataValues.submitter).then((account) => {
-                const requester = createRequester(account);
-                getPost(job.dataValues.postId).then((post) => {
-                    submitPost(post, requester).then(
-                        insertSubmittedPost(job).then(() =>{
-                            setIsDone(job.dataValues.postId, true);
-                        }
-                        )
-                    );
-                })
-            }).catch((err) => console.log(err))
-        }
-    })
+    );
+    if(typeof jobs != 'undefined' && jobs != null && jobs.length > 0){
+        await farmKarma(jobs);
+    }
 }
 
-submitPost = (post, requester) => {
+farmKarma = async (jobs) => {
+    for (const job of jobs) {
+        account = await getAccount(job.dataValues.submitter);
+        const requester = await createRequester(account);
+        await executeSubmission(account, job, requester);
+    }
+}
+executeSubmission = async (account, job, requester) => {
+    let post = null;
+    post = await getPost(job.dataValues.postId);
+    await recordSubmission(post, requester, job );
+}
+
+recordSubmission = async (post, requester, job) => {
+    await submitPost(post, requester);
+    await insertSubmittedPost(job).then(() =>{
+            setIsDone(job.dataValues.postId, true);
+        }
+    )
+}
+submitPost = async (post, requester) => {
     if (post.dataValues.url != null || '') {
         console.log(post.dataValues.subreddit);
         return requester.getSubreddit(post.dataValues.subreddit).submitLink({
@@ -42,5 +52,5 @@ submitPost = (post, requester) => {
         }).catch((err) => console.log(err));
     }
 }
-//farmKarmaJob();
+//farmKarmaJob().catch();
 module.exports = farmKarmaJob;

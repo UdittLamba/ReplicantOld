@@ -23,12 +23,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ee2629-e6de-4352-ae9c-3930412236a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/db.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/handler.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/handler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Replicant/jobs/PostJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/PostJob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/jobs/AccountUpdaterJob.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/jobs/FetchTopPostsJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/FetchTopPostsJob.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/jobs/ScheduleJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/ScheduleJob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/jobs/SubredditPopulateJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/SubredditPopulateJob.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/serverless.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +73,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -91,7 +93,7 @@
       <recent name="$PROJECT_DIR$/replicant-cron-app/models" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="AWS Lambda.[Remote] replicant-dev-postHandler">
     <configuration name="[Remote] replicant-dev-botHandler" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
       <option name="credentialProviderId" value="profile:default" />
       <option name="regionId" value="us-east-1" />
@@ -100,9 +102,26 @@
       <option name="inputIsFile" value="false" />
       <method v="2" />
     </configuration>
+    <configuration name="[Remote] replicant-dev-karmaFarmingHandler" type="aws.lambda" factoryName="Remote" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-1" />
+      <option name="functionName" value="replicant-dev-karmaFarmingHandler" />
+      <option name="input" value="{}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="[Remote] replicant-dev-postHandler" type="aws.lambda" factoryName="Remote" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-1" />
+      <option name="functionName" value="replicant-dev-postHandler" />
+      <option name="input" value="{}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="AWS Lambda.[Remote] replicant-dev-botHandler" />
+        <item itemvalue="AWS Lambda.[Remote] replicant-dev-postHandler" />
+        <item itemvalue="AWS Lambda.[Remote] replicant-dev-karmaFarmingHandler" />
       </list>
     </recent_temporary>
   </component>
@@ -132,6 +151,7 @@
       <workItem from="1601953160860" duration="287000" />
       <workItem from="1601983415319" duration="22278000" />
       <workItem from="1602063862413" duration="13358000" />
+      <workItem from="1602154936271" duration="4165000" />
     </task>
     <servers />
   </component>
@@ -159,30 +179,30 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="693" y="301" width="524" height="503" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1601916575196" />
-    <state x="693" y="385" width="523" height="335" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1602012593382">
+    <state x="693" y="385" width="523" height="335" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1602154847794">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state x="693" y="385" width="523" height="335" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602012593382" />
-    <state width="1895" height="276" key="GridCell.Tab.0.bottom" timestamp="1602013076413">
+    <state x="693" y="385" width="523" height="335" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602154847794" />
+    <state width="1893" height="274" key="GridCell.Tab.0.bottom" timestamp="1602161126686">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="276" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602013076413" />
-    <state width="1895" height="276" key="GridCell.Tab.0.center" timestamp="1602013076413">
+    <state width="1893" height="274" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602161126686" />
+    <state width="1893" height="274" key="GridCell.Tab.0.center" timestamp="1602161126686">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="276" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602013076413" />
-    <state width="1895" height="276" key="GridCell.Tab.0.left" timestamp="1602013076413">
+    <state width="1893" height="274" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602161126686" />
+    <state width="1893" height="274" key="GridCell.Tab.0.left" timestamp="1602161126686">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="276" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602013076413" />
-    <state width="1895" height="276" key="GridCell.Tab.0.right" timestamp="1602013076413">
+    <state width="1893" height="274" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602161126686" />
+    <state width="1893" height="274" key="GridCell.Tab.0.right" timestamp="1602161126686">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1895" height="276" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602013076413" />
-    <state x="441" y="189" key="SettingsEditor" timestamp="1601549836360">
+    <state width="1893" height="274" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602161126686" />
+    <state x="441" y="189" key="SettingsEditor" timestamp="1602150057768">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state x="441" y="189" key="SettingsEditor/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1601549836360" />
+    <state x="441" y="189" key="SettingsEditor/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602150057768" />
     <state x="1920" y="151" width="1366" height="768" key="dock-window-1" timestamp="1602076548164">
       <screen x="1920" y="151" width="1366" height="768" />
     </state>

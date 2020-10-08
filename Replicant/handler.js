@@ -1,5 +1,4 @@
-const {updateAccountKarma} = require('./db');
-const dayjs = require('dayjs');
+const {sequelize, updateAccountKarma} = require('./db');
 const subredditPopulateJob = require("./jobs/SubredditPopulateJob");
 const fetchTopPosts = require("./jobs/FetchTopPostsJob");
 const scheduleJob = require("./jobs/ScheduleJob");
@@ -9,16 +8,19 @@ module.exports.botHandler = () => {
     updateAccountKarma().catch((err) => console.log(err));
 }
 
-module.exports.updateHandler = () => {
-    subredditPopulateJob();
-    fetchTopPosts('today');
+module.exports.updateHandler = async () => {
+    await subredditPopulateJob();
+    await fetchTopPosts('today');
+    await sequelize.connectionManager.close();
 }
 
-module.exports.postHandler = () => {
+module.exports.postHandler = async () => {
     //TODO : convert to manually updatable control values.
-    scheduleJob(2,3);
+    await scheduleJob(2,3);
+    await sequelize.connectionManager.close();
 }
 
-module.exports.karmaFarmingHandler = () => {
-    farmKarmaJob();
+module.exports.karmaFarmingHandler = async () => {
+    await farmKarmaJob;
+    await sequelize.connectionManager.close();
 }

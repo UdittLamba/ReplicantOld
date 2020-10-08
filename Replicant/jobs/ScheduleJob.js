@@ -14,14 +14,15 @@ const pickRandomHour = () => {
  * Takes random number of accounts and generate random scheduled posts
  * for each account as per the input to the function.
  *
- * Accounts MUST be incubated for 1 week min.
+ * Accounts MUST be incubated for 1 week min although ideally it should be incubated for a month.
  * Selected posts MUST be atleast a month old.
  *
  * @param numOfAccounts
  * @param numOfPosts
  */
-const schedulePostJobs = (numOfAccounts, numOfPosts) => {
-    sequelize.models.Account.findAll({
+const schedulePostJobs = async (numOfAccounts, numOfPosts) => {
+    let selectedAccounts = null;
+    selectedAccounts = await sequelize.models.Account.findAll({
         order: Sequelize.literal('rand()'),
         where: {
             isSold: false,
@@ -31,32 +32,39 @@ const schedulePostJobs = (numOfAccounts, numOfPosts) => {
             }
         },
         limit: numOfAccounts
-    }).then((submitters) => {
-        for (const submitter of submitters) {
-            sequelize.models.Post.findAll(
-                {
-                    order: Sequelize.literal('rand()'),
-                    where: {
-                        createdAt: {
-                            [Op.lte]: dayjs().subtract(24, 'day')['$d']
-                        }
-                    },
-                    limit: numOfPosts
-                }
-            ).then((posts) => {
-                for (const post of posts) {
-                    sequelize.models.PostQueue.findOrCreate({
-                        where: {
-                            postId: post.dataValues.id,
-                            postName: post.dataValues.name,
-                            submitter: submitter.dataValues.username,
-                            toBePostedAt: pickRandomHour()
-                        }
-                    }).catch((err) => console.log(err))
-                }
-            })
-        }
     })
+    await assignPost(selectedAccounts, numOfPosts);
 }
-//schedulePostJobs(2,3);
+
+assignPost = async (submitters, numOfPosts) => {
+    let posts = null;
+    for (const submitter of submitters) {
+        posts = await sequelize.models.Post.findAll(
+            {
+                order: Sequelize.literal('rand()'),
+                where: {
+                    createdAt: {
+                        [Op.lte]: dayjs().subtract(24, 'day')['$d']
+                    }
+                },
+                limit: numOfPosts
+            }
+        )
+        await schedulePosts(posts, submitter)
+    }
+}
+
+schedulePosts = async (posts, submitter) => {
+    for (const post of posts) {
+        await sequelize.models.PostQueue.findOrCreate({
+            where: {
+                postId: post.dataValues.id,
+                postName: post.dataValues.name,
+                submitter: submitter.dataValues.username,
+                toBePostedAt: pickRandomHour()
+            }
+        }).catch((err) => console.log(err))
+    }
+}
+//schedulePostJobs(1,1).catch();
 module.exports = schedulePostJobs;
