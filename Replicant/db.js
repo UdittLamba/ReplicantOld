@@ -1,5 +1,6 @@
 const {DataTypes, Sequelize} = require('sequelize');
 const snoowrap = require('snoowrap');
+const sendKarmaReport = require('./comms/telegram/replicantMessenger');
 const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
     , {
         host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
@@ -16,7 +17,7 @@ const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
              * Ideally you want to choose a `max` number where this holds true:
              * max * EXPECTED_MAX_CONCURRENT_LAMBDA_INVOCATIONS < MAX_ALLOWED_DATABASE_CONNECTIONS * 0.8
              */
-            maxConnections : 50,
+            maxConnections: 50,
             /*
              * Set this value to 0 so connection pool eviction logic eventually cleans up all connections
              * in the event of a Lambda function timeout.
@@ -26,7 +27,7 @@ const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
              * Set this value to 0 so connections are eligible for cleanup immediately after they're
              * returned to the pool.
              */
-            idle: 1000,
+            idle: 10000,
             // Choose a small enough value that fails fast if a connection takes too long to be established.
             acquire: 30000,
             /*
@@ -259,54 +260,73 @@ getPost = async (postId) => {
 }
 
 insertSubmittedPost = async (job) => {
-     return sequelize.models.SubmittedPost.findOrCreate({
-         where: {
-             postId: job.dataValues.postId,
-             postName: job.dataValues.postName,
-             submitter: job.dataValues.submitter
-         }
-     }).catch((err) => {console.log(err)})
+    return sequelize.models.SubmittedPost.findOrCreate({
+        where: {
+            postId: job.dataValues.postId,
+            postName: job.dataValues.postName,
+            submitter: job.dataValues.submitter
+        }
+    }).catch((err) => {
+        console.log(err)
+    })
 }
 
- setIsDone =  (postId,bool) => {
+setIsDone = async (postId, bool) => {
     sequelize.models.PostQueue.update({
         isDone: bool
-    },{
+    }, {
         where: {postId: postId}
-        }).catch((err) => {console.log(err)})
- }
+    }).catch((err) => {
+        console.log(err)
+    })
+}
 
 /**
  * fetch and store comment and link karma from reddit api.
  * @returns {Promise<void>}
  */
 updateAccountKarma = async () => {
-    return sequelize.models.Account.findAll({
+    let accounts = null;
+    accounts = await sequelize.models.Account.findAll({
         where: {
             isSold: false
         }
-    }).then((accounts) => {
-        for (const account of accounts) {
-            const requester = createRequester(account);
-            requester.getMe().then((me) => {
-                sequelize.models.Account.update({
-                    postKarma: me.link_karma,
-                    commentKarma: me.comment_karma,
-                    isSuspended: me.is_suspended
-                }, {
-                    where: {
-                        username: account.username
-                    }
-                })
-            }).catch((err) => {
-                console.log(err)
-            });
-        }
-
-    }).catch((err) => {
-        console.log(err)
     });
+    await getAccountsData(accounts);
+}
 
+getAccountsData = async (accounts) => {
+    let me = null;
+    let accountsKarma = [];
+    try {
+        for (const account of accounts) {
+            const requester = await createRequester(account);
+            me = await requester.getMe();
+            await updateRedditUser(me, account);
+            accountsKarma.push(await updateRedditUser(me, account));
+        }
+        await sendKarmaReport(accountsKarma);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+updateRedditUser = async (me, account) => {
+    await sequelize.models.Account.update({
+        postKarma: me.link_karma,
+        commentKarma: me.comment_karma,
+        isSuspended: me.is_suspended
+    }, {
+        where: {
+            username: account.username
+        }
+    })
+    account = {
+        username: account.username,
+        postKarma: me.link_karma,
+        commentKarma: me.comment_karma,
+    };
+    return account;
 }
 
 /**
@@ -359,7 +379,7 @@ fetchAllSubreddits = async () => {
 }
 
 createRequester = async (account) => {
-     return new snoowrap({
+    return new snoowrap({
         userAgent: account.dataValues.userAgent,
         clientId: account.dataValues.clientId,
         clientSecret: account.dataValues.clientSecret,
@@ -368,13 +388,13 @@ createRequester = async (account) => {
     });
 }
 //sequelize.sync({alter:true}).catch();
-
+//updateAccountKarma().then();
 // sequelize.models.Account.create({
 //     userAgent: 'Replicant Bot 1.0.0',
-//     username: 'Letterhead-Mindless',
-//     password: 'xp0Y2l@#fLDN',
-//     clientId: 'e8OC-bfxUDa9lA',
-//     clientSecret: 'dcseJlzRZPART5CPM-UGhCrhw0Y'
+//     username: 'Feedback-Bulky',
+//     password: 'p1#1&&Snk!lu',
+//     clientId: 'ZRmCRqMM1bbLHQ',
+//     clientSecret: 'VpfEy-BsHPnvvjenG3d_oJvEhwA'
 // }).catch(console.log);
 
 //acc.getAccount(2).then(console.log)

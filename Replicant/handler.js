@@ -3,9 +3,11 @@ const subredditPopulateJob = require("./jobs/SubredditPopulateJob");
 const fetchTopPosts = require("./jobs/FetchTopPostsJob");
 const scheduleJob = require("./jobs/ScheduleJob");
 const farmKarmaJob = require("./jobs/FarmKarmaJob");
+const sendKarmaReport = require('./comms/telegram/replicantMessenger');
 
-module.exports.botHandler = () => {
-    updateAccountKarma().catch((err) => console.log(err));
+module.exports.botHandler = async () => {
+    await updateAccountKarma();
+    await sequelize.connectionManager.close();
 }
 
 module.exports.updateHandler = async () => {
@@ -16,11 +18,11 @@ module.exports.updateHandler = async () => {
 
 module.exports.postHandler = async () => {
     //TODO : convert to manually updatable control values.
-    await scheduleJob(2,3);
+    await scheduleJob(2, 5);
     await sequelize.connectionManager.close();
 }
 
 module.exports.karmaFarmingHandler = async () => {
-    await farmKarmaJob;
+    await farmKarmaJob();
     await sequelize.connectionManager.close();
 }

@@ -1,7 +1,7 @@
 const {sequelize, getAccount, createRequester, getPost, insertSubmittedPost, setIsDone} = require('../db');
 const dayjs = require('dayjs');
 
-const farmKarmaJob = async() => {
+const farmKarmaJob = async () => {
     let jobs = null;
     jobs = await sequelize.models.PostQueue.findAll(
         {
@@ -11,12 +11,13 @@ const farmKarmaJob = async() => {
             }
         }
     );
-    if(typeof jobs != 'undefined' && jobs != null && jobs.length > 0){
+    if (typeof jobs != 'undefined' && jobs != null && jobs.length > 0) {
         await farmKarma(jobs);
     }
 }
 
 farmKarma = async (jobs) => {
+    let account = null;
     for (const job of jobs) {
         account = await getAccount(job.dataValues.submitter);
         const requester = await createRequester(account);
@@ -26,15 +27,13 @@ farmKarma = async (jobs) => {
 executeSubmission = async (account, job, requester) => {
     let post = null;
     post = await getPost(job.dataValues.postId);
-    await recordSubmission(post, requester, job );
+    await recordSubmission(post, requester, job);
 }
 
 recordSubmission = async (post, requester, job) => {
     await submitPost(post, requester);
-    await insertSubmittedPost(job).then(() =>{
-            setIsDone(job.dataValues.postId, true);
-        }
-    )
+    await insertSubmittedPost(job);
+    await setIsDone(job.dataValues.postId, true);
 }
 submitPost = async (post, requester) => {
     if (post.dataValues.url != null || '') {
