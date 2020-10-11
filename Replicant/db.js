@@ -1,6 +1,8 @@
 const {DataTypes, Sequelize} = require('sequelize');
 const snoowrap = require('snoowrap');
+const dayjs = require('dayjs');
 const sendKarmaReport = require('./comms/telegram/replicantMessenger');
+
 const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
     , {
         host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
@@ -37,6 +39,7 @@ const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
             evict: 50
         }
     });
+
 /**
  *  MODEL DEFINITIONS
  *
@@ -260,19 +263,17 @@ getPost = async (postId) => {
 }
 
 insertSubmittedPost = async (job) => {
-    return sequelize.models.SubmittedPost.findOrCreate({
+    await sequelize.models.SubmittedPost.findOrCreate({
         where: {
             postId: job.dataValues.postId,
             postName: job.dataValues.postName,
             submitter: job.dataValues.submitter
         }
-    }).catch((err) => {
-        console.log(err)
     })
 }
 
 setIsDone = async (postId, bool) => {
-    sequelize.models.PostQueue.update({
+    await sequelize.models.PostQueue.update({
         isDone: bool
     }, {
         where: {postId: postId}
@@ -287,23 +288,29 @@ setIsDone = async (postId, bool) => {
  */
 updateAccountKarma = async () => {
     let accounts = null;
-    accounts = await sequelize.models.Account.findAll({
-        where: {
-            isSold: false
-        }
-    });
-    await getAccountsData(accounts);
+    try {
+        accounts = await sequelize.models.Account.findAll({
+            where: {
+                isSold: false
+            }
+        });
+        await getAccountsData(accounts);
+    }catch(err){
+        console.log('err');
+    }
 }
 
 getAccountsData = async (accounts) => {
-    let me = null;
+    let me, updatedUser, requester = null;
     let accountsKarma = [];
     try {
         for (const account of accounts) {
-            const requester = await createRequester(account);
+            requester = await createRequester(account);
             me = await requester.getMe();
-            await updateRedditUser(me, account);
-            accountsKarma.push(await updateRedditUser(me, account));
+            updatedUser = await updateRedditUser(me, account);
+            if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
+                accountsKarma.push(updatedUser);
+            }
         }
         await sendKarmaReport(accountsKarma);
     } catch (err) {
@@ -335,24 +342,21 @@ updateRedditUser = async (me, account) => {
  * @returns {Promise<unknown>}
  */
 fetchAllAccounts = async () => {
-    const promise = new Promise((resolve, reject) => {
-        sequelize.models.Account.findAll({
-                attributes: {
-                    exclude: ['clientSecret', 'password', 'updatedAt']
-                }
+    let accounts = null;
+    accounts = await sequelize.models.Account.findAll({
+            attributes: {
+                exclude: ['clientSecret', 'password', 'updatedAt']
             }
-        ).then((accounts) => {
-            const accs = [];
-            for (const account of accounts) {
-                accs.push(account.dataValues);
-            }
-            resolve(accs)
-        }).catch((err) => reject(Error(err)))
-    }).catch((err) => {
-        console.log(err)
-    });
-    return promise;
+        }
+    )
+    await ((accounts) => {
+        const accs = [];
+        for (const account of accounts) {
+            accs.push(account.dataValues);
+        }
+    })
 }
+
 
 /**
  *
@@ -388,13 +392,13 @@ createRequester = async (account) => {
     });
 }
 //sequelize.sync({alter:true}).catch();
-//updateAccountKarma().then();
+// updateAccountKarma().then();
 // sequelize.models.Account.create({
 //     userAgent: 'Replicant Bot 1.0.0',
-//     username: 'Feedback-Bulky',
-//     password: 'p1#1&&Snk!lu',
-//     clientId: 'ZRmCRqMM1bbLHQ',
-//     clientSecret: 'VpfEy-BsHPnvvjenG3d_oJvEhwA'
+//     username: 'VisibleLab6091',
+//     password: 'R8d8lV@#Alx7',
+//     clientId: 'PTFgamLos_7vRg',
+//     clientSecret: 'mFM-r-h9PBkADvwx-Q2BYMAKNiY'
 // }).catch(console.log);
 
 //acc.getAccount(2).then(console.log)

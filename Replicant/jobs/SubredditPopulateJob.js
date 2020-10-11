@@ -7,22 +7,25 @@ const {sequelize} = require('../db');
 const subredditPopulateJob = async () => {
     let account = null;
     //await sequelize.connectionManager.initPools();
-    if (sequelize.connectionManager.hasOwnProperty("getConnection")) {
-        delete sequelize.connectionManager.getConnection;
+    try {
+        if (sequelize.connectionManager.hasOwnProperty("getConnection")) {
+            delete sequelize.connectionManager.getConnection;
+        }
+        account = await sequelize.models.Account.findOne(
+            {
+                where: {
+                    isSuspended: false,
+                    isSold: false
+                }
+            });
+        await update(account);
+    }catch(err){
+        console.log(err);
     }
-    account = await sequelize.models.Account.findOne(
-        {
-            where: {
-                isSuspended: false,
-                isSold: false
-            }
-        });
-    await update(account);
 }
 
-update = (async (account) => {// any reddit account will do.
+update = async (account) => {// any reddit account will do.
     let subreddits = null;
-    console.log('in update');
     const requester = await new snoowrap({
         userAgent: account.dataValues.userAgent,
         clientId: account.dataValues.clientId,
@@ -32,13 +35,13 @@ update = (async (account) => {// any reddit account will do.
     });
     subreddits = await requester.getTop({time: 'day'}).map(post => post.subreddit_name_prefixed);
     await insertSubreddit(subreddits);
-})
+}
 
 insertSubreddit = async (subreddits) => {
     for (const subredditName of subreddits) {
         await sequelize.models.Subreddit.findOrCreate({
             where: {name: subredditName.substring(2, subredditName.length)}
-        }).catch(console.error);
+        })
     }
 }
 

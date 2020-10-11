@@ -1,6 +1,6 @@
 const {sequelize, updateAccountKarma} = require('./db');
 const subredditPopulateJob = require("./jobs/SubredditPopulateJob");
-const fetchTopPosts = require("./jobs/FetchTopPostsJob");
+const fetchTopPostsJob = require("./jobs/FetchTopPostsJob");
 const scheduleJob = require("./jobs/ScheduleJob");
 const farmKarmaJob = require("./jobs/FarmKarmaJob");0
 
@@ -11,7 +11,7 @@ module.exports.botHandler = async () => {
 
 module.exports.updateHandler = async () => {
     await subredditPopulateJob();
-    await fetchTopPosts('today');
+    await fetchTopPostsJob('today');
     await sequelize.connectionManager.close();
 }
 
