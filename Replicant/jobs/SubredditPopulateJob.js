@@ -1,5 +1,4 @@
-const snoowrap = require('snoowrap');
-const {sequelize} = require('../db');
+const {sequelize, createRequester} = require('../db');
 
 /**
  * Populate the Subreddit table with subreddits whose posts made to the top of the day.
@@ -26,13 +25,7 @@ const subredditPopulateJob = async () => {
 
 update = async (account) => {// any reddit account will do.
     let subreddits = null;
-    const requester = await new snoowrap({
-        userAgent: account.dataValues.userAgent,
-        clientId: account.dataValues.clientId,
-        clientSecret: account.dataValues.clientSecret,
-        username: account.dataValues.username,
-        password: account.dataValues.password
-    });
+     requester = await createRequester(account);
     subreddits = await requester.getTop({time: 'day'}).map(post => post.subreddit_name_prefixed);
     await insertSubreddit(subreddits);
 }

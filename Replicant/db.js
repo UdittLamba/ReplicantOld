@@ -358,28 +358,20 @@ fetchAllAccounts = async () => {
 }
 
 
-/**
- *
- * @returns {Promise<unknown>}
- */
+
 fetchAllSubreddits = async () => {
-    const promise = new Promise((resolve, reject) => {
-        sequelize.models.Subreddit.findAll({
+    let subreddits = null;
+    let subs = [];
+    subreddits = await sequelize.models.Subreddit.findAll({
                 attributes: {
                     exclude: ['createdAt', 'updatedAt']
                 }
-            }
-        ).then((subreddits) => {
-            const subs = [];
-            for (const subreddit of subreddits) {
-                subs.push(subreddit.dataValues);
-            }
-            resolve(subs)
-        }).catch((err) => reject(Error(err)))
-    }).catch((err) => {
-        console.log(err)
-    });
-    return promise;
+            })
+    await ((subreddits) => {
+        for (const subreddit of subreddits) {
+            subs.push(subreddit.dataValues);
+        }
+    })
 }
 
 createRequester = async (account) => {

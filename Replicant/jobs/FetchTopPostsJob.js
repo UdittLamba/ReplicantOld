@@ -67,9 +67,7 @@ insertPosts = async (posts) => {
                 })
             }
         }
-    }catch(err){
-        console.log(err);
-    }
+    }catch(err){}
 }
 //fetchTopPostsJob('today').catch();
 module.exports = fetchTopPostsJob;
