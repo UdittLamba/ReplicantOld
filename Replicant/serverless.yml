@@ -24,12 +24,11 @@ provider:
   name: aws
   runtime: nodejs12.x
   environment:
-    SCHEMA: 'replicant_schema'
-    USERNAME: 'admin'
-    PASSWORD: 'anfield1892'
-    HOST: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com'
-    DIALECT: 'mysql'
-    TELEGRAM_TOKEN: '1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI'
+    SCHEMA:  ${file(./serverless.env.yml):SCHEMA, ''}
+    USERNAME:  ${file(./serverless.env.yml):USERNAME, ''}
+    PASSWORD:  ${file(./serverless.env.yml):PASSWORD, ''}
+    HOST:  ${file(./serverless.env.yml):HOST, ''}
+    TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
   timeout: 30
 layers:
   replicantLayer:
@@ -78,19 +77,19 @@ functions:
     events:
       - schedule: rate(1 hour)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:1
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
   updateHandler:
     handler: handler.updateHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:1
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
   postHandler:
     handler: handler.postHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:1
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
   karmaFarmingHandler:
     handler: handler.karmaFarmingHandler
     events:
@@ -103,7 +102,7 @@ functions:
       - http: ANY /
       - http: 'ANY {proxy+}'
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:1
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

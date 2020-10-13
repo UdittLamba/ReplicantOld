@@ -23,9 +23,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ee2629-e6de-4352-ae9c-3930412236a4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Replicant/comms/telegram/replicantMessenger.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/comms/telegram/replicantMessenger.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Replicant/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/serverless.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1gr05Yn9TJC8YVq21XKpHC3ri22" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -209,6 +212,10 @@
     </state>
     <state width="1893" height="860" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602563175459" />
     <state width="1339" height="180" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
+    <state x="543" y="289" width="824" height="527" key="IDE.errors.dialog" timestamp="1602571435287">
+      <screen x="0" y="28" width="1920" height="1052" />
+    </state>
+    <state x="543" y="289" width="824" height="527" key="IDE.errors.dialog/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602571435287" />
     <state x="85" y="200" width="1652" height="730" key="SettingsEditor" timestamp="1602563164378">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
