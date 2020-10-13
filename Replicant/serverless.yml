@@ -29,6 +29,7 @@ provider:
     PASSWORD: 'anfield1892'
     HOST: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com'
     DIALECT: 'mysql'
+    TELEGRAM_TOKEN: '1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI'
   timeout: 30
 layers:
   replicantLayer:

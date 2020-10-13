@@ -28,3 +28,4 @@ package-lock.json
 yarn.lock
 test
 /replicant-bot/src/models/
+aws-python-telegram-bot/

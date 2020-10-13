@@ -3,9 +3,9 @@ const snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
 const sendKarmaReport = require('./comms/telegram/replicantMessenger');
 
-const sequelize = new Sequelize('replicant_schema', 'admin', 'anfield1892'
+const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME, process.env.PASSWORD
     , {
-        host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
+        host: process.env.HOST,
         dialect: 'mysql',
         pool: {
             /*

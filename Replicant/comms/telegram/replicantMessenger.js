@@ -2,7 +2,7 @@ const tg = require('telegram-bot-api');
 require('http').globalAgent.maxSockets = Infinity // play around with the number till the timeout error goes away.
 
 const api = new tg({
-    token: '1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI'
+    token: process.env.TELEGRAM_TOKEN
 })
 
 // Define your message provider
@@ -37,5 +37,4 @@ sendKarmaReport = async (accounts) => {
     }
 
 }
-
 module.exports = sendKarmaReport;
