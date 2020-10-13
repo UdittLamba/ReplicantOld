@@ -6,3 +6,8 @@ package-lock.json
 
 # Serverless directories
 .serverless
+
+# Token file
+serverless.env.yml
+
+.idea/workspace.xml

@@ -9,16 +9,11 @@ const api = new tg({
 const mp = new tg.GetUpdateMessageProvider()
 // Set message provider and start API
 api.setMessageProvider(mp)
-api.start()
-    .then(() => {
-        console.log('API has started')
-    })
-    .catch(console.err)
+api.start().catch();
 sendKarmaReport = async (accounts) => {
     let hourlyReport = '';
-    console.log(accounts[0].username);
     try {
-        accounts.forEach((value, index) => {
+        accounts.forEach((value) => {
                 hourlyReport = hourlyReport
                     + value['username'] + '|'
                     + '\n ' + 'post karma: ' + value['postKarma']
