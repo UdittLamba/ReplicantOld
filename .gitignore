@@ -30,3 +30,4 @@ test
 /replicant-bot/src/models/
 aws-python-telegram-bot/
 .idea/workspace.xml
+.gitignore

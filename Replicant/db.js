@@ -1,7 +1,7 @@
 const {DataTypes, Sequelize} = require('sequelize');
 const snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
-const sendKarmaReport = require('./comms/telegram/replicantMessenger');
+const {sendKarmaReport} = require('./comms/telegram/replicantMessenger');
 
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME, process.env.PASSWORD
     , {
@@ -244,7 +244,7 @@ SubmittedPost = sequelize.define('SubmittedPost', {
 // Post.hasOne(PostQueue, {as: 'PostQueue'});
 
 /**
- *
+ * Fetches a particular account only if it has not been sold or suspended.
  * @param accountName
  * @returns {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
@@ -262,6 +262,11 @@ getPost = async (postId) => {
     return sequelize.models.Post.findByPk(postId)
 }
 
+/**
+ * Insert into tablCreatee SubmittedPosts after posting on reddit.
+ * @param job
+ * @returns {Promise<void>}
+ */
 insertSubmittedPost = async (job) => {
     await sequelize.models.SubmittedPost.findOrCreate({
         where: {
@@ -272,6 +277,12 @@ insertSubmittedPost = async (job) => {
     })
 }
 
+/**
+ * Set the value of isDone column of PostQueues table.
+ * @param postId
+ * @param bool
+ * @returns {Promise<void>}
+ */
 setIsDone = async (postId, bool) => {
     await sequelize.models.PostQueue.update({
         isDone: bool
@@ -300,6 +311,12 @@ updateAccountKarma = async () => {
     }
 }
 
+/**
+ * Updates reddit accounts' post and comment karma.
+ * Sends a report of the karma status to user through telegram.
+ * @param accounts
+ * @returns {Promise<void>}
+ */
 getAccountsData = async (accounts) => {
     let me, updatedUser, requester = null;
     let accountsKarma = [];
@@ -318,6 +335,12 @@ getAccountsData = async (accounts) => {
     }
 }
 
+/**
+ * returns an array with account name and karma.
+ * @param me
+ * @param account
+ * @returns {Promise<{postKarma: number, commentKarma: number, username: *}>}
+ */
 updateRedditUser = async (me, account) => {
     await sequelize.models.Account.update({
         postKarma: me.link_karma,
@@ -357,8 +380,11 @@ fetchAllAccounts = async () => {
     })
 }
 
-
-
+/**
+ * Create a custom array of subreddits that excludes their
+ * createAt and updatedAt columns.
+ * @returns {Promise<void>}
+ */
 fetchAllSubreddits = async () => {
     let subreddits = null;
     let subs = [];
@@ -374,6 +400,11 @@ fetchAllSubreddits = async () => {
     })
 }
 
+/**
+ * Generate a snoowrap object for a given reddit account.
+ * @param account
+ * @returns {Promise<Snoowrap>}
+ */
 createRequester = async (account) => {
     return new snoowrap({
         userAgent: account.dataValues.userAgent,
@@ -384,16 +415,7 @@ createRequester = async (account) => {
     });
 }
 //sequelize.sync({alter:true}).catch();
-// updateAccountKarma().then();
-// sequelize.models.Account.create({
-//     userAgent: 'Replicant Bot 1.0.0',
-//     username: 'VisibleLab6091',
-//     password: 'R8d8lV@#Alx7',
-//     clientId: 'PTFgamLos_7vRg',
-//     clientSecret: 'mFM-r-h9PBkADvwx-Q2BYMAKNiY'
-// }).catch(console.log);
 
-//acc.getAccount(2).then(console.log)
 module.exports = {
     sequelize,
     getAccount,

@@ -28,7 +28,7 @@ const schedulePostJobs = async (numOfAccounts, numOfPosts) => {
             isSold: false,
             isSuspended: false,
             createdAt: {
-                [Op.lte]: dayjs().subtract(7, 'day')['$d']
+                [Op.lte]: dayjs().subtract(20, 'day')['$d']
             }
         },
         limit: numOfAccounts
@@ -36,6 +36,13 @@ const schedulePostJobs = async (numOfAccounts, numOfPosts) => {
     await assignPost(selectedAccounts, numOfPosts);
 }
 
+/**
+ * Assign <numberOfPosts> posts to selected submitters.
+ *
+ * @param submitters
+ * @param numOfPosts
+ * @returns {Promise<void>}
+ */
 assignPost = async (submitters, numOfPosts) => {
     let posts = null;
     for (const submitter of submitters) {
@@ -44,7 +51,7 @@ assignPost = async (submitters, numOfPosts) => {
                 order: Sequelize.literal('rand()'),
                 where: {
                     createdAt: {
-                        [Op.lte]: dayjs().subtract(24, 'day')['$d']
+                        [Op.lte]: dayjs().subtract(30, 'day')['$d']
                     }
                 },
                 limit: numOfPosts
@@ -54,6 +61,12 @@ assignPost = async (submitters, numOfPosts) => {
     }
 }
 
+/**
+ * Insert into table PostQueues.
+ * @param posts
+ * @param submitter
+ * @returns {Promise<void>}
+ */
 schedulePosts = async (posts, submitter) => {
     for (const post of posts) {
         await sequelize.models.PostQueue.findOrCreate({
@@ -66,5 +79,5 @@ schedulePosts = async (posts, submitter) => {
         }).catch((err) => console.log(err))
     }
 }
-//schedulePostJobs(1,1).catch();
+
 module.exports = schedulePostJobs;
