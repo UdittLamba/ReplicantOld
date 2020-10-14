@@ -6,7 +6,7 @@ const farmKarmaJob = require("./jobs/FarmKarmaJob");0
 
 module.exports.botHandler = async () => {
     await updateAccountKarma();
-    await sequelize.connectionManager.close();
+    //await sequelize.connectionManager.close();
 }
 
 module.exports.updateHandler = async () => {
@@ -23,5 +23,5 @@ module.exports.postHandler = async () => {
 
 module.exports.karmaFarmingHandler = async () => {
     await farmKarmaJob();
-    await sequelize.connectionManager.close();
+    //await sequelize.connectionManager.close();
 }

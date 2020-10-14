@@ -1,5 +1,6 @@
 const {sequelize, getAccount, createRequester, getPost, insertSubmittedPost, setIsDone} = require('../db');
 const dayjs = require('dayjs');
+const {reportSubmission} = require('../comms/telegram/replicantMessenger');
 
 const farmKarmaJob = async () => {
     let jobs = null;
@@ -22,12 +23,14 @@ farmKarma = async (jobs) => {
         account = await getAccount(job.dataValues.submitter);
         const requester = await createRequester(account);
         await executeSubmission(account, job, requester);
+        await reportSubmission(job.dataValues.submitter);
     }
 }
 executeSubmission = async (account, job, requester) => {
     let post = null;
     post = await getPost(job.dataValues.postId);
     await recordSubmission(post, requester, job);
+
 }
 
 recordSubmission = async (post, requester, job) => {
@@ -51,5 +54,4 @@ submitPost = async (post, requester) => {
         }).catch((err) => console.log(err));
     }
 }
-//farmKarmaJob().catch();
 module.exports = farmKarmaJob;

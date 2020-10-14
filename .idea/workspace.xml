@@ -23,9 +23,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ee2629-e6de-4352-ae9c-3930412236a4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Replicant/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/comms/telegram/replicantMessenger.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/comms/telegram/replicantMessenger.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/handler.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/handler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/serverless.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +59,7 @@
     <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/Replicant/node_modules/telegram-bot-api/examples/webhook.js&#10;/home/uditt/Documents/replicant/aws-python-telegram-bot/handler.py" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JavaScript" />
     <property name="javascript.nodejs.core.library.configured.version" value="14.12.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="14.11.8" />
@@ -90,11 +93,19 @@
       <recent name="$PROJECT_DIR$/aws-lambda-layer-starter/src/nodejs/models" />
     </key>
   </component>
-  <component name="RunManager" selected="AWS Lambda.[Remote] replicant-dev-updateHandler">
+  <component name="RunManager" selected="AWS Lambda.[Remote] replicant-dev-karmaFarmingHandler">
     <configuration name="[Remote] replicant-dev-botHandler" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
       <option name="credentialProviderId" value="profile:default" />
       <option name="regionId" value="us-east-1" />
       <option name="functionName" value="replicant-dev-botHandler" />
+      <option name="input" value="{}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="[Remote] replicant-dev-commandHandler" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-1" />
+      <option name="functionName" value="replicant-dev-commandHandler" />
       <option name="input" value="{}" />
       <option name="inputIsFile" value="false" />
       <method v="2" />
@@ -125,10 +136,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="AWS Lambda.[Remote] replicant-dev-updateHandler" />
-        <item itemvalue="AWS Lambda.[Remote] replicant-dev-botHandler" />
         <item itemvalue="AWS Lambda.[Remote] replicant-dev-karmaFarmingHandler" />
+        <item itemvalue="AWS Lambda.[Remote] replicant-dev-updateHandler" />
+        <item itemvalue="AWS Lambda.[Remote] replicant-dev-commandHandler" />
         <item itemvalue="AWS Lambda.[Remote] replicant-dev-postHandler" />
+        <item itemvalue="AWS Lambda.[Remote] replicant-dev-botHandler" />
       </list>
     </recent_temporary>
   </component>
@@ -161,6 +173,7 @@
       <workItem from="1602154936271" duration="4165000" />
       <workItem from="1602232349637" duration="18745000" />
       <workItem from="1602563355367" duration="1873000" />
+      <workItem from="1602645994219" duration="17146000" />
     </task>
     <servers />
   </component>
@@ -192,25 +205,25 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="693" y="385" width="523" height="335" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602154847794" />
-    <state width="1893" height="860" key="GridCell.Tab.0.bottom" timestamp="1602563175459">
+    <state width="1870" height="276" key="GridCell.Tab.0.bottom" timestamp="1602669093760">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1893" height="860" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602563175459" />
+    <state width="1870" height="276" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602669093760" />
     <state width="1339" height="180" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
-    <state width="1893" height="860" key="GridCell.Tab.0.center" timestamp="1602563175458">
+    <state width="1870" height="276" key="GridCell.Tab.0.center" timestamp="1602669093760">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1893" height="860" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602563175458" />
+    <state width="1870" height="276" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602669093760" />
     <state width="1339" height="180" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
-    <state width="1893" height="860" key="GridCell.Tab.0.left" timestamp="1602563175458">
+    <state width="1870" height="276" key="GridCell.Tab.0.left" timestamp="1602669093759">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1893" height="860" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602563175458" />
+    <state width="1870" height="276" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602669093759" />
     <state width="1339" height="180" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
-    <state width="1893" height="860" key="GridCell.Tab.0.right" timestamp="1602563175459">
+    <state width="1870" height="276" key="GridCell.Tab.0.right" timestamp="1602669093760">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1893" height="860" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602563175459" />
+    <state width="1870" height="276" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602669093760" />
     <state width="1339" height="180" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
     <state x="543" y="289" width="824" height="527" key="IDE.errors.dialog" timestamp="1602571435287">
       <screen x="0" y="28" width="1920" height="1052" />
@@ -220,18 +233,26 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="85" y="200" width="1652" height="730" key="SettingsEditor/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602563164378" />
-    <state x="1920" y="151" width="1366" height="768" key="dock-window-1" timestamp="1602076548164">
+    <state x="1920" y="151" width="1366" height="684" key="dock-window-1" timestamp="1602578939217">
       <screen x="1920" y="151" width="1366" height="768" />
     </state>
-    <state x="1920" y="151" width="1366" height="768" key="dock-window-1/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602076548164" />
-    <state x="1920" y="151" width="1366" height="768" key="dock-window-2" timestamp="1602088345466">
+    <state x="1920" y="151" width="1366" height="684" key="dock-window-1/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602578939217" />
+    <state x="1920" y="125" width="1366" height="684" maximized="true" key="dock-window-2" timestamp="1602587816356">
       <screen x="1920" y="151" width="1366" height="768" />
     </state>
-    <state x="1920" y="151" width="1366" height="768" key="dock-window-2/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602088345466" />
-    <state x="652" y="265" width="615" height="610" key="find.popup" timestamp="1602354519047">
+    <state x="1920" y="125" width="1366" height="684" maximized="true" key="dock-window-2/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602587816356" />
+    <state x="1920" y="132" width="1221" height="611" maximized="true" key="dock-window-3" timestamp="1602601643447">
+      <screen x="1920" y="151" width="1366" height="768" />
+    </state>
+    <state x="1920" y="132" width="1221" height="611" maximized="true" key="dock-window-3/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602601643447" />
+    <state x="1920" y="151" width="1366" height="684" key="dock-window-4" timestamp="1602605036861">
+      <screen x="1920" y="151" width="1366" height="768" />
+    </state>
+    <state x="1920" y="151" width="1366" height="684" key="dock-window-4/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602605036861" />
+    <state x="652" y="265" width="615" height="610" key="find.popup" timestamp="1602644309824">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state x="652" y="265" width="615" height="610" key="find.popup/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602354519047" />
+    <state x="652" y="265" width="615" height="610" key="find.popup/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602644309824" />
     <state x="685" y="464" width="540" height="177" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1599828045499">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>

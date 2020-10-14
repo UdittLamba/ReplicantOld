@@ -77,32 +77,32 @@ functions:
     events:
       - schedule: rate(1 hour)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:118
   updateHandler:
     handler: handler.updateHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:118
   postHandler:
     handler: handler.postHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:118
   karmaFarmingHandler:
     handler: handler.karmaFarmingHandler
     events:
       - schedule: rate(1 hour)
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:1
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:118
   apiHandler:
     handler: index.apiHandler
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
     layers:
-      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:40
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicantLayer:118
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
