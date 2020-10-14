@@ -18,6 +18,6 @@
     "sequelize": "^6.3.4",
     "serverless-http": "^2.6.0",
     "snoowrap": "^1.21.0",
-    "telegram-bot-api": "^2.0.1"
+    "telegraf": "^3.38.0"
   }
 }

@@ -1,15 +1,9 @@
-const tg = require('telegram-bot-api');
+const Telegram = require('telegraf/telegram')
+require('dotenv');
 require('http').globalAgent.maxSockets = Infinity // play around with the number till the timeout error goes away.
 
-const api = new tg({
-    token: process.env.TELEGRAM_TOKEN
-})
+const telegram = new Telegram(/*process.env.TELEGRAM_TOKEN*/'1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI')
 
-// Define your message provider
-const mp = new tg.GetUpdateMessageProvider()
-// Set message provider and start API
-api.setMessageProvider(mp)
-api.start().catch();
 sendKarmaReport = async (accounts) => {
     let hourlyReport = '';
     try {
@@ -21,15 +15,21 @@ sendKarmaReport = async (accounts) => {
                     + '\n' + '----------------------'+'\n';
             }
         )
-        await api.sendMessage({
-            chat_id: 1160876508,
-            text: hourlyReport,
-        })
+        await telegram.sendMessage( '1160876508', hourlyReport);
     } catch (err) {
         console.log(err);
-    } finally {
-        await api.stop();
     }
-
 }
-module.exports = sendKarmaReport;
+
+reportSubmission = async (submitter) => {
+    try {
+        await telegram.sendMessage( /*process.env.CHAT_ID*/'1160876508', submitter+' just posted on reddit!');
+    } catch (err) {
+        console.log(err);
+    }
+}
+//reportSubmission('uditt').then();
+module.exports = {
+    sendKarmaReport,
+    reportSubmission
+};
