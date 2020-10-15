@@ -23,12 +23,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20ee2629-e6de-4352-ae9c-3930412236a4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/comms/telegram/replicantMessenger.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/comms/telegram/replicantMessenger.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/FarmKarmaJob.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Replicant/jobs/ScheduleJob.js" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/jobs/ScheduleJob.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/replicant-frontend/node_modules/@babel/core/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-frontend/node_modules/@babel/core/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/replicant-frontend/node_modules/@babel/plugin-transform-runtime/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/replicant-frontend/node_modules/@babel/plugin-transform-runtime/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Replicant/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Replicant/serverless.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +93,7 @@
       <recent name="$PROJECT_DIR$/aws-lambda-layer-starter/src/nodejs/models" />
     </key>
   </component>
-  <component name="RunManager" selected="AWS Lambda.[Remote] replicant-dev-botHandler">
+  <component name="RunManager" selected="AWS Lambda.[Remote] replicant-dev-updateHandler">
     <configuration name="[Remote] replicant-dev-botHandler" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
       <option name="credentialProviderId" value="profile:default" />
       <option name="regionId" value="us-east-1" />
@@ -136,8 +136,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="AWS Lambda.[Remote] replicant-dev-botHandler" />
         <item itemvalue="AWS Lambda.[Remote] replicant-dev-updateHandler" />
+        <item itemvalue="AWS Lambda.[Remote] replicant-dev-botHandler" />
         <item itemvalue="AWS Lambda.[Remote] replicant-dev-karmaFarmingHandler" />
         <item itemvalue="AWS Lambda.[Remote] replicant-dev-commandHandler" />
         <item itemvalue="AWS Lambda.[Remote] replicant-dev-postHandler" />
@@ -174,6 +174,7 @@
       <workItem from="1602232349637" duration="18745000" />
       <workItem from="1602563355367" duration="1873000" />
       <workItem from="1602645994219" duration="20711000" />
+      <workItem from="1602746411528" duration="3652000" />
     </task>
     <servers />
   </component>
@@ -205,25 +206,25 @@
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
     <state x="693" y="385" width="523" height="335" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602154847794" />
-    <state width="1870" height="276" key="GridCell.Tab.0.bottom" timestamp="1602674732202">
+    <state width="1870" height="276" key="GridCell.Tab.0.bottom" timestamp="1602691853716">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1870" height="276" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602674732202" />
+    <state width="1870" height="276" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602691853716" />
     <state width="1339" height="180" key="GridCell.Tab.0.bottom/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
-    <state width="1870" height="276" key="GridCell.Tab.0.center" timestamp="1602674732201">
+    <state width="1870" height="276" key="GridCell.Tab.0.center" timestamp="1602691853716">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1870" height="276" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602674732201" />
+    <state width="1870" height="276" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602691853716" />
     <state width="1339" height="180" key="GridCell.Tab.0.center/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
-    <state width="1870" height="276" key="GridCell.Tab.0.left" timestamp="1602674732201">
+    <state width="1870" height="276" key="GridCell.Tab.0.left" timestamp="1602691853716">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1870" height="276" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602674732201" />
+    <state width="1870" height="276" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602691853716" />
     <state width="1339" height="180" key="GridCell.Tab.0.left/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
-    <state width="1870" height="276" key="GridCell.Tab.0.right" timestamp="1602674732201">
+    <state width="1870" height="276" key="GridCell.Tab.0.right" timestamp="1602691853716">
       <screen x="0" y="28" width="1920" height="1052" />
     </state>
-    <state width="1870" height="276" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602674732201" />
+    <state width="1870" height="276" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@0.28.1920.1052" timestamp="1602691853716" />
     <state width="1339" height="180" key="GridCell.Tab.0.right/0.28.1920.1052/1920.151.1366.768@1920.151.1366.768" timestamp="1602177928331" />
     <state x="543" y="289" width="824" height="527" key="IDE.errors.dialog" timestamp="1602571435287">
       <screen x="0" y="28" width="1920" height="1052" />
