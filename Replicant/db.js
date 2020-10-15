@@ -324,8 +324,7 @@ updateAccountKarma = async () => {
  * @returns {Promise<void>}
  */
 getAccountsData = async (accounts) => {
-    let me, updatedUser, requester = null;
-    let isHealthy = true;
+    let me, updatedUser, requester;
     let accountsKarma = [];
     try {
         for (const account of accounts) {
@@ -334,14 +333,10 @@ getAccountsData = async (accounts) => {
             updatedUser = await updateRedditUser(me, account);
             if(me.is_suspended === true){
                 await report(account.dataValues.username + ' has been suspended');
-                isHealthy = false;
             }
             if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
                 accountsKarma.push(updatedUser);
             }
-        }
-        if(isHealthy){
-            await report('Accounts suspended: NONE')
         }
         await sendKarmaReport(accountsKarma);
     } catch (err) {
