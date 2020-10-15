@@ -1,7 +1,7 @@
 const {DataTypes, Sequelize} = require('sequelize');
 const snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
-const {sendKarmaReport} = require('./comms/telegram/replicantMessenger');
+const {sendKarmaReport, report} = require('./comms/telegram/replicantMessenger');
 
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME, process.env.PASSWORD
     , {
@@ -307,7 +307,8 @@ updateAccountKarma = async () => {
     try {
         accounts = await sequelize.models.Account.findAll({
             where: {
-                isSold: false
+                isSold: false,
+                isSuspended: false
             }
         });
         await getAccountsData(accounts);
@@ -324,15 +325,23 @@ updateAccountKarma = async () => {
  */
 getAccountsData = async (accounts) => {
     let me, updatedUser, requester = null;
+    let isHealthy = true;
     let accountsKarma = [];
     try {
         for (const account of accounts) {
             requester = await createRequester(account);
             me = await requester.getMe();
             updatedUser = await updateRedditUser(me, account);
+            if(me.is_suspended === true){
+                await report(account.dataValues.username + ' has been suspended');
+                isHealthy = false;
+            }
             if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
                 accountsKarma.push(updatedUser);
             }
+        }
+        if(isHealthy){
+            await report('Accounts suspended: NONE')
         }
         await sendKarmaReport(accountsKarma);
     } catch (err) {
@@ -360,6 +369,7 @@ updateRedditUser = async (me, account) => {
         username: account.username,
         postKarma: me.link_karma,
         commentKarma: me.comment_karma,
+        isSuspended: me.is_suspended
     };
     return account;
 }

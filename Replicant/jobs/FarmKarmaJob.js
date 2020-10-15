@@ -1,6 +1,6 @@
 const {sequelize, getAccount, createRequester, getPost, insertSubmittedPost, setIsDone} = require('../db');
 const dayjs = require('dayjs');
-const {reportSubmission} = require('../comms/telegram/replicantMessenger');
+const {report} = require('../comms/telegram/replicantMessenger');
 
 /**
  * Job that posts on reddit through one of the randomly selected bot accounts
@@ -33,7 +33,7 @@ farmKarma = async (jobs) => {
         account = await getAccount(job.dataValues.submitter);
         const requester = await createRequester(account);
         await executeSubmission(account, job, requester);
-        await reportSubmission(job.dataValues.submitter);
+        await report(job.dataValues.submitter + ' just submitted on Reddit!');
     }
 }
 
