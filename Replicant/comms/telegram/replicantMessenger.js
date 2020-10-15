@@ -1,35 +1,40 @@
-const Telegram = require('telegraf/telegram')
+const Telegram = require('telegraf/telegram');
 require('dotenv');
-require('http').globalAgent.maxSockets = Infinity // play around with the number till the timeout error goes away.
+// play around with the number till the timeout error goes away.
+require('http').globalAgent.maxSockets = Infinity;
 
-const telegram = new Telegram(process.env.TELEGRAM_TOKEN)
+const telegram = new Telegram(process.env.TELEGRAM_TOKEN);
 
-sendKarmaReport = async (accounts) => {
-    let hourlyReport = '';
-    try {
-        accounts.forEach((value) => {
-                hourlyReport = hourlyReport
-                    + value['username'] + '|'
-                    + '\n ' + 'post karma: ' + value['postKarma']
-                    + '\n comment karma: ' + value['commentKarma']
-                    + '\n' + '----------------------'+'\n';
-            }
-        )
-        await telegram.sendMessage( process.env.CHAT_ID, hourlyReport);
-    } catch (err) {
-        console.log(err);
-    }
-}
+/**
+ * Base abstracted function to send telegram messages
+ * to process.env.CHAT_ID(the chat id defined in the serverless.env.yml file)
+ *
+ * @param {String} message
+ * @return {Promise<void>}
+ */
+module.exports.report = async (message) => {
+  await telegram.sendMessage(process.env.CHAT_ID, message);
+};
 
-reportSubmission = async (submitter) => {
-    try {
-        await telegram.sendMessage( process.env.CHAT_ID, submitter+' just posted on reddit!');
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-module.exports = {
-    sendKarmaReport,
-    reportSubmission
+/**
+ * Prepares a telegram report from the accounts array fed into it.
+ *
+ * @param {String[][]} accounts
+ * @return {Promise<void>}
+ */
+module.exports.sendKarmaReport = async (accounts) => {
+  let hourlyReport = '';
+  try {
+    accounts.forEach((value) => {
+      hourlyReport = hourlyReport +
+              value['username'] + '|' +
+              '\n ' + 'post karma: ' + value['postKarma'] +
+              '\n comment karma: ' + value['commentKarma'] +
+              '\n' + '----------------------' + '\n';
+    },
+    );
+    await report(hourlyReport);
+  } catch (err) {
+    console.log(err);
+  }
 };
