@@ -1,43 +1,22 @@
 const {DataTypes, Sequelize} = require('sequelize');
-const snoowrap = require('snoowrap');
+const Snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
-const {sendKarmaReport, report} = require('./comms/telegram/replicantMessenger');
+const {sendKarmaReport, report} = require(
+    './comms/telegram/replicantMessenger');
+const {getAccountsData, updateRedditUser} = require('./');
 
-const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME, process.env.PASSWORD
+const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
+    process.env.PASSWORD
     , {
-        host: process.env.HOST,
-        dialect: 'mysql',
-        pool: {
-            /*
-             * Lambda functions process one request at a time but your code may issue multiple queries
-             * concurrently. Be wary that `sequelize` has methods that issue 2 queries concurrently
-             * (e.g. `Model.findAndCountAll()`). Using a value higher than 1 allows concurrent queries to
-             * be executed in parallel rather than serialized. Careful with executing too many queries in
-             * parallel per Lambda function execution since that can bring down your database with an
-             * excessive number of connections.
-             *
-             * Ideally you want to choose a `max` number where this holds true:
-             * max * EXPECTED_MAX_CONCURRENT_LAMBDA_INVOCATIONS < MAX_ALLOWED_DATABASE_CONNECTIONS * 0.8
-             */
-            maxConnections: 50,
-            /*
-             * Set this value to 0 so connection pool eviction logic eventually cleans up all connections
-             * in the event of a Lambda function timeout.
-             */
-            min: 0,
-            /*
-             * Set this value to 0 so connections are eligible for cleanup immediately after they're
-             * returned to the pool.
-             */
-            idle: 10000,
-            // Choose a small enough value that fails fast if a connection takes too long to be established.
-            acquire: 30000,
-            /*
-             * Ensures the connection pool attempts to be cleaned up automatically on the next Lambda
-             * function invocation, if the previous invocation timed out.
-             */
-            evict: 50
-        }
+      host: process.env.HOST,
+      dialect: 'mysql',
+      pool: {
+        maxConnections: 50,
+        min: 0,
+        idle: 10000,
+        acquire: 30000,
+        evict: 50,
+      },
     });
 
 /**
@@ -45,204 +24,204 @@ const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME, proces
  *
  */
 Account = sequelize.define('Account', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        unique: true,
-    },
-    userAgent: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    clientId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    clientSecret: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    postKarma: {
-        type: DataTypes.INTEGER,
-    },
-    commentKarma: {
-        type: DataTypes.INTEGER,
-    },
-    accountAge: {
-        type: DataTypes.STRING,
-    },
-    isSold: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    },
-    isHarvested: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    },
-    isSuspended: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    },
-    cakeDay: {
-        type: DataTypes.DATE,
-    }
-})
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+  },
+  userAgent: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  clientId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  clientSecret: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  postKarma: {
+    type: DataTypes.INTEGER,
+  },
+  commentKarma: {
+    type: DataTypes.INTEGER,
+  },
+  accountAge: {
+    type: DataTypes.STRING,
+  },
+  isSold: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  isHarvested: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  isSuspended: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  cakeDay: {
+    type: DataTypes.DATE,
+  },
+});
 
 Post = sequelize.define('Post', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        unique: true,
-    },
-    title: {
-        type: DataTypes.STRING,
-    },
-    name: {
-        type: DataTypes.STRING,
-    },
-    upvoteRatio: {
-        type: DataTypes.DECIMAL,
-    },
-    ups: {
-        type: DataTypes.INTEGER,
-    },
-    downs: {
-        type: DataTypes.INTEGER,
-    },
-    score: {
-        type: DataTypes.INTEGER,
-    },
-    subreddit: {
-        type: DataTypes.STRING,
-    },
-    isOriginalContent: {
-        type: DataTypes.BOOLEAN,
-    },
-    isRedditMediaDomain: {
-        type: DataTypes.BOOLEAN,
-    },
-    isMeta: {
-        type: DataTypes.BOOLEAN,
-    },
-    edited: {
-        type: DataTypes.BOOLEAN,
-    },
-    isSelf: {
-        type: DataTypes.BOOLEAN,
-    },
-    selfText: {
-        type: DataTypes.STRING,
-    },
-    selfTextHtml: {
-        type: DataTypes.STRING,
-    },
-    created: {
-        type: DataTypes.BIGINT,
-    },
-    over18: {
-        type: DataTypes.BOOLEAN,
-    },
-    url: {
-        type: DataTypes.STRING,
-    },
-    domain: {
-        type: DataTypes.STRING,
-    }
-})
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+  },
+  title: {
+    type: DataTypes.STRING,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  upvoteRatio: {
+    type: DataTypes.DECIMAL,
+  },
+  ups: {
+    type: DataTypes.INTEGER,
+  },
+  downs: {
+    type: DataTypes.INTEGER,
+  },
+  score: {
+    type: DataTypes.INTEGER,
+  },
+  subreddit: {
+    type: DataTypes.STRING,
+  },
+  isOriginalContent: {
+    type: DataTypes.BOOLEAN,
+  },
+  isRedditMediaDomain: {
+    type: DataTypes.BOOLEAN,
+  },
+  isMeta: {
+    type: DataTypes.BOOLEAN,
+  },
+  edited: {
+    type: DataTypes.BOOLEAN,
+  },
+  isSelf: {
+    type: DataTypes.BOOLEAN,
+  },
+  selfText: {
+    type: DataTypes.STRING,
+  },
+  selfTextHtml: {
+    type: DataTypes.STRING,
+  },
+  created: {
+    type: DataTypes.BIGINT,
+  },
+  over18: {
+    type: DataTypes.BOOLEAN,
+  },
+  url: {
+    type: DataTypes.STRING,
+  },
+  domain: {
+    type: DataTypes.STRING,
+  },
+});
 
 Subreddit = sequelize.define('Subreddit', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        unique: true,
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    isApproved: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
-})
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  isApproved: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+});
 
 PostQueue = sequelize.define('PostQueue', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        unique: true,
-    },
-    postId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    postName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    submitter: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    toBePostedAt: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    isDone: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
-})
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+  },
+  postId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  postName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  submitter: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  toBePostedAt: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  isDone: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+});
 
 SubmittedPost = sequelize.define('SubmittedPost', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        unique: true,
-    },
-    postId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    },
-    postName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    submitter: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    }
-})
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+  },
+  postId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  postName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  submitter: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
 
-//relationships between tables goes here
+// relationships between tables goes here
 // Account.hasMany(PostQueue, {as:'PostQueues'});
 // Account.hasMany(SubmittedPost, {as: 'SubmittedPosts'});
 // Post.hasOne(SubmittedPost, {as: 'SubmittedPost'});
@@ -250,190 +229,190 @@ SubmittedPost = sequelize.define('SubmittedPost', {
 
 /**
  * Fetches a particular account only if it has not been sold or suspended.
- * @param accountName
- * @returns {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
+ * @param {String} accountName
+ * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
-getAccount = async (accountName) => {
-    return sequelize.models.Account.findOne({
-        where: {
-            isSold: false,
-            isSuspended: false,
-            username: accountName
-        },
-    });
-}
+module.exports.getAccount = async (accountName) => {
+  return sequelize.models.Account.findOne({
+    where: {
+      isSold: false,
+      isSuspended: false,
+      username: accountName,
+    },
+  });
+};
 
-getPost = async (postId) => {
-    return sequelize.models.Post.findByPk(postId)
-}
+// eslint-disable-next-line valid-jsdoc
+/**
+ *
+ * @param {String||number} postId
+ * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
+ */
+module.exports.getPost = async (postId) => {
+  return sequelize.models.Post.findByPk(postId);
+};
 
 /**
- * Insert into tablCreatee SubmittedPosts after posting on reddit.
- * @param job
- * @returns {Promise<void>}
+ * Insert into table SubmittedPosts after posting on reddit.
+ * @param {object} job
+ * @return {Promise<void>}
  */
-insertSubmittedPost = async (job) => {
-    await sequelize.models.SubmittedPost.findOrCreate({
-        where: {
-            postId: job.dataValues.postId,
-            postName: job.dataValues.postName,
-            submitter: job.dataValues.submitter
-        }
-    })
-}
+module.exports.insertSubmittedPost = async (job) => {
+  await sequelize.models.SubmittedPost.findOrCreate({
+    where: {
+      postId: job.dataValues.postId,
+      postName: job.dataValues.postName,
+      submitter: job.dataValues.submitter,
+    },
+  });
+};
 
 /**
  * Set the value of isDone column of PostQueues table.
- * @param postId
- * @param bool
- * @returns {Promise<void>}
+ * @param {String|number}postId
+ * @param {boolean} bool
+ * @return {Promise<void>}
  */
-setIsDone = async (postId, bool) => {
-    await sequelize.models.PostQueue.update({
-        isDone: bool
-    }, {
-        where: {postId: postId}
-    }).catch((err) => {
-        console.log(err)
-    })
-}
+module.exports.setIsDone = async (postId, bool) => {
+  await sequelize.models.PostQueue.update({
+    isDone: bool,
+  }, {
+    where: {postId: postId},
+  }).catch((err) => {
+    console.log(err);
+  });
+};
 
 /**
  * fetch and store comment and link karma from reddit api.
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
-updateAccountKarma = async () => {
-    let accounts = null;
-    try {
-        accounts = await sequelize.models.Account.findAll({
-            where: {
-                isSold: false,
-                isSuspended: false
-            }
-        });
-        await getAccountsData(accounts);
-    }catch(err){
-        console.log('err');
-    }
-}
+module.exports.updateAccountKarma = async () => {
+  let accounts = null;
+  try {
+    accounts = await sequelize.models.Account.findAll({
+      where: {
+        isSold: false,
+        isSuspended: false,
+      },
+    });
+    await getAccountsData(accounts);
+  } catch (err) {
+    console.log('err');
+  }
+};
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Updates reddit accounts' post and comment karma.
  * Sends a report of the karma status to user through telegram.
- * @param accounts
- * @returns {Promise<void>}
+ *
+ * @param {array[][]} accounts
+ * @return {Promise<void>}
  */
-getAccountsData = async (accounts) => {
-    let me, updatedUser, requester;
-    let accountsKarma = [];
-    try {
-        for (const account of accounts) {
-            requester = await createRequester(account);
-            me = await requester.getMe();
-            updatedUser = await updateRedditUser(me, account);
-            if(me.is_suspended === true){
-                await report(account.dataValues.username + ' has been suspended');
-            }
-            if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
-                accountsKarma.push(updatedUser);
-            }
-        }
-        await sendKarmaReport(accountsKarma);
-    } catch (err) {
-        console.log(err);
+module.exports.getAccountsData = async (accounts) => {
+  let me;
+  let updatedUser;
+  let requester;
+  const accountsKarma = [];
+  try {
+    for (const account of accounts) {
+      requester = await createRequester(account);
+      me = await requester.getMe();
+      updatedUser = await updateRedditUser(me, account);
+      if (me.is_suspended === true) {
+        await report(account.dataValues.username + ' has been suspended');
+      }
+      if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
+        accountsKarma.push(updatedUser);
+      }
     }
-}
+    await sendKarmaReport(accountsKarma);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 /**
  * returns an array with account name and karma.
- * @param me
- * @param account
- * @returns {Promise<{postKarma: number, commentKarma: number, username: *}>}
+ * @param {object} me
+ * @param {object} account
+ * @return {Promise<{postKarma: number, commentKarma: number, username: *}>}
  */
-updateRedditUser = async (me, account) => {
-    await sequelize.models.Account.update({
-        postKarma: me.link_karma,
-        commentKarma: me.comment_karma,
-        isSuspended: me.is_suspended
-    }, {
-        where: {
-            username: account.username
-        }
-    })
-    account = {
-        username: account.username,
-        postKarma: me.link_karma,
-        commentKarma: me.comment_karma,
-        isSuspended: me.is_suspended
-    };
-    return account;
-}
+module.exports.updateRedditUser = async (me, account) => {
+  await sequelize.models.Account.update({
+    postKarma: me.link_karma,
+    commentKarma: me.comment_karma,
+    isSuspended: me.is_suspended,
+  }, {
+    where: {
+      username: account.username,
+    },
+  });
+  account = {
+    username: account.username,
+    postKarma: me.link_karma,
+    commentKarma: me.comment_karma,
+    isSuspended: me.is_suspended,
+  };
+  return account;
+};
 
 /**
  * Hides sensitive information like passwords and client secret
  * when exposing db information via '/accounts/all' endpoint.
- * @returns {Promise<unknown>}
+ * @return {Promise<unknown>}
  */
-fetchAllAccounts = async () => {
-    let accounts = null;
-    accounts = await sequelize.models.Account.findAll({
-            attributes: {
-                exclude: ['clientSecret', 'password', 'updatedAt']
-            }
-        }
-    )
-    await ((accounts) => {
-        const accs = [];
-        for (const account of accounts) {
-            accs.push(account.dataValues);
-        }
-    })
-}
+module.exports.fetchAllAccounts = async () => {
+  const accs = [];
+  const accounts = await sequelize.models.Account.findAll({
+    attributes: {
+      exclude: ['clientSecret', 'password', 'updatedAt'],
+    },
+  });
+  await (() => {
+    for (const account of accounts) {
+      accs.push(account.dataValues);
+    }
+  });
+};
 
 /**
  * Create a custom array of subreddits that excludes their
  * createAt and updatedAt columns.
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
-fetchAllSubreddits = async () => {
-    let subreddits = null;
-    let subs = [];
-    subreddits = await sequelize.models.Subreddit.findAll({
-                attributes: {
-                    exclude: ['createdAt', 'updatedAt']
-                }
-            })
-    await ((subreddits) => {
-        for (const subreddit of subreddits) {
-            subs.push(subreddit.dataValues);
-        }
-    })
-}
+module.exports.fetchAllSubreddits = async () => {
+  let subreddits = null;
+  const subs = [];
+  subreddits = await sequelize.models.Subreddit.findAll({
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
+  });
+  await (() => {
+    for (const subreddit of subreddits) {
+      subs.push(subreddit.dataValues);
+    }
+  });
+};
 
 /**
  * Generate a snoowrap object for a given reddit account.
- * @param account
- * @returns {Promise<Snoowrap>}
+ * @param {object} account
+ * @return {Promise<Snoowrap>}
  */
-createRequester = async (account) => {
-    return new snoowrap({
-        userAgent: account.dataValues.userAgent,
-        clientId: account.dataValues.clientId,
-        clientSecret: account.dataValues.clientSecret,
-        username: account.dataValues.username,
-        password: account.dataValues.password
-    });
-}
-//sequelize.sync({alter:true}).catch();
+module.exports.createRequester = async (account) => {
+  return new Snoowrap({
+    userAgent: account.dataValues.userAgent,
+    clientId: account.dataValues.clientId,
+    clientSecret: account.dataValues.clientSecret,
+    username: account.dataValues.username,
+    password: account.dataValues.password,
+  });
+};
+// sequelize.sync({alter:true}).catch();
 
 module.exports = {
-    sequelize,
-    getAccount,
-    updateAccountKarma,
-    fetchAllAccounts,
-    fetchAllSubreddits,
-    createRequester,
-    getPost,
-    insertSubmittedPost,
-    setIsDone
+  sequelize,
 };

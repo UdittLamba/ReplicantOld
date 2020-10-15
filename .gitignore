@@ -31,3 +31,4 @@ test
 aws-python-telegram-bot/
 .idea/workspace.xml
 .gitignore
+/Replicant/.eslintrc.json

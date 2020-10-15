@@ -19,5 +19,10 @@
     "serverless-http": "^2.6.0",
     "snoowrap": "^1.21.0",
     "telegraf": "^3.38.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.11.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.21.4"
   }
 }

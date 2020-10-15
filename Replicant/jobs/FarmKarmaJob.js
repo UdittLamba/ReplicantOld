@@ -1,90 +1,98 @@
-const {sequelize, getAccount, createRequester, getPost, insertSubmittedPost, setIsDone} = require('../db');
+const {
+  sequelize,
+  getAccount,
+  createRequester,
+  getPost,
+  insertSubmittedPost,
+  setIsDone,
+} = require('../db');
 const dayjs = require('dayjs');
 const {report} = require('../comms/telegram/replicantMessenger');
+const {farmKarma, executeSubmission, recordSubmission, submitPost} = ('./');
 
 /**
  * Job that posts on reddit through one of the randomly selected bot accounts
  * in order to farm karma.
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
-const farmKarmaJob = async () => {
-    let jobs = null;
-    jobs = await sequelize.models.PostQueue.findAll(
-        {
-            where: {
-                toBePostedAt: dayjs().hour(),
-                isDone: false
-            }
-        }
-    );
-    if (typeof jobs != 'undefined' && jobs != null && jobs.length > 0) {
-        await farmKarma(jobs);
-    }
-}
+module.exports.farmKarmaJob = async () => {
+  const jobs = await sequelize.models.PostQueue.findAll(
+      {
+        where: {
+          toBePostedAt: dayjs().hour(),
+          isDone: false,
+        },
+      },
+  );
+  if (typeof jobs != 'undefined' && jobs != null && jobs.length > 0) {
+    await farmKarma(jobs);
+  }
+};
 
 /**
  * Iterate through job objects and post them on reddit.
- * @param jobs
- * @returns {Promise<void>}
+ * @param {object[]} jobs
+ * @return {Promise<void>}
  */
-farmKarma = async (jobs) => {
-    let account = null;
-    for (const job of jobs) {
-        account = await getAccount(job.dataValues.submitter);
-        const requester = await createRequester(account);
-        await executeSubmission(account, job, requester);
-        await report(job.dataValues.submitter + ' just submitted on Reddit!');
-    }
-}
+module.exports.farmKarma = async (jobs) => {
+  let account = null;
+  for (const job of jobs) {
+    account = await getAccount(job.dataValues.submitter);
+    const requester = await createRequester(account);
+    await executeSubmission(account, job, requester);
+    await report(job.dataValues.submitter + ' just submitted on Reddit!');
+  }
+};
 
 /**
- * Insert into
- * @param account
- * @param job
- * @param requester
- * @returns {Promise<void>}
- */
-executeSubmission = async (account, job, requester) => {
-    let post = null;
-    post = await getPost(job.dataValues.postId);
-    await recordSubmission(post, requester, job);
-
-}
-
-/**
+ * Handles the process of submitting a post on reddit through replicant.
  *
- * @param post
- * @param requester
- * @param job
- * @returns {Promise<void>}
+ * @param {object} account
+ * @param {object} job
+ * @param {object} requester
+ * @return {Promise<void>}
  */
-recordSubmission = async (post, requester, job) => {
-    await submitPost(post, requester);
-    await insertSubmittedPost(job);
-    await setIsDone(job.dataValues.postId, true);
-}
+module.exports.executeSubmission = async (account, job, requester) => {
+  const post = await getPost(job.dataValues.postId);
+  await recordSubmission(post, requester, job);
+};
 
 /**
+ * Submits post on reddit.
+ * Inserts inti submittedPost table for history.
+ * sets the flag isDone to true.
  *
- * @param post
- * @param requester
- * @returns {Promise<Submission | void>}
+ * @param {object} post
+ * @param {object} requester
+ * @param {object} job
+ * @return {object} {Promise<void>}
  */
-submitPost = async (post, requester) => {
-    if (post.dataValues.url != null || '') {
-        console.log(post.dataValues.subreddit);
-        return requester.getSubreddit(post.dataValues.subreddit).submitLink({
-            title: post.dataValues.title,
-            url: post.dataValues.url
-        }).catch((err) => console.log(err));
-    }
-    if (post.dataValues.isSelf === true && post.dataValues.edited === false) {
-        console.log(post.dataValues.subreddit);
-        return requester.getSubreddit(post.dataValues.subreddit).submitSelfPost({
-            title: post.dataValues.title,
-            text: post.dataValues.selfText
-        }).catch((err) => console.log(err));
-    }
-}
+module.exports.recordSubmission = async (post, requester, job) => {
+  await submitPost(post, requester);
+  await insertSubmittedPost(job);
+  await setIsDone(job.dataValues.postId, true);
+};
 
-module.exports = farmKarmaJob;
+/**
+ * Submits post on reddit.
+ *
+ * @param {object} post
+ * @param {object} requester
+ * @return {Promise<Submission | void>}
+ */
+module.exports.submitPost = async (post, requester) => {
+  if (post.dataValues.url != null || '') {
+    console.log(post.dataValues.subreddit);
+    return requester.getSubreddit(post.dataValues.subreddit).submitLink({
+      title: post.dataValues.title,
+      url: post.dataValues.url,
+    }).catch((err) => console.log(err));
+  }
+  if (post.dataValues.isSelf === true && post.dataValues.edited === false) {
+    console.log(post.dataValues.subreddit);
+    return requester.getSubreddit(post.dataValues.subreddit).submitSelfPost({
+      title: post.dataValues.title,
+      text: post.dataValues.selfText,
+    }).catch((err) => console.log(err));
+  }
+};
