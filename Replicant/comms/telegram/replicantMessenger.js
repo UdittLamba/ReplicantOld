@@ -2,7 +2,7 @@ const Telegram = require('telegraf/telegram')
 require('dotenv');
 require('http').globalAgent.maxSockets = Infinity // play around with the number till the timeout error goes away.
 
-const telegram = new Telegram(/*process.env.TELEGRAM_TOKEN*/'1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI')
+const telegram = new Telegram(process.env.TELEGRAM_TOKEN)
 
 sendKarmaReport = async (accounts) => {
     let hourlyReport = '';
@@ -15,7 +15,7 @@ sendKarmaReport = async (accounts) => {
                     + '\n' + '----------------------'+'\n';
             }
         )
-        await telegram.sendMessage( '1160876508', hourlyReport);
+        await telegram.sendMessage( process.env.CHAT_ID, hourlyReport);
     } catch (err) {
         console.log(err);
     }
@@ -23,12 +23,12 @@ sendKarmaReport = async (accounts) => {
 
 reportSubmission = async (submitter) => {
     try {
-        await telegram.sendMessage( /*process.env.CHAT_ID*/'1160876508', submitter+' just posted on reddit!');
+        await telegram.sendMessage( process.env.CHAT_ID, submitter+' just posted on reddit!');
     } catch (err) {
         console.log(err);
     }
 }
-//reportSubmission('uditt').then();
+
 module.exports = {
     sendKarmaReport,
     reportSubmission

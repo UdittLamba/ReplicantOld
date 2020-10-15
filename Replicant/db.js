@@ -89,6 +89,11 @@ Account = sequelize.define('Account', {
         allowNull: false,
         defaultValue: false,
     },
+    isHarvested: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
     isSuspended: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

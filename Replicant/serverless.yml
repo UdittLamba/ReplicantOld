@@ -29,6 +29,7 @@ provider:
     PASSWORD:  ${file(./serverless.env.yml):PASSWORD, ''}
     HOST:  ${file(./serverless.env.yml):HOST, ''}
     TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
+    CHAT_ID: ${file(./serverless.env.yml):CHAT_ID, ''}
   timeout: 30
 layers:
   replicantLayer:

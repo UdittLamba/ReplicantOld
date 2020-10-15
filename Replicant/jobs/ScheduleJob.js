@@ -27,6 +27,10 @@ const schedulePostJobs = async (numOfAccounts, numOfPosts) => {
         where: {
             isSold: false,
             isSuspended: false,
+            isHarvested: false,
+            postKarma: {
+                [Op.lte]: 20000
+            },
             createdAt: {
                 [Op.lte]: dayjs().subtract(20, 'day')['$d']
             }
@@ -48,6 +52,7 @@ assignPost = async (submitters, numOfPosts) => {
     for (const submitter of submitters) {
         posts = await sequelize.models.Post.findAll(
             {
+
                 order: Sequelize.literal('rand()'),
                 where: {
                     createdAt: {
