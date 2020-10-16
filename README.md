@@ -1,0 +1,2 @@
+# Replicant
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b3d5bae4734f4ed8bb09ecbd6a4dfe28)](https://app.codacy.com/gh/UdittLamba/Replicant?utm_source=github.com&utm_medium=referral&utm_content=UdittLamba/Replicant&utm_campaign=Badge_Grade_Settings)
