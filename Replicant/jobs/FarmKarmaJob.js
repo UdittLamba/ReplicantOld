@@ -8,7 +8,6 @@ const {
 } = require('../db');
 const dayjs = require('dayjs');
 const {report} = require('../comms/telegram/replicantMessenger');
-const {farmKarma, executeSubmission, recordSubmission, submitPost} = ('./');
 
 /**
  * Job that posts on reddit through one of the randomly selected bot accounts
@@ -34,7 +33,7 @@ module.exports.farmKarmaJob = async () => {
  * @param {object[]} jobs
  * @return {Promise<void>}
  */
-module.exports.farmKarma = async (jobs) => {
+farmKarma = async (jobs) => {
   let account = null;
   for (const job of jobs) {
     account = await getAccount(job.dataValues.submitter);
@@ -52,7 +51,7 @@ module.exports.farmKarma = async (jobs) => {
  * @param {object} requester
  * @return {Promise<void>}
  */
-module.exports.executeSubmission = async (account, job, requester) => {
+executeSubmission = async (account, job, requester) => {
   const post = await getPost(job.dataValues.postId);
   await recordSubmission(post, requester, job);
 };
@@ -67,7 +66,7 @@ module.exports.executeSubmission = async (account, job, requester) => {
  * @param {object} job
  * @return {object} {Promise<void>}
  */
-module.exports.recordSubmission = async (post, requester, job) => {
+recordSubmission = async (post, requester, job) => {
   await submitPost(post, requester);
   await insertSubmittedPost(job);
   await setIsDone(job.dataValues.postId, true);
@@ -80,7 +79,7 @@ module.exports.recordSubmission = async (post, requester, job) => {
  * @param {object} requester
  * @return {Promise<Submission | void>}
  */
-module.exports.submitPost = async (post, requester) => {
+submitPost = async (post, requester) => {
   if (post.dataValues.url != null || '') {
     console.log(post.dataValues.subreddit);
     return requester.getSubreddit(post.dataValues.subreddit).submitLink({

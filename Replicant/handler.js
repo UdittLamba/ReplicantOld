@@ -1,8 +1,8 @@
 const {sequelize, updateAccountKarma} = require('./db');
-const subredditPopulateJob = require('./jobs/SubredditPopulateJob');
-const fetchTopPostsJob = require('./jobs/FetchTopPostsJob');
-const scheduleJob = require('./jobs/ScheduleJob');
-const farmKarmaJob = require('./jobs/FarmKarmaJob');
+const {subredditPopulateJob} = require('./jobs/SubredditPopulateJob');
+const {fetchTopPostsJob} = require('./jobs/FetchTopPostsJob');
+const {schedulePostJobs} = require('./jobs/ScheduleJob');
+const {farmKarmaJob} = require('./jobs/FarmKarmaJob');
 
 /**
  *
@@ -28,7 +28,7 @@ module.exports.updateHandler = async () => {
  */
 module.exports.postHandler = async () => {
   // TODO : convert to manually updatable control values.
-  await scheduleJob(3, 5);
+  await schedulePostJobs(3, 5);
   await sequelize.connectionManager.close();
 };
 

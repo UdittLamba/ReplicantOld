@@ -3,7 +3,6 @@ const Snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
 const {sendKarmaReport, report} = require(
     './comms/telegram/replicantMessenger');
-const {getAccountsData, updateRedditUser} = require('./');
 
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
     process.env.PASSWORD
@@ -310,7 +309,7 @@ module.exports.updateAccountKarma = async () => {
  * @param {array[][]} accounts
  * @return {Promise<void>}
  */
-module.exports.getAccountsData = async (accounts) => {
+getAccountsData = async (accounts) => {
   let me;
   let updatedUser;
   let requester;
@@ -339,7 +338,7 @@ module.exports.getAccountsData = async (accounts) => {
  * @param {object} account
  * @return {Promise<{postKarma: number, commentKarma: number, username: *}>}
  */
-module.exports.updateRedditUser = async (me, account) => {
+updateRedditUser = async (me, account) => {
   await sequelize.models.Account.update({
     postKarma: me.link_karma,
     commentKarma: me.comment_karma,

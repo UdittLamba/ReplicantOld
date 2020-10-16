@@ -1,5 +1,4 @@
 const {sequelize, createRequester} = require('../db');
-const {insertSubreddit, update} = require('./');
 /**
  * Populate the Subreddit table with subreddits whose posts made
  * to the top of the day.
@@ -27,7 +26,7 @@ module.exports.subredditPopulateJob = async () => {
  * @param {string[]} subreddits
  * @return {Promise<void>}
  */
-module.exports.insertSubreddit = async (subreddits) => {
+insertSubreddit = async (subreddits) => {
   for (const subredditName of subreddits) {
     await sequelize.models.Subreddit.findOrCreate({
       where: {name: subredditName.substring(2, subredditName.length)},
@@ -40,7 +39,7 @@ module.exports.insertSubreddit = async (subreddits) => {
  * @param {object} account
  * @return {Promise<void>}
  */
-module.exports.update = async (account) => {// any reddit account will do.
+update = async (account) => {// any reddit account will do.
   const requester = await createRequester(account);
   const subreddits = await requester.getTop({time: 'day'}).
       map((post) => post.subreddit_name_prefixed);

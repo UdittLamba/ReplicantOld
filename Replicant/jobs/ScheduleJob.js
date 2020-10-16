@@ -1,7 +1,6 @@
 const {sequelize} = require('../db');
 const dayjs = require('dayjs');
 const {Op, Sequelize} = require('sequelize');
-const {assignPost, schedulePosts} = require('./');
 
 const randomNumber = (min, max) => {
   return Math.random() * (max - min) + min;
@@ -48,7 +47,7 @@ module.exports.schedulePostJobs = async (numOfAccounts, numOfPosts) => {
  * @param {number} numOfPosts
  * @return {Promise<void>}
  */
-module.exports.assignPost = async (submitters, numOfPosts) => {
+assignPost = async (submitters, numOfPosts) => {
   let posts = null;
   for (const submitter of submitters) {
     posts = await sequelize.models.Post.findAll(
@@ -72,7 +71,7 @@ module.exports.assignPost = async (submitters, numOfPosts) => {
  * @param {String} submitter
  * @return {Promise<void>}
  */
-module.exports.schedulePosts = async (posts, submitter) => {
+schedulePosts = async (posts, submitter) => {
   for (const post of posts) {
     await sequelize.models.PostQueue.findOrCreate({
       where: {

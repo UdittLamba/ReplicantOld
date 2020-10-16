@@ -1,5 +1,4 @@
 const {sequelize, createRequester} = require('../db');
-const {insertPosts} = require('./');
 
 /**
  * fetch and store top posts of approved subs and subscribe
@@ -28,7 +27,7 @@ module.exports.fetchTopPostsJob = async (time) => {
  * @param {String} time
  * @return {Promise<void>}
  */
-module.exports.getTopPostsPerSub = async (account, time) => {
+getTopPostsPerSub = async (account, time) => {
   let posts;
   let subs = null;
   /*
@@ -53,7 +52,7 @@ module.exports.getTopPostsPerSub = async (account, time) => {
  * @param {object[]} posts
  * @return {Promise<void>}
  */
-module.exports.insertPosts = async (posts) => {
+insertPosts = async (posts) => {
   try {
     for (const post of posts) {
       // Avoid OC content with poster makes a self reference.
