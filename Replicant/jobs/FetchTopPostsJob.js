@@ -6,7 +6,7 @@ const {sequelize, createRequester} = require('../db');
  * @param {String} time Eg: 'hour', 'day', 'month', 'year' or 'alltime'
  * @return {Promise<void>}
  */
-module.exports.fetchTopPostsJob = async (time) => {
+fetchTopPostsJob = async (time) => {
   let account;
   try {
     account = await sequelize.models.Account.findOne({
@@ -86,6 +86,9 @@ insertPosts = async (posts) => {
         });
       }
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 };
 
+module.exports = fetchTopPostsJob;

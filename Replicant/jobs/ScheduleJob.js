@@ -7,7 +7,7 @@ const randomNumber = (min, max) => {
 };
 
 const pickRandomHour = () => {
-  return randomNumber(12, 23);
+  return randomNumber(7, 23);
 };
 
 /**
@@ -21,7 +21,7 @@ const pickRandomHour = () => {
  * @param {number} numOfAccounts
  * @param {number} numOfPosts
  */
-module.exports.schedulePostJobs = async (numOfAccounts, numOfPosts) => {
+schedulePostJobs = async (numOfAccounts, numOfPosts) => {
   const selectedAccounts = await sequelize.models.Account.findAll({
     order: Sequelize.literal('rand()'),
     where: {
@@ -43,7 +43,7 @@ module.exports.schedulePostJobs = async (numOfAccounts, numOfPosts) => {
 /**
  * Assign <numberOfPosts> posts to selected submitters.
  *
- * @param {String[]} submitters
+ * @param {Model<TModelAttributes, TCreationAttributes>[]} submitters
  * @param {number} numOfPosts
  * @return {Promise<void>}
  */
@@ -68,7 +68,7 @@ assignPost = async (submitters, numOfPosts) => {
 /**
  * Insert into table PostQueues.
  * @param {object[]} posts
- * @param {String} submitter
+ * @param {Model<TModelAttributes, TCreationAttributes>} submitter
  * @return {Promise<void>}
  */
 schedulePosts = async (posts, submitter) => {
@@ -80,6 +80,9 @@ schedulePosts = async (posts, submitter) => {
         submitter: submitter.dataValues.username,
         toBePostedAt: pickRandomHour(),
       },
-    }).catch((err) => console.log(err));
+    });
   }
 };
+
+module.exports = schedulePostJobs;
+

@@ -231,7 +231,7 @@ SubmittedPost = sequelize.define('SubmittedPost', {
  * @param {String} accountName
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
-module.exports.getAccount = async (accountName) => {
+getAccount = async (accountName) => {
   return sequelize.models.Account.findOne({
     where: {
       isSold: false,
@@ -247,7 +247,7 @@ module.exports.getAccount = async (accountName) => {
  * @param {String||number} postId
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
-module.exports.getPost = async (postId) => {
+getPost = async (postId) => {
   return sequelize.models.Post.findByPk(postId);
 };
 
@@ -256,7 +256,7 @@ module.exports.getPost = async (postId) => {
  * @param {object} job
  * @return {Promise<void>}
  */
-module.exports.insertSubmittedPost = async (job) => {
+insertSubmittedPost = async (job) => {
   await sequelize.models.SubmittedPost.findOrCreate({
     where: {
       postId: job.dataValues.postId,
@@ -272,11 +272,11 @@ module.exports.insertSubmittedPost = async (job) => {
  * @param {boolean} bool
  * @return {Promise<void>}
  */
-module.exports.setIsDone = async (postId, bool) => {
+setIsDone = async (postId, bool) => {
   await sequelize.models.PostQueue.update({
     isDone: bool,
   }, {
-    where: {postId: postId},
+    where: {postId},
   }).catch((err) => {
     console.log(err);
   });
@@ -286,7 +286,7 @@ module.exports.setIsDone = async (postId, bool) => {
  * fetch and store comment and link karma from reddit api.
  * @return {Promise<void>}
  */
-module.exports.updateAccountKarma = async () => {
+updateAccountKarma = async () => {
   let accounts = null;
   try {
     accounts = await sequelize.models.Account.findAll({
@@ -362,7 +362,7 @@ updateRedditUser = async (me, account) => {
  * when exposing db information via '/accounts/all' endpoint.
  * @return {Promise<unknown>}
  */
-module.exports.fetchAllAccounts = async () => {
+fetchAllAccounts = async () => {
   const accs = [];
   const accounts = await sequelize.models.Account.findAll({
     attributes: {
@@ -381,7 +381,7 @@ module.exports.fetchAllAccounts = async () => {
  * createAt and updatedAt columns.
  * @return {Promise<void>}
  */
-module.exports.fetchAllSubreddits = async () => {
+fetchAllSubreddits = async () => {
   let subreddits = null;
   const subs = [];
   subreddits = await sequelize.models.Subreddit.findAll({
@@ -397,11 +397,11 @@ module.exports.fetchAllSubreddits = async () => {
 };
 
 /**
- * Generate a snoowrap object for a given reddit account.
+ *
  * @param {object} account
  * @return {Promise<Snoowrap>}
  */
-module.exports.createRequester = async (account) => {
+createRequester = async (account) => {
   return new Snoowrap({
     userAgent: account.dataValues.userAgent,
     clientId: account.dataValues.clientId,
@@ -414,4 +414,12 @@ module.exports.createRequester = async (account) => {
 
 module.exports = {
   sequelize,
+  createRequester,
+  updateAccountKarma,
+  fetchAllSubreddits,
+  setIsDone,
+  getAccount,
+  fetchAllAccounts,
+  insertSubmittedPost,
+  getPost,
 };

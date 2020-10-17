@@ -1,4 +1,5 @@
-const {sequelize, updateAccountKarma} = require('./db');
+const {updateAccountKarma} = require('./db');
+const {sequelize} = require('./db');
 const {subredditPopulateJob} = require('./jobs/SubredditPopulateJob');
 const {fetchTopPostsJob} = require('./jobs/FetchTopPostsJob');
 const {schedulePostJobs} = require('./jobs/ScheduleJob');

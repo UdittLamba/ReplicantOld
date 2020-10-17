@@ -1,9 +1,10 @@
 const {sequelize, createRequester} = require('../db');
+
 /**
  * Populate the Subreddit table with subreddits whose posts made
  * to the top of the day.
  */
-module.exports.subredditPopulateJob = async () => {
+subredditPopulateJob = async () => {
   try {
     if (sequelize.connectionManager.hasOwnProperty('getConnection')) {
       delete sequelize.connectionManager.getConnection;
@@ -45,3 +46,5 @@ update = async (account) => {// any reddit account will do.
       map((post) => post.subreddit_name_prefixed);
   await insertSubreddit(subreddits);
 };
+
+module.exports = subredditPopulateJob;

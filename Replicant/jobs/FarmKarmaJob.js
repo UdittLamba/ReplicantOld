@@ -14,7 +14,7 @@ const {report} = require('../comms/telegram/replicantMessenger');
  * in order to farm karma.
  * @return {Promise<void>}
  */
-module.exports.farmKarmaJob = async () => {
+farmKarmaJob = async () => {
   const jobs = await sequelize.models.PostQueue.findAll(
       {
         where: {
@@ -95,3 +95,5 @@ submitPost = async (post, requester) => {
     }).catch((err) => console.log(err));
   }
 };
+
+module.exports = farmKarmaJob;

@@ -12,17 +12,18 @@ const telegram = new Telegram(process.env.TELEGRAM_TOKEN);
  * @param {String} message
  * @return {Promise<void>}
  */
-module.exports.report = async (message) => {
+report = async (message) => {
   await telegram.sendMessage(process.env.CHAT_ID, message);
 };
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Prepares a telegram report from the accounts array fed into it.
  *
  * @param {String[][]} accounts
  * @return {Promise<void>}
  */
-module.exports.sendKarmaReport = async (accounts) => {
+sendKarmaReport = async (accounts) => {
   let hourlyReport = '';
   try {
     accounts.forEach((value) => {
@@ -35,6 +36,10 @@ module.exports.sendKarmaReport = async (accounts) => {
     );
     await report(hourlyReport);
   } catch (err) {
-    console.log(err);
   }
+};
+
+module.exports = {
+  report,
+  sendKarmaReport,
 };
