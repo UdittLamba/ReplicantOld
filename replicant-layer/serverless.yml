@@ -1,0 +1,14 @@
+service: replicant-backend-layer
+frameworkVersion: '2'
+provider:
+  name: aws
+layers:
+  replicant-backend:
+    path: '../replicant-layer/replicant-backend-layer'
+#resources:
+#  Outputs:
+#    ReplicantBackendLayerExport:
+#      Value:
+#        Ref: ReplicantBackendLambdaLayer
+#      Export:
+#        Name: ReplicantBackendLambdaLayer

@@ -31,47 +31,41 @@ provider:
     TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
     CHAT_ID: ${file(./serverless.env.yml):CHAT_ID, ''}
   timeout: 30
-layers:
-  replicant:
-    path: '../Replicant'
-    compatibleRuntimes:
-      - nodejs10.x
-      - nodejs12.x
 functions:
   accountUpdateHandler:
     handler: handler.accountUpdateHandler
     events:
       - schedule: rate(1 hour)
     layers:
-      - { Ref: ReplicantLambdaLayer }
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
   subredditPopulateHandler:
     handler: handler.subredditPopulateHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - { Ref: ReplicantLambdaLayer }
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
   topPostFetchHandler:
     handler: handler.topPostFetchHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - { Ref: ReplicantLambdaLayer }
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
   postScheduleHandler:
     handler: handler.postScheduleHandler
     events:
       - schedule: rate(1 day)
     layers:
-      - { Ref: ReplicantLambdaLayer }
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
   karmaFarmingHandler:
     handler: handler.karmaFarmingHandler
     events:
       - schedule: rate(1 hour)
     layers:
-      - { Ref: ReplicantLambdaLayer }
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
   apiHandler:
     handler: index.apiHandler
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
     layers:
-      - { Ref: ReplicantLambdaLayer }
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
