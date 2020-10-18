@@ -8,11 +8,10 @@ const {accountUpdateHandler,
 
 
 describe('checkAccountUpdate', () => {
-  jest.setTimeout(15000);
   it('should call accountUpdateHandler and resolve', async () => {
     expect(await accountUpdateHandler())
         .resolves;
-  });
+  }, 30000);
 });
 describe('checkSubredditPopulate', () => {
   it('should call subredditPopulateHandler and resolve', async () => {
