@@ -6,18 +6,14 @@ const {sequelize, createRequester} = require('../db');
  * @return {Promise<boolean>}
  */
 subredditPopulateJob = async () => {
-  try {
-    const account = await sequelize.models.Account.findOne(
-        {
-          where: {
-            isSuspended: false,
-            isSold: false,
-          },
-        });
-    return await update(account);
-  } catch (err) {
-    console.log(err);
-  }
+  const account = await sequelize.models.Account.findOne(
+      {
+        where: {
+          isSuspended: false,
+          isSold: false,
+        },
+      });
+  return await update(account);
 };
 
 /**
