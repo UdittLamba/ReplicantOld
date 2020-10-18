@@ -1,6 +1,7 @@
 const {DataTypes, Sequelize} = require('sequelize');
 const Snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
+require('mysql2/node_modules/iconv-lite').encodingExists('cesu8');
 const {sendKarmaReport, report} = require(
     './comms/telegram/replicantMessenger');
 
