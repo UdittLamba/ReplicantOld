@@ -23,20 +23,21 @@ subredditPopulateJob = async () => {
 /**
  *
  * @param {string[]} subreddits
- * @return {Promise<[Model<TModelAttributes, TCreationAttributes>, boolean]>}
+ * @return {Promise<boolean>}
  */
 insertSubreddit = async (subreddits) => {
   for (const subredditName of subreddits) {
-    return await sequelize.models.Subreddit.findOrCreate({
+    await sequelize.models.Subreddit.findOrCreate({
       where: {name: subredditName.substring(2, subredditName.length)},
     });
   }
+  return true;
 };
 
 /**
  *
  * @param {object} account
- * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ * @return {Promise<boolean>}
  */
 update = async (account) => {// any reddit account will do.
   const requester = await createRequester(account);
