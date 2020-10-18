@@ -15,6 +15,7 @@ describe('checkAccountUpdate', () => {
 });
 describe('checkSubredditPopulate', () => {
   it('should call subredditPopulateHandler and resolve', async () => {
+    console.log(process.env.HOST);
     expect(await subredditPopulateHandler())
         .resolves;
   });
