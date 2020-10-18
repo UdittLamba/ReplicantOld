@@ -9,14 +9,14 @@ const {accountUpdateHandler,
 
 
 describe('checkAccountUpdate', () => {
-  it('should call accountUpdateHandler and return', () => {
-    expect(accountUpdateHandler())
+  it('should call accountUpdateHandler and return', async () => {
+    expect(await accountUpdateHandler())
         .resolves;
   });
 });
 describe('checkSubredditPopulate', () => {
-  it('should call accountUpdateHandler and return', () => {
-    expect(subredditPopulateHandler())
+  it('should call accountUpdateHandler and return', async () => {
+    expect(await subredditPopulateHandler())
         .resolves;
   });
 });
@@ -27,14 +27,14 @@ describe('checkTopPostFetch', () => {
   });
 });
 describe('checkPostSchedule', () => {
-  it('should call accountUpdateHandler and return', () => {
-    expect(postScheduleHandler())
+  it('should call accountUpdateHandler and return', async () => {
+    expect(await postScheduleHandler())
         .resolves;
   });
 });
 describe('checkKarmaFarming', () => {
-  it('should call accountUpdateHandler and return', () => {
-    expect(karmaFarmingHandler())
+  it('should call accountUpdateHandler and return', async () => {
+    expect( await karmaFarmingHandler())
         .resolves;
   });
 });
