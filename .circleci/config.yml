@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Install Serverless CLI and dependencies
           command: |
-            sudo npm i -g serverless --allow-root
+            sudo npm i -g serverless --unsafe-perm
             npm install
 
       - save_cache:
