@@ -4,12 +4,12 @@ jobs:
     docker:
       - image: circleci/node:12.0
         environment:
-          SCHEMA: ${file(../replicant-backend/serverless.env.yml):SCHEMA, ''}
-          USERNAME: ${file(../replicant-backend/serverless.env.yml):USERNAME, ''}
-          PASSWORD: ${file(../replicant-backend/serverless.env.yml):PASSWORD, ''}
-          HOST: ${file(../replicant-backend/serverless.env.yml):HOST, ''}
-          TELEGRAM_TOKEN: ${file(../replicant-backend/serverless.env.yml):TELEGRAM_TOKEN, ''}
-          CHAT_ID: ${file(../replicant-backend/serverless.env.yml):CHAT_ID, ''}
+          SCHEMA: 'replicant_schema'
+          USERNAME: 'admin'
+          PASSWORD: 'anfield1892'
+          HOST: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com'
+          TELEGRAM_TOKEN: '1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI'
+          CHAT_ID: '1160876508'
 
     working_directory: ~/Replicant
 
