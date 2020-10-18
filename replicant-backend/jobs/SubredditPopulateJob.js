@@ -3,7 +3,7 @@ const {sequelize, createRequester} = require('../db');
 /**
  * Populate the Subreddit table with subreddits whose posts made
  * to the top of the day.
- * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ * @return {Promise<boolean>}
  */
 subredditPopulateJob = async () => {
   try {

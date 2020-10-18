@@ -41,4 +41,4 @@ jobs:
           command: pwd
       - run:
           name: Deploy application
-          command: serverless deploy
+          command: cd replicant-backend && serverless deploy
