@@ -244,7 +244,7 @@ getAccount = async (accountName) => {
 // eslint-disable-next-line valid-jsdoc
 /**
  *
- * @param {String||number} postId
+ * @param {String|number} postId
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
 getPost = async (postId) => {
@@ -284,7 +284,7 @@ setIsDone = async (postId, bool) => {
 
 /**
  * fetch and store comment and link karma from reddit api.
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 updateAccountKarma = async () => {
   let accounts = null;
@@ -295,7 +295,7 @@ updateAccountKarma = async () => {
         isSuspended: false,
       },
     });
-    await getAccountsData(accounts);
+    return await getAccountsData(accounts);
   } catch (err) {
     console.log('err');
   }
@@ -307,7 +307,7 @@ updateAccountKarma = async () => {
  * Sends a report of the karma status to user through telegram.
  *
  * @param {array[][]} accounts
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 getAccountsData = async (accounts) => {
   let me;
@@ -326,7 +326,7 @@ getAccountsData = async (accounts) => {
         accountsKarma.push(updatedUser);
       }
     }
-    await sendKarmaReport(accountsKarma);
+    return await sendKarmaReport(accountsKarma);
   } catch (err) {
     console.log(err);
   }

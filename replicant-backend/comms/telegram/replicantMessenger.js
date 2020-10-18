@@ -6,14 +6,12 @@ require('http').globalAgent.maxSockets = Infinity;
 const telegram = new Telegram(process.env.TELEGRAM_TOKEN);
 
 /**
- * Base abstracted function to send telegram messages
- * to process.env.CHAT_ID(the chat id defined in the serverless.env.yml file)
  *
  * @param {String} message
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 report = async (message) => {
-  await telegram.sendMessage(process.env.CHAT_ID, message);
+  return await telegram.sendMessage(process.env.CHAT_ID, message);
 };
 
 // eslint-disable-next-line valid-jsdoc
@@ -21,22 +19,19 @@ report = async (message) => {
  * Prepares a telegram report from the accounts array fed into it.
  *
  * @param {String[][]} accounts
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 sendKarmaReport = async (accounts) => {
   let hourlyReport = '';
-  try {
-    accounts.forEach((value) => {
-      hourlyReport = hourlyReport +
-              value['username'] + '|' +
-              '\n ' + 'post karma: ' + value['postKarma'] +
-              '\n comment karma: ' + value['commentKarma'] +
-              '\n' + '----------------------' + '\n';
-    },
-    );
-    await report(hourlyReport);
-  } catch (err) {
-  }
+  accounts.forEach((value) => {
+    hourlyReport = hourlyReport +
+            value['username'] + '|' +
+            '\n ' + 'post karma: ' + value['postKarma'] +
+            '\n comment karma: ' + value['commentKarma'] +
+            '\n' + '----------------------' + '\n';
+  },
+  );
+  return await report(hourlyReport);
 };
 
 module.exports = {

@@ -1,41 +1,64 @@
 const {updateAccountKarma} = require('./db');
 const {subredditPopulateJob} = require('./jobs/SubredditPopulateJob');
 const {fetchTopPostsJob} = require('./jobs/FetchTopPostsJob');
-const {schedulePostJobs} = require('./jobs/ScheduleJob');
+const {scheduleJob} = require('./jobs/ScheduleJob');
 const {farmKarmaJob} = require('./jobs/FarmKarmaJob');
 
 /**
  *
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 module.exports.accountUpdateHandler = async () => {
-  await updateAccountKarma();
+  try {
+    return await updateAccountKarma();
+  } catch (e) {
+    Error(e);
+  }
 };
 
 /**
  *
- * @return {Promise<void>}
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
 module.exports.subredditPopulateHandler = async () => {
-  await subredditPopulateJob();
+  try {
+    return await subredditPopulateJob();
+  } catch (e) {
+    Error(e);
+  }
 };
-
+/**
+ *
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ */
 module.exports.topPostFetchHandler = async () => {
-  await fetchTopPostsJob('today');
+  try {
+    return await fetchTopPostsJob('today');
+  } catch (e) {
+    Error(e);
+  }
 };
 
 /**
  *
- * @return {Promise<void>}
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
 module.exports.postScheduleHandler = async () => {
   // TODO : convert to manually updatable control values.
-  await schedulePostJobs(3, 5);
+  try {
+    return await scheduleJob(3, 5);
+  } catch (e) {
+    Error(e);
+  }
 };
 
 /**
- * @return {Promise<void>}
+ * @return {Promise<Message|boolean>}
  */
 module.exports.karmaFarmingHandler = async () => {
-  await farmKarmaJob();
+  try {
+    return await farmKarmaJob();
+  } catch (e) {
+    Error(e);
+  }
 };

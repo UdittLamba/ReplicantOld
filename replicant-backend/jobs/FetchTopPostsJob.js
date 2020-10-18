@@ -4,7 +4,7 @@ const {sequelize, createRequester} = require('../db');
  * fetch and store top posts of approved subs and subscribe
  * to approved subreddits.
  * @param {String} time Eg: 'hour', 'day', 'month', 'year' or 'alltime'
- * @return {Promise<void>}
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
 fetchTopPostsJob = async (time) => {
   let account;
@@ -15,7 +15,7 @@ fetchTopPostsJob = async (time) => {
         isSuspended: false,
       },
     });
-    await getTopPostsPerSub(account, time);
+    return await getTopPostsPerSub(account, time);
   } catch (err) {
     console.log(err);
   }
@@ -25,7 +25,7 @@ fetchTopPostsJob = async (time) => {
  *
  * @param {object} account
  * @param {String} time
- * @return {Promise<void>}
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
 getTopPostsPerSub = async (account, time) => {
   let posts;
@@ -43,14 +43,14 @@ getTopPostsPerSub = async (account, time) => {
     posts = await requester.getSubreddit(subName.dataValues.name).
         subscribe().
         getTop(time);
-    await insertPosts(posts);
+    return await insertPosts(posts);
   }
 };
 
 /**
  *
  * @param {object[]} posts
- * @return {Promise<void>}
+ * @return {Promise<[Model<TModelAttributes, TCreationAttributes>, boolean]>}
  */
 insertPosts = async (posts) => {
   try {
@@ -61,7 +61,7 @@ insertPosts = async (posts) => {
       if (!post.title.includes('I') && !post.title.includes('My ') &&
           !post.title.includes(' my ') &&
           post.domain !== 'v.redd.it' && post.ups > 1000) {
-        await sequelize.models.Post.findOrCreate({
+        return await sequelize.models.Post.findOrCreate({
           where: {name: post.name},
           defaults: {
             title: post.title,
@@ -91,4 +91,6 @@ insertPosts = async (posts) => {
   }
 };
 
-module.exports = fetchTopPostsJob;
+module.exports = {
+  fetchTopPostsJob,
+};

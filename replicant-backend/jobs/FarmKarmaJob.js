@@ -12,26 +12,32 @@ const {report} = require('../comms/telegram/replicantMessenger');
 /**
  * Job that posts on reddit through one of the randomly selected bot accounts
  * in order to farm karma.
- * @return {Promise<void>}
+ * @return {Promise<Message|boolean>}
  */
 farmKarmaJob = async () => {
-  const jobs = await sequelize.models.PostQueue.findAll(
-      {
-        where: {
-          toBePostedAt: dayjs().hour(),
-          isDone: false,
+  try {
+    const jobs = await sequelize.models.PostQueue.findAll(
+        {
+          where: {
+            toBePostedAt: dayjs().hour(),
+            isDone: false,
+          },
         },
-      },
-  );
-  if (typeof jobs != 'undefined' && jobs != null && jobs.length > 0) {
-    await farmKarma(jobs);
+    );
+    if (typeof jobs != 'undefined' && jobs != null && jobs.length > 0) {
+      return await farmKarma(jobs);
+    } else {
+      return false;
+    }
+  } catch (e) {
+    throw e;
   }
 };
 
 /**
  * Iterate through job objects and post them on reddit.
  * @param {object[]} jobs
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 farmKarma = async (jobs) => {
   let account = null;
@@ -39,7 +45,8 @@ farmKarma = async (jobs) => {
     account = await getAccount(job.dataValues.submitter);
     const requester = await createRequester(account);
     await executeSubmission(account, job, requester);
-    await report(job.dataValues.submitter + ' just submitted on Reddit!');
+    return await report(job.dataValues.submitter +
+        ' just submitted on Reddit!');
   }
 };
 
@@ -96,4 +103,8 @@ submitPost = async (post, requester) => {
   }
 };
 
-module.exports = farmKarmaJob;
+farmKarmaJob().then();
+
+module.exports = {
+  farmKarmaJob,
+};
