@@ -11,7 +11,7 @@ describe('checkAccountUpdate', () => {
   it('should call accountUpdateHandler and resolve', async () => {
     expect(await accountUpdateHandler())
         .resolves;
-  }, 30000);
+  }, 3000);
 });
 describe('checkSubredditPopulate', () => {
   it('should call subredditPopulateHandler and resolve', async () => {

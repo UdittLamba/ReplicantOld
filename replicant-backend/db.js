@@ -1,3 +1,4 @@
+require('dotenv');
 const {DataTypes, Sequelize} = require('sequelize');
 const Snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
