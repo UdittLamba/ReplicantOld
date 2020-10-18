@@ -32,7 +32,9 @@ jobs:
       - run:
           name: Run tests with coverage
           command: cd replicant-backend && npm test --coverage
-
+      - run:
+          name: addr
+          command: pwd
       - run:
           name: Deploy application
-          command: serverless deploy
+          command: cd replicant-backend && serverless deploy
