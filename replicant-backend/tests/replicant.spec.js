@@ -7,12 +7,12 @@ const {accountUpdateHandler,
   karmaFarmingHandler} = require('../handler');
 
 
-describe('checkAccountUpdate', () => {
-  it('should call accountUpdateHandler and resolve', async () => {
-    expect(await accountUpdateHandler())
-        .resolves;
-  }, 3000);
-});
+// describe('checkAccountUpdate', () => {
+//   it('should call accountUpdateHandler and resolve', async () => {
+//     expect(await accountUpdateHandler())
+//         .resolves;
+//   }, 3000);
+// });
 describe('checkSubredditPopulate', () => {
   it('should call subredditPopulateHandler and resolve', async () => {
     console.log(process.env.HOST);
