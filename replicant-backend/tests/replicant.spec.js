@@ -1,4 +1,4 @@
-const {describe, it} = require('@jest/globals');
+const {describe, it, jest} = require('@jest/globals');
 
 const {accountUpdateHandler,
   subredditPopulateHandler,
@@ -8,6 +8,7 @@ const {accountUpdateHandler,
 
 
 describe('checkAccountUpdate', () => {
+  jest.setTimeout(15000);
   it('should call accountUpdateHandler and resolve', async () => {
     expect(await accountUpdateHandler())
         .resolves;
