@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_and_test:
     docker:
       - image: circleci/node:12.0
 
@@ -36,9 +36,6 @@ jobs:
       - run:
           name: Run tests with coverage
           command: cd replicant-backend && npm test --coverage
-      - run:
-          name: addr
-          command: pwd
       - run:
           name: Deploy application
           command: cd replicant-backend && serverless deploy
