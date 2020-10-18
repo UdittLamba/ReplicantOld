@@ -18,7 +18,7 @@ module.exports.accountUpdateHandler = async () => {
 
 /**
  *
- * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ * @return {Promise<boolean>}
  */
 module.exports.subredditPopulateHandler = async () => {
   try {

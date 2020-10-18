@@ -4,19 +4,23 @@ const dayjs = require('dayjs');
 const {sendKarmaReport, report} = require(
     './comms/telegram/replicantMessenger');
 
-const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
-    process.env.PASSWORD
-    , {
-      host: process.env.HOST,
-      dialect: 'mysql',
-      pool: {
-        maxConnections: 50,
-        min: 0,
-        idle: 10000,
-        acquire: 30000,
-        evict: 50,
-      },
-    });
+getConnection = async () => {
+  const connection = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
+      process.env.PASSWORD
+      , {
+        host: process.env.HOST,
+        path: process.env.PATH,
+        dialect: 'mysql',
+        pool: {
+          maxConnections: 50,
+          min: 0,
+          idle: 10000,
+          acquire: 30000,
+          evict: 50,
+        },
+      });
+  await connection.authenticate();
+};
 
 /**
  *  MODEL DEFINITIONS
