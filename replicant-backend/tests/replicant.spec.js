@@ -26,12 +26,12 @@ describe('checkTopPostFetch', () => {
         .resolves;
   });
 });
-describe('checkPostSchedule', () => {
-  it('should call postScheduleHandler and return', async () => {
-    expect(await postScheduleHandler())
-        .resolves;
-  });
-});
+// describe('checkPostSchedule', () => {
+//   it('should call postScheduleHandler and return', async () => {
+//     expect(await postScheduleHandler())
+//         .resolves;
+//   });
+// });
 describe('checkKarmaFarming', () => {
   it('should call karmaFarmingHandler and return', async () => {
     expect( await karmaFarmingHandler())
