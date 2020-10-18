@@ -1,30 +1,40 @@
-const {it} = require('./jest');
+const {describe, it} = require('@jest/globals');
 
-const {
-  accountUpdateHandler,
+
+const {accountUpdateHandler,
   subredditPopulateHandler,
   topPostFetchHandler,
   postScheduleHandler,
-  karmaFarmingHandler,
-} = require('../handler');
+  karmaFarmingHandler} = require('../handler');
 
-it('should call accountUpdateHandler and return', () => {
-  expect(accountUpdateHandler()).resolves;
+
+describe('checkAccountUpdate', () => {
+  it('should call accountUpdateHandler and return', () => {
+    expect(accountUpdateHandler())
+        .resolves;
+  });
 });
-
-it('should call accountUpdateHandler and return', () => {
-  expect(subredditPopulateHandler()).resolves;
+describe('checkSubredditPopulate', () => {
+  it('should call accountUpdateHandler and return', () => {
+    expect(subredditPopulateHandler())
+        .resolves;
+  });
 });
-
-it('should call accountUpdateHandler and return', () => {
-  expect(topPostFetchHandler()).resolves;
+describe('checkTopPostFetch', () => {
+  it('should call accountUpdateHandler and return', () => {
+    expect(topPostFetchHandler())
+        .resolves;
+  });
 });
-
-it('should call accountUpdateHandler and return', () => {
-  expect(postScheduleHandler()).resolves;
+describe('checkPostSchedule', () => {
+  it('should call accountUpdateHandler and return', () => {
+    expect(postScheduleHandler())
+        .resolves;
+  });
 });
-
-it('should call accountUpdateHandler and return', () => {
-  expect(karmaFarmingHandler()).resolves;
+describe('checkKarmaFarming', () => {
+  it('should call accountUpdateHandler and return', () => {
+    expect(karmaFarmingHandler())
+        .resolves;
+  });
 });
-

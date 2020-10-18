@@ -9,6 +9,7 @@
   "author": "Uditt Lamba",
   "license": "ISC",
   "dependencies": {
+    "@jest/globals": "^26.5.3",
     "dayjs": "^1.9.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
