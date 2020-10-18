@@ -12,7 +12,7 @@ module.exports.accountUpdateHandler = async () => {
   try {
     return await updateAccountKarma();
   } catch (e) {
-    throw e;
+    console.error(e);
   }
 };
 
@@ -24,7 +24,7 @@ module.exports.subredditPopulateHandler = async () => {
   try {
     return await subredditPopulateJob();
   } catch (e) {
-    throw e;
+    console.error(e);
   }
 };
 
@@ -36,7 +36,7 @@ module.exports.topPostFetchHandler = async () => {
   try {
     return await fetchTopPostsJob('today');
   } catch (e) {
-    throw e;
+    console.error(e);
   }
 };
 
@@ -49,7 +49,7 @@ module.exports.postScheduleHandler = async () => {
   try {
     return await scheduleJob(3, 5);
   } catch (e) {
-    throw e;
+    console.error(e);
   }
 };
 
@@ -60,6 +60,6 @@ module.exports.karmaFarmingHandler = async () => {
   try {
     return await farmKarmaJob();
   } catch (e) {
-    throw e;
+    console.error(e);
   }
 };

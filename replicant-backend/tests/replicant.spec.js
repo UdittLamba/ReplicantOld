@@ -1,4 +1,4 @@
-const {describe, it, jest} = require('@jest/globals');
+const {describe, it} = require('@jest/globals');
 
 const {accountUpdateHandler,
   subredditPopulateHandler,
