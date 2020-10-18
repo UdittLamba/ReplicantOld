@@ -25,15 +25,15 @@ describe('checkTopPostFetch', () => {
         .resolves;
   });
 });
-describe('checkPostSchedule', () => {
-  it('should call postScheduleHandler and resolve', async () => {
-    expect(await postScheduleHandler())
-        .resolves;
-  });
-});
-describe('checkKarmaFarming', () => {
-  it('should call karmaFarmingHandler and resolve', async () => {
-    expect( await karmaFarmingHandler())
-        .resolves;
-  });
-});
+// describe('checkPostSchedule', () => {
+//   it('should call postScheduleHandler and resolve', async () => {
+//     expect(await postScheduleHandler())
+//         .resolves;
+//   });
+// });
+// describe('checkKarmaFarming', () => {
+//   it('should call karmaFarmingHandler and resolve', async () => {
+//     expect( await karmaFarmingHandler())
+//         .resolves;
+//   });
+// });
