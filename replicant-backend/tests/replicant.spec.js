@@ -32,9 +32,9 @@ describe('checkTopPostFetch', () => {
 //         .resolves;
 //   });
 // });
-describe('checkKarmaFarming', () => {
-  it('should call karmaFarmingHandler and return', async () => {
-    expect( await karmaFarmingHandler())
-        .resolves;
-  });
-});
+// describe('checkKarmaFarming', () => {
+//   it('should call karmaFarmingHandler and return', async () => {
+//     expect( await karmaFarmingHandler())
+//         .resolves;
+//   });
+// });
