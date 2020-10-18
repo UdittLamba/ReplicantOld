@@ -35,4 +35,4 @@ jobs:
 
       - run:
           name: Deploy application
-          command: cd replicant-backend && sls deploy
+          command: cd replicant-backend && serverless deploy
