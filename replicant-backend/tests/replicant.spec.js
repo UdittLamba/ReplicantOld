@@ -15,25 +15,25 @@ describe('checkAccountUpdate', () => {
   });
 });
 describe('checkSubredditPopulate', () => {
-  it('should call accountUpdateHandler and return', async () => {
+  it('should call subredditPopulateHandler and return', async () => {
     expect(await subredditPopulateHandler())
         .resolves;
   });
 });
 describe('checkTopPostFetch', () => {
-  it('should call accountUpdateHandler and return', () => {
+  it('should call topPostFetchHandler and return', () => {
     expect(topPostFetchHandler())
         .resolves;
   });
 });
 describe('checkPostSchedule', () => {
-  it('should call accountUpdateHandler and return', async () => {
+  it('should call postScheduleHandler and return', async () => {
     expect(await postScheduleHandler())
         .resolves;
   });
 });
 describe('checkKarmaFarming', () => {
-  it('should call accountUpdateHandler and return', async () => {
+  it('should call karmaFarmingHandler and return', async () => {
     expect( await karmaFarmingHandler())
         .resolves;
   });
