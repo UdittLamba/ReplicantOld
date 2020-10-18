@@ -7,9 +7,6 @@ const {sequelize, createRequester} = require('../db');
  */
 subredditPopulateJob = async () => {
   try {
-    if (sequelize.connectionManager.hasOwnProperty('getConnection')) {
-      delete sequelize.connectionManager.getConnection;
-    }
     const account = await sequelize.models.Account.findOne(
         {
           where: {
