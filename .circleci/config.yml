@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:8.10
 
-    working_directory: ~/repo
+    working_directory: ~/replicant/replicant-backend
 
     steps:
       - checkout
@@ -15,9 +15,7 @@ jobs:
             - v1-dependencies-
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      -run:
-        name: move to replicant-backend
-        command: cd replicant-backend
+
       - run:
           name: Install Serverless CLI and dependencies
           command: |
