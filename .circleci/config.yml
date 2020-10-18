@@ -30,7 +30,7 @@ jobs:
       # run tests!
       - run:
           name: Run tests with coverage
-          command: cd replicant-backend && npm test --coverage
+          command: cd replicant-backend && npm install && npm test --coverage
 
       - run:
           name: Deploy application
