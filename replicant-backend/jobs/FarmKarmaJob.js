@@ -60,7 +60,7 @@ farmKarma = async (jobs) => {
  */
 executeSubmission = async (account, job, requester) => {
   const post = await getPost(job.dataValues.postId);
-  if (post) {
+  if (post !== null) {
     await recordSubmission(post, requester, job);
   } else {
     return false;
