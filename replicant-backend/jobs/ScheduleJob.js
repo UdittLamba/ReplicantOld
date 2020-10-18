@@ -17,11 +17,11 @@ const pickRandomHour = () => {
  * Accounts MUST be incubated for 1 week min although ideally
  * it should be incubated for a month.
  * Selected posts MUST be at least a month old.
- *
- * @param {number} numOfAccounts
- * @param {number} numOfPosts
+ * @param {Integer} numOfAccounts
+ * @param {Integer} numOfPosts
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
-schedulePostJobs = async (numOfAccounts, numOfPosts) => {
+scheduleJob = async (numOfAccounts, numOfPosts) => {
   const selectedAccounts = await sequelize.models.Account.findAll({
     order: Sequelize.literal('rand()'),
     where: {
@@ -37,7 +37,7 @@ schedulePostJobs = async (numOfAccounts, numOfPosts) => {
     },
     limit: numOfAccounts,
   });
-  await assignPost(selectedAccounts, numOfPosts);
+  return await assignPost(selectedAccounts, numOfPosts);
 };
 
 /**
@@ -45,7 +45,7 @@ schedulePostJobs = async (numOfAccounts, numOfPosts) => {
  *
  * @param {Model<TModelAttributes, TCreationAttributes>[]} submitters
  * @param {number} numOfPosts
- * @return {Promise<void>}
+ * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
 assignPost = async (submitters, numOfPosts) => {
   let posts = null;
@@ -61,7 +61,7 @@ assignPost = async (submitters, numOfPosts) => {
           limit: numOfPosts,
         },
     );
-    await schedulePosts(posts, submitter);
+    return await schedulePosts(posts, submitter);
   }
 };
 
@@ -69,11 +69,11 @@ assignPost = async (submitters, numOfPosts) => {
  * Insert into table PostQueues.
  * @param {object[]} posts
  * @param {Model<TModelAttributes, TCreationAttributes>} submitter
- * @return {Promise<void>}
+ * @return {Promise<[Model<TModelAttributes, TCreationAttributes>, boolean]>}
  */
 schedulePosts = async (posts, submitter) => {
   for (const post of posts) {
-    await sequelize.models.PostQueue.findOrCreate({
+    return await sequelize.models.PostQueue.findOrCreate({
       where: {
         postId: post.dataValues.id,
         postName: post.dataValues.name,
@@ -84,5 +84,7 @@ schedulePosts = async (posts, submitter) => {
   }
 };
 
-module.exports = schedulePostJobs;
+module.exports = {
+  scheduleJob,
+};
 

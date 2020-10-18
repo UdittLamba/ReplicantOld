@@ -1,0 +1,30 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Uditt Lamba",
+  "license": "ISC",
+  "dependencies": {
+    "@jest/globals": "^26.5.3",
+    "dayjs": "^1.9.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jest": "^26.5.3",
+    "lodash": "^4.17.15",
+    "mysql2": "^2.1.0",
+    "node-env-run": "^4.0.2",
+    "sequelize": "^6.3.4",
+    "serverless-http": "^2.6.0",
+    "snoowrap": "^1.21.0",
+    "telegraf": "^3.38.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.11.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.21.4"
+  }
+}

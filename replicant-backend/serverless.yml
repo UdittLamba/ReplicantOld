@@ -1,0 +1,76 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: replicant
+# app and org for use with dashboard.serverless.com
+app: replicant-app
+org: udittlamba
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    SCHEMA:  ${file(./serverless.env.yml):SCHEMA, ''}
+    USERNAME:  ${file(./serverless.env.yml):USERNAME, ''}
+    PASSWORD:  ${file(./serverless.env.yml):PASSWORD, ''}
+    HOST:  ${file(./serverless.env.yml):HOST, ''}
+    TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
+    CHAT_ID: ${file(./serverless.env.yml):CHAT_ID, ''}
+  timeout: 30
+functions:
+  accountUpdateHandler:
+    handler: handler.accountUpdateHandler
+    events:
+      - schedule: rate(1 hour)
+    layers:
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
+  subredditPopulateHandler:
+    handler: handler.subredditPopulateHandler
+    events:
+      - schedule: rate(1 day)
+    layers:
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
+  topPostFetchHandler:
+    handler: handler.topPostFetchHandler
+    events:
+      - schedule: rate(1 day)
+    layers:
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
+  postScheduleHandler:
+    handler: handler.postScheduleHandler
+    events:
+      - schedule: rate(1 day)
+    layers:
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
+  karmaFarmingHandler:
+    handler: handler.karmaFarmingHandler
+    events:
+      - schedule: rate(1 hour)
+    layers:
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
+  apiHandler:
+    handler: index.apiHandler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+    layers:
+      - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:2
+# exclude the code coverage files and circle ci files
+package:
+  exclude:
+    - coverage/**
+    - .circleci/**

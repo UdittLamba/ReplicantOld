@@ -244,7 +244,7 @@ getAccount = async (accountName) => {
 // eslint-disable-next-line valid-jsdoc
 /**
  *
- * @param {String||number} postId
+ * @param {String|number} postId
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
 getPost = async (postId) => {
@@ -268,12 +268,13 @@ insertSubmittedPost = async (job) => {
 
 /**
  * Set the value of isDone column of PostQueues table.
- * @param {String|number}postId
+ * @param {String| Number}postId
  * @param {boolean} bool
- * @return {Promise<void>}
+ * @return {Promise<[number, Model<TModelAttributes,
+ * TCreationAttributes>[]]|void>}
  */
 setIsDone = async (postId, bool) => {
-  await sequelize.models.PostQueue.update({
+  return await sequelize.models.PostQueue.update({
     isDone: bool,
   }, {
     where: {postId},
@@ -284,7 +285,7 @@ setIsDone = async (postId, bool) => {
 
 /**
  * fetch and store comment and link karma from reddit api.
- * @return {Promise<void>}
+ * @return {Promise<Message>}
  */
 updateAccountKarma = async () => {
   let accounts = null;
@@ -295,7 +296,7 @@ updateAccountKarma = async () => {
         isSuspended: false,
       },
     });
-    await getAccountsData(accounts);
+    return await getAccountsData(accounts);
   } catch (err) {
     console.log('err');
   }
@@ -306,30 +307,26 @@ updateAccountKarma = async () => {
  * Updates reddit accounts' post and comment karma.
  * Sends a report of the karma status to user through telegram.
  *
- * @param {array[][]} accounts
- * @return {Promise<void>}
+ * @param {Model<TModelAttributes, TCreationAttributes>[]} accounts
+ * @return {Promise<Message>}
  */
 getAccountsData = async (accounts) => {
   let me;
   let updatedUser;
   let requester;
   const accountsKarma = [];
-  try {
-    for (const account of accounts) {
-      requester = await createRequester(account);
-      me = await requester.getMe();
-      updatedUser = await updateRedditUser(me, account);
-      if (me.is_suspended === true) {
-        await report(account.dataValues.username + ' has been suspended');
-      }
-      if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
-        accountsKarma.push(updatedUser);
-      }
+  for (const account of accounts) {
+    requester = await createRequester(account);
+    me = await requester.getMe();
+    updatedUser = await updateRedditUser(me, account);
+    if (me.is_suspended === true) {
+      await report(account.dataValues.username + ' has been suspended');
     }
-    await sendKarmaReport(accountsKarma);
-  } catch (err) {
-    console.log(err);
+    if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')['$d']) {
+      accountsKarma.push(updatedUser);
+    }
   }
+  return await sendKarmaReport(accountsKarma);
 };
 
 /**
@@ -379,7 +376,7 @@ fetchAllAccounts = async () => {
 /**
  * Create a custom array of subreddits that excludes their
  * createAt and updatedAt columns.
- * @return {Promise<void>}
+ * @return {Promise<function(): void>}
  */
 fetchAllSubreddits = async () => {
   let subreddits = null;
@@ -389,7 +386,7 @@ fetchAllSubreddits = async () => {
       exclude: ['createdAt', 'updatedAt'],
     },
   });
-  await (() => {
+  return (() => {
     for (const subreddit of subreddits) {
       subs.push(subreddit.dataValues);
     }
