@@ -7,7 +7,7 @@ const {sendKarmaReport, report} = require(
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
     process.env.PASSWORD
     , {
-      host: process.env.HOST,
+      host: 'replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com',
       dialect: 'mysql',
       pool: {
         maxConnections: 50,
@@ -379,7 +379,7 @@ fetchAllAccounts = async () => {
 /**
  * Create a custom array of subreddits that excludes their
  * createAt and updatedAt columns.
- * @return {Promise<void>}
+ * @return {Promise<function(): void>}
  */
 fetchAllSubreddits = async () => {
   let subreddits = null;
@@ -389,7 +389,7 @@ fetchAllSubreddits = async () => {
       exclude: ['createdAt', 'updatedAt'],
     },
   });
-  await (() => {
+  return (() => {
     for (const subreddit of subreddits) {
       subs.push(subreddit.dataValues);
     }
