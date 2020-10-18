@@ -7,6 +7,7 @@ const {sendKarmaReport, report} = require(
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
     process.env.PASSWORD
     , {
+      logging: false,
       host: process.env.HOST,
       path: process.env.PATH,
       dialect: 'mysql',
