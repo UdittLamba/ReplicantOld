@@ -13,27 +13,27 @@ describe('checkAccountUpdate', () => {
         .resolves;
   });
 });
-// describe('checkSubredditPopulate', () => {
-//   it('should call subredditPopulateHandler and resolve', async () => {
-//     expect(await subredditPopulateHandler())
-//         .resolves;
-//   });
-// });
+describe('checkSubredditPopulate', () => {
+  it('should call subredditPopulateHandler and resolve', async () => {
+    expect(await subredditPopulateHandler())
+        .resolves;
+  });
+});
 describe('checkTopPostFetch', () => {
   it('should call topPostFetchHandler and resolve', () => {
     expect(topPostFetchHandler())
         .resolves;
   });
 });
-// describe('checkPostSchedule', () => {
-//   it('should call postScheduleHandler and resolve', async () => {
-//     expect(await postScheduleHandler())
-//         .resolves;
-//   });
-// });
-// describe('checkKarmaFarming', () => {
-//   it('should call karmaFarmingHandler and resolve', async () => {
-//     expect( await karmaFarmingHandler())
-//         .resolves;
-//   });
-// });
+describe('checkPostSchedule', () => {
+  it('should call postScheduleHandler and resolve', async () => {
+    expect(await postScheduleHandler())
+        .resolves;
+  });
+});
+describe('checkKarmaFarming', () => {
+  it('should call karmaFarmingHandler and resolve', async () => {
+    expect( await karmaFarmingHandler())
+        .resolves;
+  });
+});
