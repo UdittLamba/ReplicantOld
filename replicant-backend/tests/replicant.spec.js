@@ -20,8 +20,8 @@ describe('checkSubredditPopulate', () => {
   });
 });
 describe('checkTopPostFetch', () => {
-  it('should call topPostFetchHandler and resolve', () => {
-    expect(topPostFetchHandler())
+  it('should call topPostFetchHandler and resolve', async () => {
+    expect(await topPostFetchHandler())
         .resolves;
   });
 });
