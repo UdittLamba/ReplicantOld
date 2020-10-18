@@ -19,8 +19,9 @@ jobs:
       - run:
           name: Install Serverless CLI and dependencies
           command: |
+            cd replicant-backend
             sudo npm i serverless --unsafe-perm
-            npm install
+            sudo npm install
 
       - save_cache:
           paths:
@@ -30,7 +31,7 @@ jobs:
       # run tests!
       - run:
           name: Run tests with coverage
-          command: cd replicant-backend && npm install && npm test --coverage
+          command: cd replicant-backend && npm test --coverage
 
       - run:
           name: Deploy application
