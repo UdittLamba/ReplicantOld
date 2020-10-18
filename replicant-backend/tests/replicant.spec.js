@@ -1,4 +1,4 @@
-const {describe, it} = require('jest');
+const {it} = require('./jest');
 
 const {
   accountUpdateHandler,
