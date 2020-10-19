@@ -3,21 +3,17 @@ const {sequelize, createRequester} = require('../db');
 /**
  * Populate the Subreddit table with subreddits whose posts made
  * to the top of the day.
- * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ * @return {Promise<boolean>}
  */
 subredditPopulateJob = async () => {
-  try {
-    const account = await sequelize.models.Account.findOne(
-        {
-          where: {
-            isSuspended: false,
-            isSold: false,
-          },
-        });
-    return await update(account);
-  } catch (err) {
-    console.log(err);
-  }
+  const account = await sequelize.models.Account.findOne(
+      {
+        where: {
+          isSuspended: false,
+          isSold: false,
+        },
+      });
+  return await update(account);
 };
 
 /**

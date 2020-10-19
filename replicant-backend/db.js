@@ -1,3 +1,4 @@
+require('dotenv');
 const {DataTypes, Sequelize} = require('sequelize');
 const Snoowrap = require('snoowrap');
 const dayjs = require('dayjs');
@@ -7,7 +8,9 @@ const {sendKarmaReport, report} = require(
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
     process.env.PASSWORD
     , {
+      logging: false,
       host: process.env.HOST,
+      path: process.env.PATH,
       dialect: 'mysql',
       pool: {
         maxConnections: 50,
@@ -289,17 +292,13 @@ setIsDone = async (postId, bool) => {
  */
 updateAccountKarma = async () => {
   let accounts = null;
-  try {
-    accounts = await sequelize.models.Account.findAll({
-      where: {
-        isSold: false,
-        isSuspended: false,
-      },
-    });
-    return await getAccountsData(accounts);
-  } catch (err) {
-    console.log('err');
-  }
+  accounts = await sequelize.models.Account.findAll({
+    where: {
+      isSold: false,
+      isSuspended: false,
+    },
+  });
+  return await getAccountsData(accounts);
 };
 
 // eslint-disable-next-line valid-jsdoc

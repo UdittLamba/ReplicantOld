@@ -12,21 +12,22 @@ module.exports.accountUpdateHandler = async () => {
   try {
     return await updateAccountKarma();
   } catch (e) {
-    Error(e);
+    console.error(e);
   }
 };
 
 /**
  *
- * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ * @return {Promise<boolean>}
  */
 module.exports.subredditPopulateHandler = async () => {
   try {
     return await subredditPopulateJob();
   } catch (e) {
-    Error(e);
+    console.error(e);
   }
 };
+
 /**
  *
  * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
@@ -35,7 +36,7 @@ module.exports.topPostFetchHandler = async () => {
   try {
     return await fetchTopPostsJob('today');
   } catch (e) {
-    Error(e);
+    console.error(e);
   }
 };
 
@@ -48,7 +49,7 @@ module.exports.postScheduleHandler = async () => {
   try {
     return await scheduleJob(3, 5);
   } catch (e) {
-    Error(e);
+    console.error(e);
   }
 };
 
@@ -59,6 +60,6 @@ module.exports.karmaFarmingHandler = async () => {
   try {
     return await farmKarmaJob();
   } catch (e) {
-    Error(e);
+    console.error(e);
   }
 };
