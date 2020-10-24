@@ -24,7 +24,6 @@ describe('checkSubredditPopulate', () => {
 });
 describe('checkTopPostFetch', () => {
   test('should call topPostFetchHandler and resolve', async () => {
-    expect.assertions(1);
     try {
       await topPostFetchHandler();
     } catch (e) {
@@ -35,7 +34,6 @@ describe('checkTopPostFetch', () => {
 
 describe('checkPostSchedule', () => {
   test('should call postScheduleHandler and resolve', async () => {
-    expect.assertions(1);
     try {
       await postScheduleHandler();
     } catch (e) {
@@ -46,7 +44,6 @@ describe('checkPostSchedule', () => {
 
 describe('checkSubredditPopulate', () => {
   test('should call karmaFarmingHandler and resolve', async () => {
-    expect.assertions(1);
     try {
       await subredditPopulateHandler();
     } catch (e) {
