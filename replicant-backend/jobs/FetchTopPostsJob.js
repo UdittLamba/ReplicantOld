@@ -40,10 +40,10 @@ getTopPostsPerSub = async (account, time) => {
     },
   });
   for (const subName of subs) {
-    posts = await requester.getSubreddit(subName.dataValues.name).
-        subscribe().
-        getTop(time);
-    return await insertPosts(posts);
+    posts = await requester.getSubreddit(subName.dataValues.name)
+        .subscribe()
+        .getTop(time);
+    await insertPosts(posts);
   }
 };
 
@@ -55,7 +55,7 @@ getTopPostsPerSub = async (account, time) => {
 insertPosts = async (posts) => {
   try {
     for (const post of posts) {
-      // Avoid OC content with poster makes a self reference.
+      // Avoid OC content where poster makes a self reference.
       // Avoid posts with less than 1000 karma.
       // Avoid reddit hosted video media.
       if (!post.title.includes('I') && !post.title.includes('My ') &&
