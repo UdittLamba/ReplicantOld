@@ -1,9 +1,6 @@
-import {test} from '@jest/globals';
-
-const {describe, it} = require('@jest/globals');
+const {test, describe} = require('@jest/globals');
 
 const {
-  accountUpdateHandler,
   subredditPopulateHandler,
   topPostFetchHandler,
   postScheduleHandler,
@@ -17,7 +14,7 @@ const {
 //   }, 3000);
 // });
 describe('checkSubredditPopulate', () => {
-  it('should call subredditPopulateHandler and resolve', async () => {
+  test('should call subredditPopulateHandler and resolve', async () => {
     try {
       await subredditPopulateHandler();
     } catch (e) {
@@ -55,6 +52,15 @@ describe('checkSubredditPopulate', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
+  });
+});
 
+describe('checkKarmaFarming', () => {
+  test('should call subredditPopulateHandler and resolve', async () => {
+    try {
+      await karmaFarmingHandler();
+    } catch (e) {
+      expect(e).toMatch('error');
+    }
   });
 });
