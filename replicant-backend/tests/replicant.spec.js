@@ -14,7 +14,7 @@ describe('checkAccountUpdate', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  }, 3000);
+  }, 6000);
 });
 describe('checkSubredditPopulate', () => {
   test('should call subredditPopulateHandler and resolve', async () => {
@@ -23,7 +23,7 @@ describe('checkSubredditPopulate', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  }, 3000);
+  }, 6000);
 });
 describe('checkTopPostFetch', () => {
   test('should call topPostFetchHandler and resolve', async () => {
@@ -32,7 +32,7 @@ describe('checkTopPostFetch', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  });
+  }, 6000);
 });
 
 describe('checkPostSchedule', () => {
@@ -42,25 +42,15 @@ describe('checkPostSchedule', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  });
-});
-
-describe('checkSubredditPopulate', () => {
-  test('should call karmaFarmingHandler and resolve', async () => {
-    try {
-      await subredditPopulateHandler();
-    } catch (e) {
-      expect(e).toMatch('error');
-    }
-  });
+  }, 6000);
 });
 
 describe('checkKarmaFarming', () => {
-  test('should call subredditPopulateHandler and resolve', async () => {
+  test('should call karmaFarmingHandler and resolve', async () => {
     try {
       await karmaFarmingHandler();
     } catch (e) {
       expect(e).toMatch('error');
     }
-  });
+  }, 6000);
 });
