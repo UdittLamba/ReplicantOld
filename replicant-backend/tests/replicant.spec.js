@@ -1,18 +1,21 @@
 const {test, describe} = require('@jest/globals');
-
 const {
+  accountUpdateHandler,
   subredditPopulateHandler,
   topPostFetchHandler,
   postScheduleHandler,
   karmaFarmingHandler,
 } = require('../handler');
 
-// describe('checkAccountUpdate', () => {
-//   it('should call accountUpdateHandler and resolve', async () => {
-//     expect(await accountUpdateHandler())
-//         .resolves;
-//   }, 3000);
-// });
+describe('checkAccountUpdate', () => {
+  test('should call accountUpdateHandler and resolve', async () => {
+    try {
+      await accountUpdateHandler();
+    } catch (e) {
+      expect(e).toMatch('error');
+    }
+  }, 3000);
+});
 describe('checkSubredditPopulate', () => {
   test('should call subredditPopulateHandler and resolve', async () => {
     try {
@@ -20,7 +23,7 @@ describe('checkSubredditPopulate', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  });
+  }, 3000);
 });
 describe('checkTopPostFetch', () => {
   test('should call topPostFetchHandler and resolve', async () => {
