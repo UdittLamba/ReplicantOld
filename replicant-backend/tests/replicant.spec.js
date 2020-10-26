@@ -14,7 +14,7 @@ describe('checkAccountUpdate', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  }, 10000);
+  }, 20000);
 });
 describe('checkSubredditPopulate', () => {
   test('should call subredditPopulateHandler and resolve', async () => {
@@ -32,7 +32,7 @@ describe('checkTopPostFetch', () => {
     } catch (e) {
       expect(e).toMatch('error');
     }
-  }, 10000);
+  }, 20000);
 });
 
 describe('checkPostSchedule', () => {
