@@ -16,210 +16,210 @@ const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
       min: 0,
       idle: 10000,
       acquire: 30000,
-      evict: 50
-    }
+      evict: 50,
+    },
   })
 
 /**
  *  MODEL DEFINITIONS
  *
  */
-Account = sequelize.define('Account', {
+sequelize.define('Account', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   userAgent: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   clientId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   clientSecret: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   postKarma: {
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
   commentKarma: {
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
   },
   accountAge: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
   },
   isSold: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false
+    defaultValue: false,
   },
   isHarvested: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false
+    defaultValue: false,
   },
   isSuspended: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false
+    defaultValue: false,
   },
   cakeDay: {
-    type: DataTypes.DATE
-  }
+    type: DataTypes.DATE,
+  },
 })
 
-Post = sequelize.define('Post', {
+sequelize.define('Post', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   title: {
-    type: DataTypes.STRING
-  },
-  name: {
-    type: DataTypes.STRING
-  },
-  upvoteRatio: {
-    type: DataTypes.DECIMAL
-  },
-  ups: {
-    type: DataTypes.INTEGER
-  },
-  downs: {
-    type: DataTypes.INTEGER
-  },
-  score: {
-    type: DataTypes.INTEGER
-  },
-  subreddit: {
-    type: DataTypes.STRING
-  },
-  isOriginalContent: {
-    type: DataTypes.BOOLEAN
-  },
-  isRedditMediaDomain: {
-    type: DataTypes.BOOLEAN
-  },
-  isMeta: {
-    type: DataTypes.BOOLEAN
-  },
-  edited: {
-    type: DataTypes.BOOLEAN
-  },
-  isSelf: {
-    type: DataTypes.BOOLEAN
-  },
-  selfText: {
-    type: DataTypes.STRING
-  },
-  selfTextHtml: {
-    type: DataTypes.STRING
-  },
-  created: {
-    type: DataTypes.BIGINT
-  },
-  over18: {
-    type: DataTypes.BOOLEAN
-  },
-  url: {
-    type: DataTypes.STRING
-  },
-  domain: {
-    type: DataTypes.STRING
-  }
-})
-
-Subreddit = sequelize.define('Subreddit', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
-    unique: true
+    type: DataTypes.STRING,
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+  },
+  upvoteRatio: {
+    type: DataTypes.DECIMAL,
+  },
+  ups: {
+    type: DataTypes.INTEGER,
+  },
+  downs: {
+    type: DataTypes.INTEGER,
+  },
+  score: {
+    type: DataTypes.INTEGER,
+  },
+  subreddit: {
+    type: DataTypes.STRING,
+  },
+  isOriginalContent: {
+    type: DataTypes.BOOLEAN,
+  },
+  isRedditMediaDomain: {
+    type: DataTypes.BOOLEAN,
+  },
+  isMeta: {
+    type: DataTypes.BOOLEAN,
+  },
+  edited: {
+    type: DataTypes.BOOLEAN,
+  },
+  isSelf: {
+    type: DataTypes.BOOLEAN,
+  },
+  selfText: {
+    type: DataTypes.STRING,
+  },
+  selfTextHtml: {
+    type: DataTypes.STRING,
+  },
+  created: {
+    type: DataTypes.BIGINT,
+  },
+  over18: {
+    type: DataTypes.BOOLEAN,
+  },
+  url: {
+    type: DataTypes.STRING,
+  },
+  domain: {
+    type: DataTypes.STRING,
+  },
+})
+
+sequelize.define('Subreddit', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    unique: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   isApproved: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false
-  }
+    defaultValue: false,
+  },
 })
 
-PostQueue = sequelize.define('PostQueue', {
+sequelize.define('PostQueue', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   postId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   postName: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   submitter: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   toBePostedAt: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   isDone: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false
-  }
+    defaultValue: false,
+  },
 })
 
-SubmittedPost = sequelize.define('SubmittedPost', {
+sequelize.define('SubmittedPost', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   postId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   postName: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   submitter: {
     type: DataTypes.STRING,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 })
 
 // relationships between tables goes here
@@ -233,13 +233,13 @@ SubmittedPost = sequelize.define('SubmittedPost', {
  * @param {String} accountName
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
-getAccount = async (accountName) => {
+const getAccount = async (accountName) => {
   return sequelize.models.Account.findOne({
     where: {
       isSold: false,
       isSuspended: false,
-      username: accountName
-    }
+      username: accountName,
+    },
   })
 }
 
@@ -249,7 +249,7 @@ getAccount = async (accountName) => {
  * @param {String|number} postId
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
-getPost = async (postId) => {
+const getPost = async (postId) => {
   return sequelize.models.Post.findByPk(postId)
 }
 
@@ -258,13 +258,13 @@ getPost = async (postId) => {
  * @param {object} job
  * @return {Promise<void>}
  */
-insertSubmittedPost = async (job) => {
+const insertSubmittedPost = async (job) => {
   await sequelize.models.SubmittedPost.findOrCreate({
     where: {
       postId: job.dataValues.postId,
       postName: job.dataValues.postName,
-      submitter: job.dataValues.submitter
-    }
+      submitter: job.dataValues.submitter,
+    },
   })
 }
 
@@ -275,11 +275,11 @@ insertSubmittedPost = async (job) => {
  * @return {Promise<[number, Model<TModelAttributes,
  * TCreationAttributes>[]]|void>}
  */
-setIsDone = async (postId, bool) => {
+const setIsDone = async (postId, bool) => {
   return await sequelize.models.PostQueue.update({
-    isDone: bool
+    isDone: bool,
   }, {
-    where: { postId }
+    where: { postId },
   }).catch((err) => {
     console.log(err)
   })
@@ -289,13 +289,13 @@ setIsDone = async (postId, bool) => {
  * fetch and store comment and link karma from reddit api.
  * @return {Promise<Message>}
  */
-updateAccountKarma = async () => {
+const updateAccountKarma = async () => {
   let accounts = null
   accounts = await sequelize.models.Account.findAll({
     where: {
       isSold: false,
-      isSuspended: false
-    }
+      isSuspended: false,
+    },
   })
   return await getAccountsData(accounts)
 }
@@ -308,7 +308,7 @@ updateAccountKarma = async () => {
  * @param {Model<TModelAttributes, TCreationAttributes>[]} accounts
  * @return {Promise<Message>}
  */
-getAccountsData = async (accounts) => {
+const getAccountsData = async (accounts) => {
   let me
   let updatedUser
   let requester
@@ -333,21 +333,21 @@ getAccountsData = async (accounts) => {
  * @param {object} account
  * @return {Promise<{postKarma: number, commentKarma: number, username: *}>}
  */
-updateRedditUser = async (me, account) => {
+const updateRedditUser = async (me, account) => {
   await sequelize.models.Account.update({
     postKarma: me.link_karma,
     commentKarma: me.comment_karma,
-    isSuspended: me.is_suspended
+    isSuspended: me.is_suspended,
   }, {
     where: {
-      username: account.username
-    }
+      username: account.username,
+    },
   })
   account = {
     username: account.username,
     postKarma: me.link_karma,
     commentKarma: me.comment_karma,
-    isSuspended: me.is_suspended
+    isSuspended: me.is_suspended,
   }
   return account
 }
@@ -357,18 +357,16 @@ updateRedditUser = async (me, account) => {
  * when exposing db information via '/accounts/all' endpoint.
  * @return {Promise<unknown>}
  */
-fetchAllAccounts = async () => {
+const fetchAllAccounts = async () => {
   const accs = []
   const accounts = await sequelize.models.Account.findAll({
     attributes: {
-      exclude: ['clientSecret', 'password', 'updatedAt']
-    }
+      exclude: ['clientSecret', 'password', 'updatedAt'],
+    },
   })
-  await (() => {
-    for (const account of accounts) {
-      accs.push(account.dataValues)
-    }
-  })
+  for (const account of accounts) {
+    accs.push(account.dataValues)
+  }
 }
 
 /**
@@ -376,13 +374,13 @@ fetchAllAccounts = async () => {
  * createAt and updatedAt columns.
  * @return {Promise<function(): void>}
  */
-fetchAllSubreddits = async () => {
+const fetchAllSubreddits = async () => {
   let subreddits = null
   const subs = []
   subreddits = await sequelize.models.Subreddit.findAll({
     attributes: {
-      exclude: ['createdAt', 'updatedAt']
-    }
+      exclude: ['createdAt', 'updatedAt'],
+    },
   })
   return () => {
     for (const subreddit of subreddits) {
@@ -396,13 +394,13 @@ fetchAllSubreddits = async () => {
  * @param {object} account
  * @return {Promise<Snoowrap>}
  */
-createRequester = async (account) => {
+const createRequester = async (account) => {
   return new Snoowrap({
     userAgent: account.dataValues.userAgent,
     clientId: account.dataValues.clientId,
     clientSecret: account.dataValues.clientSecret,
     username: account.dataValues.username,
-    password: account.dataValues.password
+    password: account.dataValues.password,
   })
 }
 // sequelize.sync({alter:true}).catch();
@@ -416,5 +414,5 @@ module.exports = {
   getAccount,
   fetchAllAccounts,
   insertSubmittedPost,
-  getPost
+  getPost,
 }

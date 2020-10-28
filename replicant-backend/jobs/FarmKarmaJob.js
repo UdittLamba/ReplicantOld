@@ -40,7 +40,7 @@ const farmKarma = async (jobs) => {
   for (const job of jobs) {
     account = await getAccount(job.dataValues.submitter)
     const requester = await createRequester(account)
-    await executeSubmission(account, job, requester)
+    await executeSubmission(job, requester)
     await report(job.dataValues.submitter +
       ' just submitted on Reddit!')
   }
@@ -54,7 +54,7 @@ const farmKarma = async (jobs) => {
  * @param {object} requester
  * @return {Promise<boolean>}
  */
-const executeSubmission = async (account, job, requester) => {
+const executeSubmission = async (job, requester) => {
   const post = await getPost(job.dataValues.postId)
   if (post !== null) {
     await recordSubmission(post, requester, job)
