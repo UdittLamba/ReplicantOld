@@ -16,8 +16,8 @@ const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
       min: 0,
       idle: 10000,
       acquire: 30000,
-      evict: 50,
-    },
+      evict: 50
+    }
   })
 
 /**
@@ -30,58 +30,58 @@ sequelize.define('Account', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   userAgent: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   clientId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   clientSecret: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   postKarma: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER
   },
   commentKarma: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER
   },
   accountAge: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   isSold: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: false
   },
   isHarvested: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: false
   },
   isSuspended: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: false
   },
   cakeDay: {
-    type: DataTypes.DATE,
-  },
+    type: DataTypes.DATE
+  }
 })
 
 sequelize.define('Post', {
@@ -90,62 +90,62 @@ sequelize.define('Post', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   title: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   upvoteRatio: {
-    type: DataTypes.DECIMAL,
+    type: DataTypes.DECIMAL
   },
   ups: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER
   },
   downs: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER
   },
   score: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER
   },
   subreddit: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   isOriginalContent: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN
   },
   isRedditMediaDomain: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN
   },
   isMeta: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN
   },
   edited: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN
   },
   isSelf: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN
   },
   selfText: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   selfTextHtml: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   created: {
-    type: DataTypes.BIGINT,
+    type: DataTypes.BIGINT
   },
   over18: {
-    type: DataTypes.BOOLEAN,
+    type: DataTypes.BOOLEAN
   },
   url: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   domain: {
-    type: DataTypes.STRING,
-  },
+    type: DataTypes.STRING
+  }
 })
 
 sequelize.define('Subreddit', {
@@ -154,17 +154,17 @@ sequelize.define('Subreddit', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   isApproved: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
-  },
+    defaultValue: false
+  }
 })
 
 sequelize.define('PostQueue', {
@@ -173,30 +173,30 @@ sequelize.define('PostQueue', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   postId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   postName: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   submitter: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   toBePostedAt: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: false
   },
   isDone: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: false,
-  },
+    defaultValue: false
+  }
 })
 
 sequelize.define('SubmittedPost', {
@@ -205,21 +205,21 @@ sequelize.define('SubmittedPost', {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   postId: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true
   },
   postName: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   },
   submitter: {
     type: DataTypes.STRING,
-    allowNull: false,
-  },
+    allowNull: false
+  }
 })
 
 // relationships between tables goes here
@@ -238,8 +238,8 @@ const getAccount = async (accountName) => {
     where: {
       isSold: false,
       isSuspended: false,
-      username: accountName,
-    },
+      username: accountName
+    }
   })
 }
 
@@ -263,8 +263,8 @@ const insertSubmittedPost = async (job) => {
     where: {
       postId: job.dataValues.postId,
       postName: job.dataValues.postName,
-      submitter: job.dataValues.submitter,
-    },
+      submitter: job.dataValues.submitter
+    }
   })
 }
 
@@ -277,9 +277,9 @@ const insertSubmittedPost = async (job) => {
  */
 const setIsDone = async (postId, bool) => {
   return await sequelize.models.PostQueue.update({
-    isDone: bool,
+    isDone: bool
   }, {
-    where: { postId },
+    where: { postId }
   }).catch((err) => {
     console.log(err)
   })
@@ -294,8 +294,8 @@ const updateAccountKarma = async () => {
   accounts = await sequelize.models.Account.findAll({
     where: {
       isSold: false,
-      isSuspended: false,
-    },
+      isSuspended: false
+    }
   })
   return await getAccountsData(accounts)
 }
@@ -337,17 +337,17 @@ const updateRedditUser = async (me, account) => {
   await sequelize.models.Account.update({
     postKarma: me.link_karma,
     commentKarma: me.comment_karma,
-    isSuspended: me.is_suspended,
+    isSuspended: me.is_suspended
   }, {
     where: {
-      username: account.username,
-    },
+      username: account.username
+    }
   })
   account = {
     username: account.username,
     postKarma: me.link_karma,
     commentKarma: me.comment_karma,
-    isSuspended: me.is_suspended,
+    isSuspended: me.is_suspended
   }
   return account
 }
@@ -355,18 +355,19 @@ const updateRedditUser = async (me, account) => {
 /**
  * Hides sensitive information like passwords and client secret
  * when exposing db information via '/accounts/all' endpoint.
- * @return {Promise<unknown>}
+ * @return {Promise<[]>}
  */
 const fetchAllAccounts = async () => {
   const accs = []
   const accounts = await sequelize.models.Account.findAll({
     attributes: {
-      exclude: ['clientSecret', 'password', 'updatedAt'],
-    },
+      exclude: ['clientSecret', 'password', 'updatedAt']
+    }
   })
   for (const account of accounts) {
     accs.push(account.dataValues)
   }
+  return accs
 }
 
 /**
@@ -379,8 +380,8 @@ const fetchAllSubreddits = async () => {
   const subs = []
   subreddits = await sequelize.models.Subreddit.findAll({
     attributes: {
-      exclude: ['createdAt', 'updatedAt'],
-    },
+      exclude: ['createdAt', 'updatedAt']
+    }
   })
   return () => {
     for (const subreddit of subreddits) {
@@ -400,7 +401,7 @@ const createRequester = async (account) => {
     clientId: account.dataValues.clientId,
     clientSecret: account.dataValues.clientSecret,
     username: account.dataValues.username,
-    password: account.dataValues.password,
+    password: account.dataValues.password
   })
 }
 // sequelize.sync({alter:true}).catch();
@@ -414,5 +415,5 @@ module.exports = {
   getAccount,
   fetchAllAccounts,
   insertSubmittedPost,
-  getPost,
+  getPost
 }
