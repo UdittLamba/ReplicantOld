@@ -14,23 +14,19 @@ const { report } = require('../comms/telegram/replicantMessenger')
  * in order to farm karma.
  * @return {Promise<Message|boolean>}
  */
-farmKarmaJob = async () => {
-  try {
-    const jobs = await sequelize.models.PostQueue.findAll(
-      {
-        where: {
-          toBePostedAt: dayjs().hour(),
-          isDone: false
-        }
+const farmKarmaJob = async () => {
+  const jobs = await sequelize.models.PostQueue.findAll(
+    {
+      where: {
+        toBePostedAt: dayjs().hour(),
+        isDone: false
       }
-    )
-    if (typeof jobs !== 'undefined' && jobs != null && jobs.length > 0) {
-      return await farmKarma(jobs)
-    } else {
-      return false
     }
-  } catch (e) {
-    throw e
+  )
+  if (typeof jobs !== 'undefined' && jobs != null && jobs.length > 0) {
+    return await farmKarma(jobs)
+  } else {
+    return false
   }
 }
 
@@ -39,14 +35,14 @@ farmKarmaJob = async () => {
  * @param {object[]} jobs
  * @return {Promise<Message>}
  */
-farmKarma = async (jobs) => {
+const farmKarma = async (jobs) => {
   let account = null
   for (const job of jobs) {
     account = await getAccount(job.dataValues.submitter)
     const requester = await createRequester(account)
     await executeSubmission(account, job, requester)
-    return await report(job.dataValues.submitter +
-        ' just submitted on Reddit!')
+    await report(job.dataValues.submitter +
+      ' just submitted on Reddit!')
   }
 }
 
@@ -58,7 +54,7 @@ farmKarma = async (jobs) => {
  * @param {object} requester
  * @return {Promise<boolean>}
  */
-executeSubmission = async (account, job, requester) => {
+const executeSubmission = async (account, job, requester) => {
   const post = await getPost(job.dataValues.postId)
   if (post !== null) {
     await recordSubmission(post, requester, job)
@@ -77,7 +73,7 @@ executeSubmission = async (account, job, requester) => {
  * @param {object} job
  * @return {object} {Promise<void>}
  */
-recordSubmission = async (post, requester, job) => {
+const recordSubmission = async (post, requester, job) => {
   await submitPost(post, requester)
   await insertSubmittedPost(job)
   await setIsDone(job.dataValues.postId, true)
@@ -90,24 +86,22 @@ recordSubmission = async (post, requester, job) => {
  * @param {object} requester
  * @return {Promise<Submission | void>}
  */
-submitPost = async (post, requester) => {
+const submitPost = async (post, requester) => {
   if (post.dataValues.url != null || '') {
     console.log(post.dataValues.subreddit)
-    return requester.getSubreddit(post.dataValues.subreddit)
-      .submitLink({
-        title: post.dataValues.title,
-        url: post.dataValues.url,
-        sendReplies: false
-      }).catch((err) => console.log(err))
+    return requester.getSubreddit(post.dataValues.subreddit).submitLink({
+      title: post.dataValues.title,
+      url: post.dataValues.url,
+      sendReplies: false
+    }).catch((err) => console.log(err))
   }
   if (post.dataValues.isSelf === true && post.dataValues.edited === false) {
     console.log(post.dataValues.subreddit)
-    return requester.getSubreddit(post.dataValues.subreddit)
-      .submitSelfPost({
-        title: post.dataValues.title,
-        text: post.dataValues.selfText,
-        sendReplies: false
-      }).catch((err) => console.log(err))
+    return requester.getSubreddit(post.dataValues.subreddit).submitSelfPost({
+      title: post.dataValues.title,
+      text: post.dataValues.selfText,
+      sendReplies: false
+    }).catch((err) => console.log(err))
   }
 }
 

@@ -15,7 +15,7 @@ const fetchTopPostsJob = async (time) => {
         isSuspended: false
       }
     })
-    return await getTopPostsPerSub(account, time)
+    await getTopPostsPerSub(account, time)
   } catch (err) {
     console.log(err)
   }
