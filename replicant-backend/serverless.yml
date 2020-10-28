@@ -23,13 +23,13 @@ frameworkVersion: "2"
 provider:
   name: aws
   runtime: nodejs12.x
-  environment:
-    SCHEMA:  ${file(./serverless.env.yml):SCHEMA, ''}
-    USERNAME:  ${file(./serverless.env.yml):USERNAME, ''}
-    PASSWORD:  ${file(./serverless.env.yml):PASSWORD, ''}
-    HOST:  ${file(./serverless.env.yml):HOST, ''}
-    TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
-    CHAT_ID: ${file(./serverless.env.yml):CHAT_ID, ''}
+#  environment:
+#    SCHEMA:  ${file(./serverless.env.yml):SCHEMA, ''}
+#    USERNAME:  ${file(./serverless.env.yml):USERNAME, ''}
+#    PASSWORD:  ${file(./serverless.env.yml):PASSWORD, ''}
+#    HOST:  ${file(./serverless.env.yml):HOST, ''}
+#    TELEGRAM_TOKEN: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
+#    CHAT_ID: ${file(./serverless.env.yml):CHAT_ID, ''}
   timeout: 30
 functions:
   accountUpdateHandler:
@@ -68,3 +68,5 @@ functions:
       - http: ANY /
     layers:
       - arn:aws:lambda:us-east-1:647853042055:layer:replicant-backend:3
+plugins:
+  - serverless-dotenv-plugin
