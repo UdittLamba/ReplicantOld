@@ -7,4 +7,4 @@ install:
 script:
   - cd replicant-backend && npm install
   - npm install serverless --save
-  - npm test
+  - sls deploy
