@@ -1,17 +1,7 @@
 language: node_js
-env:
-  - SCHEMA="replicant_schema"
-  - USER_NAME="admin"
-  - PASSWORD="anfield1892"
-  - HOST="replicant.cn9bhff6gydg.us-east-1.rds.amazonaws.com"
-  - TELEGRAM_TOKEN="1060251852:AAHSGrs-12kx_SoEYosqa99jUw3K315PnVI"
-  - CHAT_ID="1160876508"
 node_js:
   - "12"
-install:
-  - npm install serverless -g
-  - npm install
 script:
   - cd replicant-backend && npm install
   - npm install serverless --save
-  - sls deploy
+  - npm test
