@@ -1,40 +1,56 @@
-const {describe, it} = require('@jest/globals');
-
-const {accountUpdateHandler,
+const { test, describe, expect } = require('@jest/globals')
+const {
+  accountUpdateHandler,
   subredditPopulateHandler,
   topPostFetchHandler,
   postScheduleHandler,
-  karmaFarmingHandler} = require('../handler');
+  karmaFarmingHandler
+} = require('../handler')
 
-
-// describe('checkAccountUpdate', () => {
-//   it('should call accountUpdateHandler and resolve', async () => {
-//     expect(await accountUpdateHandler())
-//         .resolves;
-//   }, 3000);
-// });
+describe('checkAccountUpdate', () => {
+  test('should call accountUpdateHandler and resolve', async () => {
+    try {
+      await accountUpdateHandler()
+    } catch (e) {
+      expect(e).toMatch('error')
+    }
+  }, 20000)
+})
 describe('checkSubredditPopulate', () => {
-  it('should call subredditPopulateHandler and resolve', async () => {
-    console.log(process.env.HOST);
-    expect(await subredditPopulateHandler())
-        .resolves;
-  });
-});
+  test('should call subredditPopulateHandler and resolve', async () => {
+    try {
+      await subredditPopulateHandler()
+    } catch (e) {
+      expect(e).toMatch('error')
+    }
+  })
+})
 describe('checkTopPostFetch', () => {
-  it('should call topPostFetchHandler and resolve', async () => {
-    expect(await topPostFetchHandler())
-        .resolves;
-  });
-});
+  test('should call topPostFetchHandler and resolve', async () => {
+    try {
+      await topPostFetchHandler()
+    } catch (e) {
+      expect(e).toMatch('error')
+    }
+  }, 30000)
+})
+
 describe('checkPostSchedule', () => {
-  it('should call postScheduleHandler and resolve', async () => {
-    expect(await postScheduleHandler())
-        .resolves;
-  });
-});
+  test('should call postScheduleHandler and resolve', async () => {
+    try {
+      await postScheduleHandler()
+    } catch (e) {
+      expect(e).toMatch('error')
+    }
+  })
+})
+
 describe('checkKarmaFarming', () => {
-  it('should call karmaFarmingHandler and resolve', async () => {
-    expect( await karmaFarmingHandler())
-        .resolves;
-  });
-});
+  test('should call karmaFarmingHandler and resolve', async () => {
+    try {
+      await karmaFarmingHandler()
+    } catch (e) {
+      expect(e).toMatch('error')
+    }
+  }, 6000)
+})

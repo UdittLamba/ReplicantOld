@@ -1,8 +1,7 @@
 language: node_js
 node_js:
   - "12"
-install:
-  - npm install serverless -g
-  - npm install
 script:
-  - cd replicant-backend && sls deploy
+  - cd replicant-backend && npm install
+  - npm install serverless --save
+  - npm test
