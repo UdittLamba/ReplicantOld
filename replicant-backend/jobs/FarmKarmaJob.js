@@ -4,10 +4,10 @@ const {
   createRequester,
   getPost,
   insertSubmittedPost,
-  setIsDone,
-} = require('../db');
-const dayjs = require('dayjs');
-const {report} = require('../comms/telegram/replicantMessenger');
+  setIsDone
+} = require('../db')
+const dayjs = require('dayjs')
+const { report } = require('../comms/telegram/replicantMessenger')
 
 /**
  * Job that posts on reddit through one of the randomly selected bot accounts
@@ -17,22 +17,22 @@ const {report} = require('../comms/telegram/replicantMessenger');
 farmKarmaJob = async () => {
   try {
     const jobs = await sequelize.models.PostQueue.findAll(
-        {
-          where: {
-            toBePostedAt: dayjs().hour(),
-            isDone: false,
-          },
-        },
-    );
-    if (typeof jobs != 'undefined' && jobs != null && jobs.length > 0) {
-      return await farmKarma(jobs);
+      {
+        where: {
+          toBePostedAt: dayjs().hour(),
+          isDone: false
+        }
+      }
+    )
+    if (typeof jobs !== 'undefined' && jobs != null && jobs.length > 0) {
+      return await farmKarma(jobs)
     } else {
-      return false;
+      return false
     }
   } catch (e) {
-    throw e;
+    throw e
   }
-};
+}
 
 /**
  * Iterate through job objects and post them on reddit.
@@ -40,15 +40,15 @@ farmKarmaJob = async () => {
  * @return {Promise<Message>}
  */
 farmKarma = async (jobs) => {
-  let account = null;
+  let account = null
   for (const job of jobs) {
-    account = await getAccount(job.dataValues.submitter);
-    const requester = await createRequester(account);
-    await executeSubmission(account, job, requester);
+    account = await getAccount(job.dataValues.submitter)
+    const requester = await createRequester(account)
+    await executeSubmission(account, job, requester)
     return await report(job.dataValues.submitter +
-        ' just submitted on Reddit!');
+        ' just submitted on Reddit!')
   }
-};
+}
 
 /**
  * Handles the process of submitting a post on reddit through replicant.
@@ -59,13 +59,13 @@ farmKarma = async (jobs) => {
  * @return {Promise<boolean>}
  */
 executeSubmission = async (account, job, requester) => {
-  const post = await getPost(job.dataValues.postId);
+  const post = await getPost(job.dataValues.postId)
   if (post !== null) {
-    await recordSubmission(post, requester, job);
+    await recordSubmission(post, requester, job)
   } else {
-    return false;
+    return false
   }
-};
+}
 
 /**
  * Submits post on reddit.
@@ -78,10 +78,10 @@ executeSubmission = async (account, job, requester) => {
  * @return {object} {Promise<void>}
  */
 recordSubmission = async (post, requester, job) => {
-  await submitPost(post, requester);
-  await insertSubmittedPost(job);
-  await setIsDone(job.dataValues.postId, true);
-};
+  await submitPost(post, requester)
+  await insertSubmittedPost(job)
+  await setIsDone(job.dataValues.postId, true)
+}
 
 /**
  * Submits post on reddit.
@@ -92,27 +92,27 @@ recordSubmission = async (post, requester, job) => {
  */
 submitPost = async (post, requester) => {
   if (post.dataValues.url != null || '') {
-    console.log(post.dataValues.subreddit);
+    console.log(post.dataValues.subreddit)
     return requester.getSubreddit(post.dataValues.subreddit)
-        .submitLink({
-          title: post.dataValues.title,
-          url: post.dataValues.url,
-          sendReplies: false,
-        }).catch((err) => console.log(err));
+      .submitLink({
+        title: post.dataValues.title,
+        url: post.dataValues.url,
+        sendReplies: false
+      }).catch((err) => console.log(err))
   }
   if (post.dataValues.isSelf === true && post.dataValues.edited === false) {
-    console.log(post.dataValues.subreddit);
+    console.log(post.dataValues.subreddit)
     return requester.getSubreddit(post.dataValues.subreddit)
-        .submitSelfPost({
-          title: post.dataValues.title,
-          text: post.dataValues.selfText,
-          sendReplies: false,
-        }).catch((err) => console.log(err));
+      .submitSelfPost({
+        title: post.dataValues.title,
+        text: post.dataValues.selfText,
+        sendReplies: false
+      }).catch((err) => console.log(err))
   }
-};
+}
 
 // farmKarmaJob().then();
 
 module.exports = {
-  farmKarmaJob,
-};
+  farmKarmaJob
+}

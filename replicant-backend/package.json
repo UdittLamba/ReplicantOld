@@ -4,7 +4,7 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "jest --detectOpenHandles"
+    "test": "standard && jest --detectOpenHandles"
   },
   "author": "Uditt Lamba",
   "license": "ISC",
@@ -20,12 +20,10 @@
     "sequelize": "^6.3.4",
     "serverless-http": "^2.6.0",
     "snoowrap": "^1.21.0",
-    "telegraf": "^3.38.0"
+    "telegraf": "^3.38.0",
+    "travis-cli": "^1.0.9"
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.21.4",
     "serverless-dotenv-plugin": "^3.1.0"
   }
 }

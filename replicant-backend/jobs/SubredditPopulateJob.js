@@ -1,47 +1,47 @@
-const {sequelize, createRequester} = require('../db');
+const { sequelize, createRequester } = require('../db')
 
 /**
  * Populate the Subreddit table with subreddits whose posts made
  * to the top of the day.
  * @return {Promise<boolean>}
  */
-subredditPopulateJob = async () => {
+const subredditPopulateJob = async () => {
   const account = await sequelize.models.Account.findOne(
-      {
-        where: {
-          isSuspended: false,
-          isSold: false,
-        },
-      });
-  return await update(account);
-};
+    {
+      where: {
+        isSuspended: false,
+        isSold: false
+      }
+    })
+  return await update(account)
+}
 
 /**
  *
  * @param {string[]} subreddits
  * @return {Promise<boolean>}
  */
-insertSubreddit = async (subreddits) => {
+const insertSubreddit = async (subreddits) => {
   for (const subredditName of subreddits) {
     await sequelize.models.Subreddit.findOrCreate({
-      where: {name: subredditName.substring(2, subredditName.length)},
-    });
+      where: { name: subredditName.substring(2, subredditName.length) }
+    })
   }
-  return true;
-};
+  return true
+}
 
 /**
  *
  * @param {object} account
  * @return {Promise<boolean>}
  */
-update = async (account) => {// any reddit account will do.
-  const requester = await createRequester(account);
-  const subreddits = await requester.getTop({time: 'day'}).
-      map((post) => post.subreddit_name_prefixed);
-  return await insertSubreddit(subreddits);
-};
+const update = async (account) => { // any reddit account will do.
+  const requester = await createRequester(account)
+  const subreddits = await requester.getTop({ time: 'day' })
+    .map((post) => post.subreddit_name_prefixed)
+  return await insertSubreddit(subreddits)
+}
 
 module.exports = {
-  subredditPopulateJob,
-};
+  subredditPopulateJob
+}

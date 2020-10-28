@@ -1,8 +1,8 @@
-const {updateAccountKarma} = require('./db');
-const {subredditPopulateJob} = require('./jobs/SubredditPopulateJob');
-const {fetchTopPostsJob} = require('./jobs/FetchTopPostsJob');
-const {scheduleJob} = require('./jobs/ScheduleJob');
-const {farmKarmaJob} = require('./jobs/FarmKarmaJob');
+const { updateAccountKarma } = require('./db')
+const { subredditPopulateJob } = require('./jobs/SubredditPopulateJob')
+const { fetchTopPostsJob } = require('./jobs/FetchTopPostsJob')
+const { scheduleJob } = require('./jobs/ScheduleJob')
+const { farmKarmaJob } = require('./jobs/FarmKarmaJob')
 
 /**
  *
@@ -10,11 +10,11 @@ const {farmKarmaJob} = require('./jobs/FarmKarmaJob');
  */
 module.exports.accountUpdateHandler = async () => {
   try {
-    return await updateAccountKarma();
+    return await updateAccountKarma()
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
-};
+}
 
 /**
  *
@@ -22,11 +22,11 @@ module.exports.accountUpdateHandler = async () => {
  */
 module.exports.subredditPopulateHandler = async () => {
   try {
-    return await subredditPopulateJob();
+    return await subredditPopulateJob()
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
-};
+}
 
 /**
  *
@@ -34,11 +34,11 @@ module.exports.subredditPopulateHandler = async () => {
  */
 module.exports.topPostFetchHandler = async () => {
   try {
-    return await fetchTopPostsJob('today');
+    return await fetchTopPostsJob('today')
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
-};
+}
 
 /**
  *
@@ -47,19 +47,19 @@ module.exports.topPostFetchHandler = async () => {
 module.exports.postScheduleHandler = async () => {
   // TODO : convert to manually updatable control values.
   try {
-    return await scheduleJob(3, 5);
+    return await scheduleJob(3, 5)
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
-};
+}
 
 /**
  * @return {Promise<Message|boolean>}
  */
 module.exports.karmaFarmingHandler = async () => {
   try {
-    return await farmKarmaJob();
+    return await farmKarmaJob()
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
-};
+}

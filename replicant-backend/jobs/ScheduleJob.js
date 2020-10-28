@@ -1,14 +1,14 @@
-const {sequelize} = require('../db');
-const dayjs = require('dayjs');
-const {Op, Sequelize} = require('sequelize');
+const { sequelize } = require('../db')
+const dayjs = require('dayjs')
+const { Op, Sequelize } = require('sequelize')
 
 const randomNumber = (min, max) => {
-  return Math.random() * (max - min) + min;
-};
+  return Math.random() * (max - min) + min
+}
 
 const pickRandomHour = () => {
-  return randomNumber(7, 23);
-};
+  return randomNumber(7, 23)
+}
 
 /**
  * Takes random number of accounts and generate random scheduled posts
@@ -21,7 +21,7 @@ const pickRandomHour = () => {
  * @param {Integer} numOfPosts
  * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
-scheduleJob = async (numOfAccounts, numOfPosts) => {
+const scheduleJob = async (numOfAccounts, numOfPosts) => {
   const selectedAccounts = await sequelize.models.Account.findAll({
     order: Sequelize.literal('rand()'),
     where: {
@@ -29,16 +29,16 @@ scheduleJob = async (numOfAccounts, numOfPosts) => {
       isSuspended: false,
       isHarvested: false,
       postKarma: {
-        [Op.lte]: 20000,
+        [Op.lte]: 20000
       },
       createdAt: {
-        [Op.lte]: dayjs().subtract(20, 'day')['$d'],
-      },
+        [Op.lte]: dayjs().subtract(20, 'day').$d
+      }
     },
-    limit: numOfAccounts,
-  });
-  return await assignPost(selectedAccounts, numOfPosts);
-};
+    limit: numOfAccounts
+  })
+  return await assignPost(selectedAccounts, numOfPosts)
+}
 
 /**
  * Assign <numberOfPosts> posts to selected submitters.
@@ -47,23 +47,23 @@ scheduleJob = async (numOfAccounts, numOfPosts) => {
  * @param {number} numOfPosts
  * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
  */
-assignPost = async (submitters, numOfPosts) => {
-  let posts = null;
+const assignPost = async (submitters, numOfPosts) => {
+  let posts = null
   for (const submitter of submitters) {
     posts = await sequelize.models.Post.findAll(
-        {
-          order: Sequelize.literal('rand()'),
-          where: {
-            createdAt: {
-              [Op.lte]: dayjs().subtract(30, 'day')['$d'],
-            },
-          },
-          limit: numOfPosts,
+      {
+        order: Sequelize.literal('rand()'),
+        where: {
+          createdAt: {
+            [Op.lte]: dayjs().subtract(30, 'day').$d
+          }
         },
-    );
-    return await schedulePosts(posts, submitter);
+        limit: numOfPosts
+      }
+    )
+    await schedulePosts(posts, submitter)
   }
-};
+}
 
 /**
  * Insert into table PostQueues.
@@ -71,20 +71,19 @@ assignPost = async (submitters, numOfPosts) => {
  * @param {Model<TModelAttributes, TCreationAttributes>} submitter
  * @return {Promise<[Model<TModelAttributes, TCreationAttributes>, boolean]>}
  */
-schedulePosts = async (posts, submitter) => {
+const schedulePosts = async (posts, submitter) => {
   for (const post of posts) {
-    return await sequelize.models.PostQueue.findOrCreate({
+    await sequelize.models.PostQueue.findOrCreate({
       where: {
         postId: post.dataValues.id,
         postName: post.dataValues.name,
         submitter: submitter.dataValues.username,
-        toBePostedAt: pickRandomHour(),
-      },
-    });
+        toBePostedAt: pickRandomHour()
+      }
+    })
   }
-};
+}
 
 module.exports = {
-  scheduleJob,
-};
-
+  scheduleJob
+}

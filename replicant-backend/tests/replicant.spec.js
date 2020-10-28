@@ -1,56 +1,56 @@
-const {test, describe} = require('@jest/globals');
+const { test, describe, expect } = require('@jest/globals')
 const {
   accountUpdateHandler,
   subredditPopulateHandler,
   topPostFetchHandler,
   postScheduleHandler,
-  karmaFarmingHandler,
-} = require('../handler');
+  karmaFarmingHandler
+} = require('../handler')
 
 describe('checkAccountUpdate', () => {
   test('should call accountUpdateHandler and resolve', async () => {
     try {
-      await accountUpdateHandler();
+      await accountUpdateHandler()
     } catch (e) {
-      expect(e).toMatch('error');
+      expect(e).toMatch('error')
     }
-  }, 20000);
-});
+  }, 20000)
+})
 describe('checkSubredditPopulate', () => {
   test('should call subredditPopulateHandler and resolve', async () => {
     try {
-      await subredditPopulateHandler();
+      await subredditPopulateHandler()
     } catch (e) {
-      expect(e).toMatch('error');
+      expect(e).toMatch('error')
     }
-  });
-});
+  })
+})
 describe('checkTopPostFetch', () => {
   test('should call topPostFetchHandler and resolve', async () => {
     try {
-      await topPostFetchHandler();
+      await topPostFetchHandler()
     } catch (e) {
-      expect(e).toMatch('error');
+      expect(e).toMatch('error')
     }
-  }, 20000);
-});
+  }, 30000)
+})
 
 describe('checkPostSchedule', () => {
   test('should call postScheduleHandler and resolve', async () => {
     try {
-      await postScheduleHandler();
+      await postScheduleHandler()
     } catch (e) {
-      expect(e).toMatch('error');
+      expect(e).toMatch('error')
     }
-  });
-});
+  })
+})
 
 describe('checkKarmaFarming', () => {
   test('should call karmaFarmingHandler and resolve', async () => {
     try {
-      await karmaFarmingHandler();
+      await karmaFarmingHandler()
     } catch (e) {
-      expect(e).toMatch('error');
+      expect(e).toMatch('error')
     }
-  }, 6000);
-});
+  }, 6000)
+})
