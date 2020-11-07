@@ -88,7 +88,6 @@ const recordSubmission = async (post, requester, job) => {
  */
 const submitPost = async (post, requester) => {
   if (post.dataValues.url != null || '') {
-    console.log(post.dataValues.subreddit)
     return requester.getSubreddit(post.dataValues.subreddit).submitLink({
       title: post.dataValues.title,
       url: post.dataValues.url,
@@ -96,7 +95,6 @@ const submitPost = async (post, requester) => {
     }).catch((err) => console.log(err))
   }
   if (post.dataValues.isSelf === true && post.dataValues.edited === false) {
-    console.log(post.dataValues.subreddit)
     return requester.getSubreddit(post.dataValues.subreddit).submitSelfPost({
       title: post.dataValues.title,
       text: post.dataValues.selfText,
