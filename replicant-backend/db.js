@@ -4,7 +4,7 @@ const dayjs = require('dayjs')
 const { sendKarmaReport, report } = require(
   './comms/telegram/replicantMessenger')
 
-const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
+const sequelize = new Sequelize(process.env.SCHEMA, process.env.USER_NAME,
   process.env.PASSWORD
   , {
     logging: false,
@@ -13,6 +13,7 @@ const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
     dialect: 'mysql',
     pool: {
       maxConnections: 50,
+
       min: 0,
       idle: 10000,
       acquire: 30000,
@@ -22,7 +23,6 @@ const sequelize = new Sequelize(process.env.SCHEMA, process.env.USERNAME,
 
 /**
  *  MODEL DEFINITIONS
- *
  */
 sequelize.define('Account', {
   id: {
