@@ -233,7 +233,8 @@ sequelize.define('SubmittedPost', {
 // Post.hasOne(PostQueue, {as: 'PostQueue'});
 
 /**
- * Fetches a particular account only if it has not been sold or suspended.
+ * Fetches a particular account only if it has not been sold,
+ * suspended or shadowbanned.
  * @param {String} accountName
  * @return {Promise<Model<TModelAttributes, TCreationAttributes> | null>}
  */
@@ -242,6 +243,7 @@ const getAccount = async (accountName) => {
     where: {
       isSold: false,
       isSuspended: false,
+      isShadowBanned: false,
       username: accountName
     }
   })

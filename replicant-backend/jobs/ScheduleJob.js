@@ -28,11 +28,12 @@ const scheduleJob = async (numOfAccounts, numOfPosts) => {
       isSold: false,
       isSuspended: false,
       isHarvested: false,
+      isShadowBanned: false,
       postKarma: {
         [Op.lte]: 20000
       },
       createdAt: {
-        [Op.lte]: dayjs().subtract(20, 'day').$d
+        [Op.lte]: dayjs().subtract(20, 'day')
       }
     },
     limit: numOfAccounts
@@ -55,7 +56,7 @@ const assignPost = async (submitters, numOfPosts) => {
         order: Sequelize.literal('rand()'),
         where: {
           createdAt: {
-            [Op.lte]: dayjs().subtract(30, 'day').$d
+            [Op.lte]: dayjs().subtract(30, 'day')
           }
         },
         limit: numOfPosts
