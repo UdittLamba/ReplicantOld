@@ -4,7 +4,6 @@ const dayjs = require('dayjs')
 const { sendKarmaReport, report } = require(
   './comms/telegram/replicantMessenger')
 
-
 const sequelize = new Sequelize(process.env.SCHEMA, process.env.USER_NAME,
   process.env.PASSWORD
   , {
@@ -75,6 +74,11 @@ sequelize.define('Account', {
     defaultValue: false
   },
   isSuspended: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  isShadowBanned: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false
