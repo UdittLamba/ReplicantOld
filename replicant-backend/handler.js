@@ -4,6 +4,7 @@ const { fetchTopPostsJob } = require('./jobs/FetchTopPostsJob')
 const { scheduleJob } = require('./jobs/ScheduleJob')
 const { farmKarmaJob } = require('./jobs/FarmKarmaJob')
 const { detectShadowbannedAcc } = require('./jobs/DetectShadowBannedAccountsJob')
+const { sanitizeSubreddits } = require('./jobs/SanitizeSubredditsJob')
 
 /**
  *
@@ -68,6 +69,14 @@ module.exports.karmaFarmingHandler = async () => {
 module.exports.detectShadowbannedAccHandler = async () => {
   try {
     return await detectShadowbannedAcc()
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+module.exports.sanitizeSubredditsHandler = async () => {
+  try {
+    return await sanitizeSubreddits()
   } catch (e) {
     console.error(e)
   }

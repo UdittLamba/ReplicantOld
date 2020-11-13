@@ -10,6 +10,7 @@ const subredditPopulateJob = async () => {
     {
       where: {
         isSuspended: false,
+        isShadowBanned: false,
         isSold: false
       }
     })
