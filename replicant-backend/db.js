@@ -413,6 +413,16 @@ const createRequester = async (account) => {
 }
 // sequelize.sync({alter:true}).catch();
 
+const disapproveSubreddit = async (subredditName) => {
+  await sequelize.models.Subreddits.update({
+    isApproved: false
+  },
+  {
+    where: {
+      name: subredditName
+    }
+  })
+}
 module.exports = {
   sequelize,
   createRequester,
@@ -422,5 +432,6 @@ module.exports = {
   getAccount,
   fetchAllAccounts,
   insertSubmittedPost,
-  getPost
+  getPost,
+  disapproveSubreddit
 }

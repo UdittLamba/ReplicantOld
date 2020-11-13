@@ -12,7 +12,8 @@ const fetchTopPostsJob = async (time) => {
     account = await sequelize.models.Account.findOne({
       where: {
         isSold: false,
-        isSuspended: false
+        isSuspended: false,
+        isShadowBanned: false
       }
     })
     await getTopPostsPerSub(account, time)
