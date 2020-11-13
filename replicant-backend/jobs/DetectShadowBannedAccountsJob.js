@@ -13,18 +13,17 @@ const detectShadowbannedAcc = async () => {
     where: {
       isSold: false,
       isSuspended: false,
-      isShadowbanned: false
+      isShadowBanned: false
     }
   })
   for (const account of accounts) {
     try {
-      return await axios({
+      await axios({
         method: 'get',
-        url: baseRedditUrl + account.dataValues.username,
+        url: baseRedditUrl + account.dataValues.username + '.json',
         responseType: 'json'
       })
     } catch (err) {
-      console.log(err.response.status)
       if (err.response.status) {
         await sequelize.models.Account.update({
           isShadowBanned: true

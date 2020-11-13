@@ -300,7 +300,8 @@ const updateAccountKarma = async () => {
   accounts = await sequelize.models.Account.findAll({
     where: {
       isSold: false,
-      isSuspended: false
+      isSuspended: false,
+      isShadowBanned: false
     }
   })
   return await getAccountsData(accounts)
@@ -326,7 +327,7 @@ const getAccountsData = async (accounts) => {
     if (me.is_suspended === true) {
       await report(account.dataValues.username + ' has been suspended')
     }
-    if (account.dataValues.createdAt <= dayjs().subtract(24, 'day').$d) {
+    if (account.dataValues.createdAt <= dayjs().subtract(24, 'day')) {
       accountsKarma.push(updatedUser)
     }
   }

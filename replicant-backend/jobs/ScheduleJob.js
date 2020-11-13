@@ -29,9 +29,6 @@ const scheduleJob = async (numOfAccounts, numOfPosts) => {
       isSuspended: false,
       isHarvested: false,
       isShadowBanned: false,
-      postKarma: {
-        [Op.lte]: 20000
-      },
       createdAt: {
         [Op.lte]: dayjs().subtract(20, 'day')
       }

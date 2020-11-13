@@ -43,12 +43,12 @@ module.exports.topPostFetchHandler = async () => {
 
 /**
  *
- * @return {Promise<(Model<TModelAttributes, TCreationAttributes>|boolean)[]>}
+ * @return {Promise<void>}
  */
 module.exports.postScheduleHandler = async () => {
   // TODO : convert to manually updatable control values.
   try {
-    return await scheduleJob(3, 5)
+    await scheduleJob(3, 5)
   } catch (e) {
     console.error(e)
   }
