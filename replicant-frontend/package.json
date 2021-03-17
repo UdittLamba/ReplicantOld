@@ -20,7 +20,7 @@
     "@babel/runtime": "^7.12.0",
     "babel-preset-nano-react-app": "^0.1.0",
     "cssnano": "^4.1.10",
-    "parcel-bundler": "^1.11.0",
+    "parcel-bundler": "^1.12.5",
     "parcel-plugin-clean-dist": "0.0.6"
   },
   "babel": {
